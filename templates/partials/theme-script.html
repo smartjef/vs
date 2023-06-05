@@ -1,0 +1,22 @@
+
+<script>
+    // Function to toggle the theme
+    function toggleTheme() {
+      var link = document.getElementById("themeLink");
+      var switchInput = document.getElementById("flexSwitchCheckChecked");
+
+      if (switchInput.checked) {
+        // Switch to Dark Theme
+        link.setAttribute("href", "/static/css/style-dark.css");
+        switchInput.previousElementSibling.innerHTML = "Light Theme";
+      } else {
+        // Switch to Light Theme
+        link.setAttribute("href", "");
+        switchInput.previousElementSibling.innerHTML = "Dark Theme";
+      }
+    }
+
+    // Add event listener to the switch
+    var switchInput = document.getElementById("flexSwitchCheckChecked");
+    switchInput.addEventListener("change", toggleTheme);
+  </script>

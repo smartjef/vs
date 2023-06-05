@@ -1,0 +1,193 @@
+<style>
+    .subscribe-form {
+        background-image: linear-gradient(194deg, #222429 30%, #ffaa17 150%);
+        position: relative;
+        text-align: center;
+        margin-top: 0px;
+        margin-bottom: -120px;
+        padding: 30px 0px 40px 0px;
+        border-radius: 15px;
+        z-index: 1;
+    }
+    .subscribe-form:before {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url(/static/images/app4/cta-bg1-1.png);
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        background-size: cover;
+        opacity: 0.56;
+        content: "";
+    }
+    .subscribe-form form {
+        margin-bottom: 10px;
+    }
+    .subscribe-form form .form-group {
+        position: relative;
+    }
+    .subscribe-form form .form-group input {
+        padding: 17px 30px;
+        width: 70%;
+        border-radius: 10px;
+        margin: 0 auto;
+    }
+    .subscribe-form form .form-group button {
+        position: absolute;
+        right: 7%;
+        -webkit-transform: translateX(-90%);
+                transform: translateX(-90%);
+        top: 5px;
+        border-radius: 7px;
+    }
+    .subscribe-form form .form-group button:hover {
+        background: #000;
+    }
+    .subscribe-form form .form-group .btn-style-one::before {
+        background-color: unset;
+    }
+    .subscribe-form .title {
+        font-size: 34px;
+    }
+    @media screen and (max-width: 991px) {
+    .subscribe-form form .form-group button {
+        right: 1%;
+        }
+        .subscribe-form .title {
+            font-size: 24px;
+        }
+    }      
+</style>
+<section id="contact">
+    <div class="auto-container my-5">
+        <div class="row">
+            <div class="subscribe-form">
+                <h4 class="title text-white mb-30">Subscribe our newsletter and get useful <br> information every week</h4>
+                <form method="post" action="{% url 'subscribe:new'%}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="email" name="email" class="email" placeholder="Email Address" required>
+                        <button type="submit" class="theme-btn btn-style-one text-white"><span class="btn-title"><i class="far fa-paper-plane"></i></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Main Footer -->
+<footer class="main-footer">
+    <div class="bg-image"  style="background-image: url(/static/images/background/2.jpg)"></div>
+
+    <!--Widgets Section-->
+    <div class="widgets-section">
+        <div class="auto-container">
+            <div class="row">
+                <!--Footer Column-->
+                <div class="footer-column col-xl-3 col-lg-12 col-md-6 col-sm-12">
+                    <div class="footer-widget about-widget">
+                        <div class="logo"><a href="/"><img src="/static/images/logo.png" alt="" width="180" ></a></div>
+                        <div class="text">Desires to obtain pain of itself, because it is pain, but occasionally circumstances.</div>
+                        <ul class="social-icon-two">
+                            <li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}"><span class="fab fa-twitter"></span></a></li>
+                            <li><a href="{{ about.facebook|default:'https://fb.com' }}"><span class="fab fa-facebook-square"></span></a></li>
+                            <li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><span class="fab fa-linkedin"></span></a></li>
+                            <li><a href="{{ about.instagram|default:'https://instagram.com/vstech_ltd/' }}"><span class="fab fa-instagram"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!--Footer Column-->
+                <div class="footer-column col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="footer-widget">
+                        <h3 class="widget-title">Explore</h3>
+                        <ul class="user-links">
+                            <li><a href="{% url 'about' %}">About Company</a></li>
+                            <li><a href="{% url 'users:team' %}">Meet the Team</a></li>
+                            <li><a href="{% url 'blog:list' %}">News & Media</a></li>
+                            <li><a href="{% url 'project:list' %}">Our Projects</a></li>
+                            <li><a href="{% url 'shop:list' %}">Our Shop</a></li>
+                            <li><a href="{% url 'faq' %}">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!--Footer Column-->
+                <div class="footer-column col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="footer-widget contact-widget">
+                        <h3 class="widget-title">Contact</h3>
+                        <div class="widget-content">
+                            <div class="text">
+                                {{ about.address|default:'52106 00100 Nairobi' }}
+                                <div class="contact-info-box">
+                                    <span class="icon lnr-icon-clock"></span>
+                                    <span class="title">Opened:</span>
+                                    Sun - Fri 24hrs
+                                </div>
+                            </div>
+                            <ul class="contact-info">
+                                <li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a><br></li>
+                                <li><i class="fa fa-phone-square"></i> <a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a><br></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Footer Column-->
+                <div class="footer-column col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="footer-widget gallery-widget">
+                        <h3 class="widget-title">Gallery</h3>
+                        <div class="widget-content">
+                            <div class="outer clearfix">
+                                {% if teams %}
+                                    {% for team in teams %}
+                                        <figure class="image">
+                                            <a href="{{ team.get_absolute_url }}"><img src="{% if team.image %}{{ team.image.url }}{% else %}/static/images/resource/project-thumb-1.jpg{% endif %}" alt="{{ team.user.get_full_name|default:'No Name'}}"></a>
+                                        </figure>
+                                    {% endfor %}
+                                {% else %}
+                                    <figure class="image">
+                                        <a href="#"><img src="/static/images/resource/project-thumb-1.jpg" alt=""></a>
+                                    </figure>
+                                    <figure class="image">
+                                        <a href="#"><img src="/static/images/resource/project-thumb-2.jpg" alt=""></a>
+                                    </figure>
+                                    <figure class="image">
+                                        <a href="#"><img src="/static/images/resource/project-thumb-3.jpg" alt=""></a>
+                                    </figure>
+                                    <figure class="image">
+                                        <a href="#"><img src="/static/images/resource/project-thumb-4.jpg" alt=""></a>
+                                    </figure>
+                                    <figure class="image">
+                                        <a href="#"><img src="/static/images/resource/project-thumb-5.jpg" alt=""></a>
+                                    </figure>
+                                    <figure class="image">
+                                        <a href="#"><img src="/static/images/resource/project-thumb-6.jpg" alt=""></a>
+                                    </figure>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--Footer Bottom-->
+		<div class="footer-bottom">
+			<div class="auto-container">
+				<div class="inner-container d-flex" style="background-color: unset;">
+					<div class="copyright-text text-white">© {{ current_year }} <a href="/">VSTech Limited</a>. All Rights Reserved
+					</div>
+					
+					<ul class="social-icon-two ms-auto">
+						<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+						<li><a href="#"><i class="fab fa-pinterest"></i></a></li>
+						<li><a href="#"><i class="fab fa-instagram"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+</footer>
+<!--End Main Footer -->
