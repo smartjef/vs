@@ -18,7 +18,7 @@ def index(request):
         'faqs': FAQ.objects.filter(is_active=True)[:5],
         'blogs': Post.objects.filter(is_published=True)[:3],
     }
-    return render(request, f'index/2.html', context)
+    return render(request, f'index/1.html', context)
 
 def contact(request):
     if request.method == "POST":
@@ -43,10 +43,23 @@ def contact(request):
     return render(request, 'contact.html', context)
 
 def about(request):
-    return render(request, 'about.html')
+    context = {
+        'title': 'About Us',
+        'partners': Partner.objects.all(),
+        'projects': Project.objects.filter(is_active=True),
+    }
+    return render(request, 'about.html', context)
 
 def testimonies(request):
-    return render(request, 'testimonial.html')
+    context = {
+        'title': 'Testimonies',
+        'testimonies': Testimony.objects.filter(is_active=True),
+    }
+    return render(request, 'testimonial.html', context)
 
 def faq(request):
-    return render(request, 'faq.html')
+    context = {
+        'title': 'FAQs',
+        'faqs': FAQ.objects.filter(is_active=True),
+    }
+    return render(request, 'faq.html', context)

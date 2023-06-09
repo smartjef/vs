@@ -3,45 +3,39 @@
 
 {% endblock %}
 {% block content %}
+{% if testimonies %}
 	<!-- Testimonial Section -->
 	<section>
 		<div class="container">
 			<div class="row">
+				{% for testimony in testimonies %}
 				<!-- Testimonial Carousel -->
 				<div class="col-lg-6 col-md-12 col-sm-12">
 					<div class="testimonial-block-four mb-md-30">
 						<div class="inner-box">
 							<div class="content-box">
 								<span class="icon icon-quote"></span>
-								<div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								<div class="text">Proin a lacus arcu. Nullam id dui eu orci maximus. Cras at auctor lectus, vel pretium tellus. Class aptent sociosqu ad litora torquent per conubia nostra.</div>
+								<div class="rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+								<div class="text">{{ testimony.message }}</div>
 							</div>
 							<div class="info-box">
-								<figure class="thumb"><img src="/static/images/resource/testi-thumb-3.jpg" alt=""></figure>
-								<h5 class="name">Jessica Brown</h5>
-								<span class="designation">Founder</span>
+								<figure class="thumb"><img src="{% if testimony.image %}{{ testimony.image.url }}{% else %}/static/images/resource/testi-thumb-3.jpg{% endif %}" alt="{{ testimony.name }}" title="{{ testimony.name }}"></figure>
+								<h5 class="name">{{ testimony.name }}</h5>
+								<span class="designation">{{ testimony.position }}</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6 col-md-12 col-sm-12">
-					<div class="testimonial-block-four">
-						<div class="inner-box">
-							<div class="content-box">
-								<span class="icon icon-quote"></span>
-								<div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								<div class="text">Proin a lacus arcu. Nullam id dui eu orci maximus. Cras at auctor lectus, vel pretium tellus. Class aptent sociosqu ad litora torquent per conubia nostra.</div>
-							</div>
-							<div class="info-box">
-								<figure class="thumb"><img src="/static/images/resource/testi-thumb-2.jpg" alt=""></figure>
-								<h5 class="name">Alesha Brown</h5>
-								<span class="designation">Co Founder</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</section>
 	<!-- End Testimonial Section -->
+{% endif %}
 {% endblock %}

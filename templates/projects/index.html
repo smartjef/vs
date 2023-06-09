@@ -1,104 +1,38 @@
 {% extends 'base.html' %}
+{% block title %}
+	Completed Projects - VSTech Limited
+{% endblock %}
 {% block meta %}
-
+	<meta name="title" content="Products and Projects - VSTech Limited">
+	<meta name="keywords" content="vstech, vstech limied, vstech products, products, services, software solutions, VSTech Limited, business needs, industry solutions">
+	<meta name="description" content="Explore the range of software solutions, services and various designs offered by VSTech Limited. Find the right product or service to meet your business needs.">
 {% endblock %}
 {% block content %}
+{% if projects %}
 	<!-- Gallery Section -->
 	<section class="">
 		<div class="container">
 			<div class="row g-3">
+				{% for project in projects %}
 				<div class="col-lg-4 col-md-6 col-sm-12">
 					<!-- Project Block -->
 					<div class="project-block">
 						<div class="inner-box">
 							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-1.jpg" class="lightbox-image"><img src="/static/images/resource/project-1.jpg" alt=""></a></figure>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
+								<figure class="image"><a href="{% if project.front_image %}{{ project.front_image.url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" class="lightbox-image"><img src="{% if project.front_image %}{{ project.front_image.url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt="{{ project.title }}" title="{{ project.title }}"></a></figure>
+								<a href="{{ project.get_absolute_url }}" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
 							</div>
 							<div class="content-box">
-								<h4 class="title"><a href="page-project-details/">Tech Solutions</a></h4>
-								<span class="cat">DESIGN / IDEAS</span>
+								<h4 class="title"><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h4>
+								<span class="cat">{{ project.category }}</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<!-- Project Block -->
-					<div class="project-block">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-2.jpg" class="lightbox-image"><img src="/static/images/resource/project-2.jpg" alt=""></a></figure>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-							<div class="content-box">
-								<h4 class="title"><a href="page-project-details/">Smart Visions</a></h4>
-								<span class="cat">DESIGN / IDEAS</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<!-- Project Block -->
-					<div class="project-block">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-3.jpg" class="lightbox-image"><img src="/static/images/resource/project-3.jpg" alt=""></a></figure>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-							<div class="content-box">
-								<h4 class="title"><a href="page-project-details/">Platform Integration</a></h4>
-								<span class="cat">DESIGN / IDEAS</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<!-- Project Block -->
-					<div class="project-block">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-4.jpg" class="lightbox-image"><img src="/static/images/resource/project-4.jpg" alt=""></a></figure>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-							<div class="content-box">
-								<h4 class="title"><a href="page-project-details/">Web Development</a></h4>
-								<span class="cat">DESIGN / IDEAS</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<!-- Project Block -->
-					<div class="project-block">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-1.jpg" class="lightbox-image"><img src="/static/images/resource/project-1.jpg" alt=""></a></figure>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-							<div class="content-box">
-								<h4 class="title"><a href="page-project-details/">Tech Solutions</a></h4>
-								<span class="cat">DESIGN / IDEAS</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<!-- Project Block -->
-					<div class="project-block">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-2.jpg" class="lightbox-image"><img src="/static/images/resource/project-2.jpg" alt=""></a></figure>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-							<div class="content-box">
-								<h4 class="title"><a href="page-project-details/">Smart Visions</a></h4>
-								<span class="cat">DESIGN / IDEAS</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</section>
 	<!-- End Gallery Section -->
+{% endif %}
 {% endblock %}
