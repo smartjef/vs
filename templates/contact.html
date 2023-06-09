@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
+{% block title %}Contact VSTech Limited - Get in touch with our software experts or leave feedback/query{% endblock %}
 {% block meta %}
-
+<meta name="title" content="Contact VSTech Limited - Get in touch with our software experts or leave feedback/query">
+<meta name="keyword" content="contact, VSTech Limited, software experts, phone, email, physical address, support, customer service, feedback, query, form">
+<meta name="description" content="Need to get in touch with VSTech Limited? Find our contact information including phone, email, physical address and feedback/query form on this page.">
+<meta name="next-head-count" content="5" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 {% endblock %}
 {% block content %}
 	<!--Contact Details Start-->
@@ -13,36 +18,36 @@
 						<h2>Feel free to write</h2>
 					</div>
 					<!-- Contact Form -->
-					<form id="contact_form" name="contact_form" class="" action="" method="post">
+					<form id="contact_form" name="contact_form" action="{% url 'contact' %}" method="post">
+						{% csrf_token %}
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="mb-3">
-									<input name="form_name" class="form-control" type="text" placeholder="Enter Name">
+									<input name="full_name" required class="form-control" type="text" placeholder="Enter Your Name">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="mb-3">
-									<input name="form_email" class="form-control required email" type="email" placeholder="Enter Email">
+									<input name="user_email" required class="form-control required email" type="email" placeholder="Enter Your Email">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="mb-3">
-									<input name="form_subject" class="form-control required" type="text" placeholder="Enter Subject">
+									<input name="subject" required class="form-control required" type="text" placeholder="Enter Subject">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="mb-3">
-									<input name="form_phone" class="form-control" type="text" placeholder="Enter Phone">
+									<input name="phone" class="form-control" type="text" placeholder="Enter Phone number">
 								</div>
 							</div>
 						</div>
 						<div class="mb-3">
-							<textarea name="form_message" class="form-control required" rows="7" placeholder="Enter Message"></textarea>
+							<textarea name="message" class="form-control required" rows="7" placeholder="Enter Message"></textarea>
 						</div>
 						<div class="mb-3">
-							<input name="form_botcheck" class="form-control" type="hidden" value="" />
 							<button type="submit" class="theme-btn btn-style-one" data-loading-text="Please wait..."><span class="btn-title">Send message</span></button>
 							<button type="reset" class="theme-btn btn-style-one"><span class="btn-title">Reset</span></button>
 						</div>
@@ -54,7 +59,7 @@
 						<div class="sec-title">
 							<span class="sub-title">Need any help?</span>
 							<h2>Get in touch with us</h2>
-							<div class="text">Lorem ipsum is simply free text available dolor sit amet, consectetur notted adipisicing elit sed do eiusmod tempor incididunt simply free ut labore et dolore magna aliqua.</div>
+							<div class="text">Web design is not just a profession for us, it's a passion. Our company leverages this passion to deliver powerful software solutions that exceed our clients' expectations.</div>
 						</div>
 						<ul class="list-unstyled contact-details__info">
 							<li>
@@ -63,7 +68,7 @@
 								</div>
 								<div class="text">
 									<h6>Have any question?</h6>
-									<a href="tel:980089850"><span>Free</span> +92 (020)-9850</a>
+									<a href="tel:{{ about.phone_number|default:'+254795067776' }}"><span>Free</span> {{ about.phone_number|default:'+254795067776' }}</a>
 								</div>
 							</li>
 							<li>
@@ -81,7 +86,7 @@
 								</div>
 								<div class="text">
 									<h6>Visit anytime</h6>
-									<span>66 broklyn golden street. New York</span>
+									<span>{{ about.address|default:'Moi Avenue, Ibrahims Mall' }}</span>
 								</div>
 							</li>
 						</ul>
@@ -92,44 +97,11 @@
 	</section>
 	<!--Contact Details End-->
 	
-	<!-- Divider: Google Map -->
-	<section>
-		<div class="container-fluid p-0">
-			<div class="row">
-				<!-- Google Map HTML Codes -->
-				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.843149788316!2d144.9537131159042!3d-37.81714274201087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sbn!2sbd!4v1583760510840!5m2!1sbn!2sbd" data-tm-width="100%" height="500" frameborder="0" allowfullscreen=""></iframe>
-			</div>
-		</div>
-	</section>
+	{% include 'partials/map.html' %}
 
 {% endblock %}
 {% block js %}
 	<!-- form submit -->
 	<script src="/static/js/jquery.validate.min.js"></script>
 	<script src="/static/js/jquery.form.min.js"></script>
-	<script>
-		(function($) {
-			$("#contact_form").validate({
-				submitHandler: function(form) {
-					var form_btn = $(form).find('button[type="submit"]');
-					var form_result_div = '#form-result';
-					$(form_result_div).remove();
-					form_btn.before('<div id="form-result" class="alert alert-success" role="alert" style="display: none;"></div>');
-					var form_btn_old_msg = form_btn.html();
-					form_btn.html(form_btn.prop('disabled', true).data("loading-text"));
-					$(form).ajaxSubmit({
-						dataType:  'json',
-						success: function(data) {
-							if( data.status == 'true' ) {
-								$(form).find('.form-control').val('');
-							}
-							form_btn.prop('disabled', false).html(form_btn_old_msg);
-							$(form_result_div).html(data.message).fadeIn('slow');
-							setTimeout(function(){ $(form_result_div).fadeOut('slow') }, 6000);
-						}
-					});
-				}
-			});
-		})(jQuery);
-	</script>
 {% endblock %}
