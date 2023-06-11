@@ -1,11 +1,11 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
-
+{% load crispy_forms_tags %}
 {% block head_title %}{% trans "E-mail Addresses" %}{% endblock %}
 
 {% block content %}
-    <h1>{% trans "E-mail Addresses" %}</h1>
+    <h2 class="text-center">{% trans "E-mail Addresses" %}</h2>
 {% if user.emailaddress_set.all %}
 <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
 
@@ -21,19 +21,19 @@
 
 {{ emailaddress.email }}
     {% if emailaddress.verified %}
-    <span class="verified">{% trans "Verified" %}</span>
+    <span class="verified bg-success text-white p-1">{% trans "Verified" %}</span>
     {% else %}
-    <span class="unverified">{% trans "Unverified" %}</span>
+    <span class="unverified bg-danger text-white p-1">{% trans "Unverified" %}</span>
     {% endif %}
-      {% if emailaddress.primary %}<span class="primary">{% trans "Primary" %}</span>{% endif %}
+      {% if emailaddress.primary %}<span class="primary bg-primary text-white p-1">{% trans "Primary" %}</span>{% endif %}
 </label>
 </div>
   {% endfor %}
 
 <div class="buttonHolder">
-      <button class="secondaryAction" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
-      <button class="secondaryAction" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
-      <button class="primaryAction" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
+      <button class="secondaryAction btn btn-primary btn-sm" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
+      <button class="secondaryAction btn btn-info btn-sm" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
+      <button class="primaryAction btn btn-danger btn-sm" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
 </div>
 
 </fieldset>
@@ -45,12 +45,12 @@
 {% endif %}
 
   {% if can_add_email %}
-    <h2>{% trans "Add E-mail Address" %}</h2>
+    <h3>{% trans "Add E-mail Address" %}</h3>
 
     <form method="post" action="{% url 'account_email' %}" class="add_email">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button name="action_add" type="submit">{% trans "Add E-mail" %}</button>
+        {{ form|crispy }}
+        <button name="action_add" class="theme-btn btn-style-one w-100" type="submit">{% trans "Add an email" %}</button>
     </form>
   {% endif %}
 

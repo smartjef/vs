@@ -61,8 +61,8 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.github',
 
-    # 'crispy_forms',
-    # 'crispy_bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     # Local apps
     'core.apps.CoreConfig',
@@ -237,6 +237,8 @@ EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Authentification Settings
 AUTHENTICATION_BACKENDS = [

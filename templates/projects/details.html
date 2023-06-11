@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %}{{ title }} - {{ category }} - VSTech Limited {% endblock %}
 {% block meta %}
 
 {% endblock %}
@@ -9,7 +10,7 @@
 			<div class="row">
 				<div class="col-xl-12">
 					<div class="project-details__top">
-						<div class="project-details__img"> <img src="/static/images/resource/project-details.jpg" alt=""> </div>
+						<div class="project-details__img"> <img src="{% if project.cover_image %}{{ project.cover_image.url }}{% else %}/static/images/resource/project-details.jpg{% endif %}" alt="{{ project.title }}" title="{{ project.title }}"> </div>
 					</div>
 				</div>
 			</div>
@@ -17,31 +18,8 @@
 				<div class="row">
 					<div class="col-xl-8 col-lg-8">
 						<div class="project-details__content-left">
-							<h3 class="">Here to Know About This Project</h3>
-							<p class="">There are many variations of passages of psum
-								available, but the majority have suffered alteration in some form, by injected
-								humour, or randomised words which don't look even slightly believable. If you are
-								going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
-								embarrassing hidden in the middle of text. Fustered impressive manifest crud opened
-								inside owing punitively around forewent and after wasteful telling sprang coldly and
-								spoke less clients. Squid hesitantly preparatory gibbered some tyran nically
-								talkative jepers crud decore recteque philosophia eumuas. </p>
-							<p class="mb-5">Beyond more stoic this along goodness hey this this
-								wow manatee mongoose one as since a far flustered impressive manifest far crud
-								opened inside owing punitively around forewent and after wasteful telling sprang
-								coldly and spoke less clients. Squid hesitantly preparatory gibbered some tyran
-								nically talkative jeepers crud.</p>
-							<h3 class="">Project Challenges</h3>
-							<p class="mb-5">Eque porro est qui dolorem ipsum quia quaed inventore
-								veritatis et quasi architecto beatae vitae dicta sunt explicabo. Aelltes port lacus
-								quis enim var sed efficitur turpis gilla sed sit amet finibus eros. Lorem Ipsum is
-								simply dummy text of the printing and typesetting.</p>
-							<h3 class="">Organic Food Supply</h3>
-							<p class="">When an unknown printer took a galley of type and
-								scrambled it to make a type specimen book. It has survived not only five centuries,
-								but also the leap into electronic typesetting, remaining essentially unchanged. It
-								was popularised in the 1960s with the release of Letraset sheets containing. Neque
-								porro est qui dolorem ipsumo.</p>
+							<h3 class="">Here to Know About {{ project }}</h3>
+							<p class="">{{ project.description|linebreaks }}</p>
 						</div>
 					</div>
 					<div class="col-xl-4 col-lg-4">
@@ -51,26 +29,31 @@
 								<ul class="list-unstyled project-details__details-list">
 									<li>
 										<p class="project-details__client">Date</p>
-										<h4 class="project-details__name">22 April, 2022</h4>
+										<h4 class="project-details__name">{{ project.date_completed|default:'-' }}</h4>
 									</li>
 									<li>
 										<p class="project-details__client">Client</p>
-										<h4 class="project-details__name">Kodesolution Ltd</h4>
+										<h4 class="project-details__name">{{ project.client|default:'-' }}</h4>
 									</li>
 									<li>
 										<p class="project-details__client">Website</p>
-										<h4 class="project-details__name">www.domain.com</h4>
+										<h4 class="project-details__name"><a href="{{ project.website|default:'' }}">{{ project.website|default:'-' }}</a></h4>
 									</li>
-									<li>
+									<!-- <li>
 										<p class="project-details__client">Location</p>
 										<h4 class="project-details__name">New York, USA</h4>
-									</li>
-									<li>
+									</li> -->
+									<!-- <li>
 										<p class="project-details__client">Value</p>
 										<h4 class="project-details__name">$11,367</h4>
-									</li>
+									</li> -->
 									<li>
-										<div class="project-details__social"> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-pinterest-p"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> </div>
+										<div class="project-details__social"> 
+											<a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}"><i class="fab fa-twitter"></i></a> 
+											<a href="{{ about.facebook|default:'https://fb.com' }}"><i class="fab fa-facebook"></i></a> 
+											<a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><i class="fab fa-linkedin"></i></a> 
+											<a href="{{ about.instagram|default:'https://instagram.com/vstech_ltd/' }}"><i class="fab fa-instagram"></i></a> 
+										</div>
 									</li>
 								</ul>
 							</div>
@@ -82,18 +65,22 @@
 				<div class="col-xl-12">
 					<div class="project-details__pagination-box">
 						<ul class="project-details__pagination list-unstyled clearfix">
-							<li class="next">
-								<div class="icon"> <a href="#" aria-label="Previous"><i class="lnr lnr-icon-arrow-left"></i></a> </div>
-								<div class="content">Previous</div>
-							</li>
+							{% if previous_project.slug != project.slug %}
+								<li class="next">
+									<div class="icon"> <a href="{{ previous_project.get_absolute_url }}" aria-label="Previous"><i class="lnr lnr-icon-arrow-left"></i></a> </div>
+									<div class="content">Previous</div>
+								</li>
+							{% endif %}
 							<li class="count"><a href="#"></a></li>
 							<li class="count"><a href="#"></a></li>
 							<li class="count"><a href="#"></a></li>
 							<li class="count"><a href="#"></a></li>
-							<li class="previous">
-								<div class="content">Next</div>
-								<div class="icon"> <a href="#" aria-label="Previous"><i class="lnr lnr-icon-arrow-right"></i></a> </div>
-							</li>
+							{% if next_project != project %}
+								<li class="previous">
+									<div class="content">Next</div>
+									<div class="icon"> <a href="{{ next_project.get_absolute_url }}" aria-label="Previous"><i class="lnr lnr-icon-arrow-right"></i></a> </div>
+								</li>
+							{% endif %}
 						</ul>
 					</div>
 				</div>

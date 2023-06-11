@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Project
+from django.urls import reverse
 # Create your views here.
 def index(request):
     context = {
@@ -9,4 +10,20 @@ def index(request):
     return render(request, 'projects/index.html', context)
 
 def service_details(request, slug):
-    return render(request, 'projects/details.html')
+    current_project = get_object_or_404(Project, slug=slug)
+    
+    # Find the next project
+    next_project = Project.objects.filter(created_at__gt=current_project.created_at).order_by('created_at').first()
+    
+    # Find the previous project
+    previous_project = Project.objects.filter(created_at__lt=current_project.created_at).order_by('-created_at').first()
+    
+    context = {
+        'title': current_project.title,
+        'category': 'Projects',
+        'category_url': reverse('project:list'),
+        'next_project': next_project,
+        'project': current_project,
+        'previous_project': previous_project,
+    }
+    return render(request, 'projects/details.html', context)

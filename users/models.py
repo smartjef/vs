@@ -39,6 +39,9 @@ class Team(models.Model):
     experience = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     order = models.PositiveSmallIntegerField(default=0)
+    meta_title = models.CharField(max_length=150, blank=True, null=True)
+    meta_keywords = models.TextField(blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
