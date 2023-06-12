@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}{{ title }} - {{ category }} - VSech Limited{% endblock %}
 {% block meta %}
-
+	<meta name="title" content="{{ service.meta_title }}">
+	<meta name="keywords" content="{{ service.meta_keywords }}">
+	<meta name="description" content="{{ service.meta_description }}">
 {% endblock %}
 {% block content %}
 	<!--Start Services Details-->
@@ -28,18 +30,18 @@
 						</div>
 
 						<!--End Services Details Sidebar Single-->
-            <div class="sidebar-widget banner-widget">
-              <div class="widget-content" style="background-image: url(/static/images/resource/contact.jpg);">
-                <div class="shape" style="background-image: url(/static/images/resource/overlay-shape.png);"></div>
-                <div class="content-box">
-                  <div class="icon-box">
-                    <i class="lnr lnr-icon-pie-chart"></i>
-                  </div>
-                  <h3>View VSTech Profile</h3>
-                  <a href="{% url 'contact' %}" class="theme-btn btn-style-two bg-light"><span class="btn-title text-black"> Contact us</span></a>
-                </div>
-              </div>
-            </div>
+						<div class="sidebar-widget banner-widget">
+						<div class="widget-content" style="background-image: url(/static/images/resource/contact.jpg);">
+							<div class="shape" style="background-image: url(/static/images/resource/overlay-shape.png);"></div>
+							<div class="content-box">
+							<div class="icon-box">
+								<i class="lnr lnr-icon-pie-chart"></i>
+							</div>
+							<h3>View VSTech Profile</h3>
+							<a href="{% url 'contact' %}" class="theme-btn btn-style-two bg-light"><span class="btn-title text-black"> Contact us</span></a>
+							</div>
+						</div>
+						</div>
 
 						<!--Start Services Details Sidebar Single-->
 						<div class="sidebar-widget service-sidebar-single mt-5">

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment, Reply
+from .models import Post, Comment, Reply, PostLike
 # Register your models here.
 
 @admin.register(Post)
@@ -16,16 +16,20 @@ class ReplyInline(admin.TabularInline):
     extra = 1
     can_delete = False
     show_change_link = True
-    fields = ('name', 'email', 'message', 'created_at', 'updated_at')
+    fields = ('author', 'message', 'created_at', 'updated_at')
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('post', 'name', 'email', 'is_approved', 'created_at', 'updated_at')
+    list_display = ('post', 'author', 'is_approved', 'created_at', 'updated_at')
     list_filter = ('is_approved', 'created_at', 'updated_at')
-    search_fields = ('name', 'email', 'message')
+    search_fields = ('author', 'message')
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
     inlines = [ReplyInline]
 
+@admin.register(PostLike)
+class PostLikeAdmin(admin.ModelAdmin):
+    list_display = ('post', 'user', 'value')
+    search_fields = ('post', 'user')

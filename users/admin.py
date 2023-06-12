@@ -12,7 +12,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ['order', 'user', 'slug', 'rank', 'is_active', 'created_at']
+    list_display = ['user', 'order', 'slug', 'rank', 'is_active', 'created_at']
     list_filter = ('is_active', 'created_at', 'updated_at')
     search_fields = ('user__username', 'user__email', 'rank')
     date_hierarchy = 'created_at'

@@ -10,13 +10,13 @@ def index(request):
     return render(request, 'projects/index.html', context)
 
 def service_details(request, slug):
-    current_project = get_object_or_404(Project, slug=slug)
+    current_project = get_object_or_404(Project, slug=slug, is_active=True)
     
     # Find the next project
-    next_project = Project.objects.filter(created_at__gt=current_project.created_at).order_by('created_at').first()
+    next_project = Project.objects.filter(created_at__gt=current_project.created_at, is_active=True).order_by('created_at').first()
     
     # Find the previous project
-    previous_project = Project.objects.filter(created_at__lt=current_project.created_at).order_by('-created_at').first()
+    previous_project = Project.objects.filter(created_at__lt=current_project.created_at, is_active=True).order_by('-created_at').first()
     
     context = {
         'title': current_project.title,

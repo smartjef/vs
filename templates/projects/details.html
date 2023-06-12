@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}{{ title }} - {{ category }} - VSTech Limited {% endblock %}
 {% block meta %}
-
+	<meta name="title" content="{{ project.meta_title }}">
+	<meta name="keywords" content="{{ project.meta_keywords }}">
+	<meta name="description" content="{{ project.meta_description }}">
 {% endblock %}
 {% block content %}
 	<!--Project Details Start-->
@@ -65,7 +67,7 @@
 				<div class="col-xl-12">
 					<div class="project-details__pagination-box">
 						<ul class="project-details__pagination list-unstyled clearfix">
-							{% if previous_project.slug != project.slug %}
+							{% if previous_project %}
 								<li class="next">
 									<div class="icon"> <a href="{{ previous_project.get_absolute_url }}" aria-label="Previous"><i class="lnr lnr-icon-arrow-left"></i></a> </div>
 									<div class="content">Previous</div>
@@ -75,7 +77,7 @@
 							<li class="count"><a href="#"></a></li>
 							<li class="count"><a href="#"></a></li>
 							<li class="count"><a href="#"></a></li>
-							{% if next_project != project %}
+							{% if next_project %}
 								<li class="previous">
 									<div class="content">Next</div>
 									<div class="icon"> <a href="{{ next_project.get_absolute_url }}" aria-label="Previous"><i class="lnr lnr-icon-arrow-right"></i></a> </div>

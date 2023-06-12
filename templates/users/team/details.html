@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% block title %}{{ title }} - {{ category }} - VSTech Limited{% endblock %}
 {% block meta %}
-
+	<meta name="title" content="{{ team.meta_title }}">
+	<meta name="keywords" content="{{ team.meta_keywords }}">
+	<meta name="description" content="{{ team.meta_description }}">
 {% endblock %}
 {% block content %}
 	<!--Team Details Start-->

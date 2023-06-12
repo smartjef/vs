@@ -6,6 +6,7 @@ from service.models import Service
 from project.models import Project
 from blog.models import Post
 from .models import Testimony, Partner, FAQ, Contact
+from users.models import Team
 # Create your views here.
 def index(request):
     random_number = randint(1,10)
@@ -63,3 +64,26 @@ def faq(request):
         'faqs': FAQ.objects.filter(is_active=True),
     }
     return render(request, 'faq.html', context)
+
+def search(request):
+    query = request.GET.get('q')
+    title = 'Search page'
+    if query:
+        blogs = Post.objects.filter(is_published=True, title__icontains=query) or Post.objects.filter(is_published=True, body__icontains=query)
+        testimonies = Testimony.objects.filter(is_active=True, message__icontains=query) or Testimony.objects.filter(is_active=True, name__icontains=query)
+        services = Service.objects.filter(title__icontains=query) or Service.objects.filter(description__icontains=query)
+        projects = Project.objects.filter(is_active=True, title__icontains=query) or Project.objects.filter(is_active=True, description__icontains=query)
+        faqs = FAQ.objects.filter(is_active=True, question__icontains=query) or FAQ.objects.filter(is_active=True, answer__icontains=query)
+        teams = Team.objects.filter(is_active=True, user__first_name__icontains=query) or Team.objects.filter(is_active=True, rank__icontains=query)
+        total_results = blogs.count()+testimonies.count()+services.count()+projects.count()+faqs.count()+teams.count()
+        title = f"{total_results} Search result for '{query}'"
+    context = {
+        'title': title,
+        'blogs': blogs,
+        'testimonies': testimonies,
+        'services': services,
+        'projects': projects,
+        'faqs': faqs,
+        'teams': teams,
+    }
+    return render(request, 'search.html', context)

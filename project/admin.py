@@ -4,7 +4,7 @@ from .models import Project
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'category', 'website', 'client', 'updated_at')
+    list_display = ('title', 'slug', 'category', 'website', 'client', 'is_active', 'updated_at')
     list_filter = ('created_at','category', 'updated_at')
     search_fields = ('title', 'slug', 'category', 'description', 'client', 'website')
     date_hierarchy = 'created_at'

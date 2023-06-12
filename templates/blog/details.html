@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% block title %}{{ title }} - {{ category }} - VSTech Limited{% endblock %}
 {% block meta %}
-
+	<meta name="title" content="{{ post.meta_title }}">
+	<meta name="keywords" content="{{ post.meta_keywords }}">
+	<meta name="description" content="{{ post.meta_description }}">
 {% endblock %}
 {% block content %}
 	<!--Blog Details Start-->
@@ -10,240 +13,114 @@
 				<div class="col-xl-8 col-lg-7">
 					<div class="blog-details__left">
 						<div class="blog-details__img">
-							<img src="/static/images/resource/news-details.jpg" alt="">
+							<img src="{% if post.cover_image %}{{ post.cover_image.url }}{% else %}/static/images/resource/news-details.jpg{% endif %}" alt="{{ post }}" title="{{ post }}">
 							<div class="blog-details__date">
-								<span class="day">28</span>
-								<span class="month">Aug</span>
+								<span class="day">{{ post.published_date|date:'d' }}</span>
+								<span class="month">{{ post.published_date|date:'M' }}</span>
 							</div>
 						</div>
 						<div class="blog-details__content">
 							<ul class="list-unstyled blog-details__meta">
-								<li><a href="news-details/"><i class="fas fa-user-circle"></i> Admin</a> </li>
-								<li><a href="news-details/"><i class="fas fa-comments"></i> 02
-									Comments</a>
+								<li><a href="news-details/"><i class="fas fa-user-circle"></i> {{ post.author.get_full_name|default:'No Name' }}</a> </li>
+								<li>
+									<i class="fa fa-eye" aria-hidden="true"></i> {{ post.views }}
+									<a href="{% url 'blog:like_post' post.slug %}"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a> {{ post.likes }}
+									<a href="{% url 'blog:dislike_post' post.slug %}"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> {{ post.dislikes }}
+									<a href="#comments"><i class="fas fa-comments"></i> {{ post.comments.all.count }} Comments</a>
 								</li>
 							</ul>
-							<h3 class="blog-details__title">We’re Leader In Tecnology Market</h3>
-							<p class="blog-details__text-2">Mauris non dignissim purus, ac commodo diam. Donec sit
-								amet lacinia nulla. Aliquam quis purus in justo pulvinar tempor. Aliquam tellus
-								nulla, sollicitudin at euismod nec, feugiat at nisi. Quisque vitae odio nec lacus
-								interdum tempus. Phasellus a rhoncus erat. Vivamus vel eros vitae est aliquet
-								pellentesque vitae et nunc. Sed vitae leo vitae nisl pellentesque semper.
-							</p>
-							<p class="blog-details__text-2">Mauris non dignissim purus, ac commodo diam. Donec sit
-								amet lacinia nulla. Aliquam quis purus in justo pulvinar tempor. Aliquam tellus
-								nulla, sollicitudin at euismod nec, feugiat at nisi. Quisque vitae odio nec lacus
-								interdum tempus. Phasellus a rhoncus erat. Vivamus vel eros vitae est aliquet
-								pellentesque vitae et nunc. Sed vitae leo vitae nisl pellentesque semper.
-							</p>
-							<p class="blog-details__text-2">Mauris non dignissim purus, ac commodo diam. Donec sit
-								amet lacinia nulla. Aliquam quis purus in justo pulvinar tempor. Aliquam tellus
-								nulla, sollicitudin at euismod nec, feugiat at nisi. Quisque vitae odio nec lacus
-								interdum tempus. Phasellus a rhoncus erat. Vivamus vel eros vitae est aliquet
-								pellentesque vitae et nunc. Sed vitae leo vitae nisl pellentesque semper.
+							<h3 class="blog-details__title">{{ post.title }}</h3>
+							<p class="blog-details__text-2">
+								{{ post.body|linebreaks }}
 							</p>
 						</div>
 						<div class="blog-details__bottom">
-							<p class="blog-details__tags"> <span>Tags</span> <a href="news-details/">Agriculture</a> <a href="news-details/">Farm</a> </p>
+							{% if post.tags.all %}
+							<p class="blog-details__tags"> 
+								<span>Tags</span> 
+								{% for post_tag in post.tags.all %}
+								<a href="{% url 'blog:list_by_tag' post_tag.slug %}">{{ post_tag }}</a> 
+								{% endfor %} 
+							</p>
+							{% endif %}
 							<div class="blog-details__social-list"> <a href="news-details/"><i class="fab fa-twitter"></i></a> <a href="news-details/"><i class="fab fa-facebook"></i></a> <a href="news-details/"><i class="fab fa-pinterest-p"></i></a> <a href="news-details/"><i class="fab fa-instagram"></i></a> </div>
 						</div>
 						<div class="nav-links">
-							<div class="prev">
-								<a href="news-details/" rel="prev">True factors of the modern healthy lifestyle</a>
-							</div>
-							<div class="next">
-								<a href="news-details/" rel="next">How to lead a healthy &amp; well-balanced life</a>
-							</div>
+							{% if previous_post %}
+								<div class="prev">
+									<a href="{{ previous_post.get_absolute_url }}" rel="prev">{{ previous_post }}</a>
+								</div>
+							{% endif %}
+							{% if next_post %}
+								<div class="next">
+									<a href="{{ next_post.get_absolute_url }}" rel="next">{{ next_post }}</a>
+								</div>
+							{% endif %}
 						</div>
-						<div class="comment-one">
-							<h3 class="comment-one__title">2 Comments</h3>
+						<div class="comment-one" id="comments">
+							<h3 class="comment-one__title">{{ post.comments.all.count }} Comments</h3>
+							{% if post.comments.all %}
+								{% for post_comment in post.comments.all %}
+									<div class="comment-one__single">
+										<div class="comment-one__image"> <img src="{% if post_comment.author.profile.image %}{{ post_comment.author.profile.image.url }}{% else %}/static/images/resource/testi-thumb-1.jpg{% endif %}" alt="{{ post_comment.author.get_full_name }}"> </div>
+										<div class="comment-one__content">
+											<h3>{{ post_comment.author.get_full_name }}</h3>
+											<p>
+												{{ post_comment.message }}
+												{% if request.user == post_comment.author %} <br>
+													<a href="{% url 'blog:edit_comment' post_comment.id %}" class="btn btn-sm btn-primary text-white"><i class="fas fa-edit"></i></a>
+													<a href="{% url 'blog:delete_comment' post_comment.id %}" class="btn btn-sm btn-danger text-white"><i class="fa fa-trash" aria-hidden="true"></i></a>
+												{% endif %}
+											</p>
+											<a href="news-details/" class="theme-btn btn-style-one comment-one__btn"><span class="btn-title">Reply</span></a>
+										</div>
+									</div>
+								{% endfor %}
+							{% else %}
 							<div class="comment-one__single">
-								<div class="comment-one__image"> <img src="/static/images/resource/testi-thumb-1.jpg" alt=""> </div>
 								<div class="comment-one__content">
-									<h3>Kevin Martin</h3>
-									<p>Mauris non dignissim purus, ac commodo diam. Donec sit amet lacinia nulla.
-										Aliquam quis purus in justo pulvinar tempor. Aliquam tellus nulla,
-										sollicitudin at euismod.
-									</p>
-									<a href="news-details/" class="theme-btn btn-style-one comment-one__btn"><span class="btn-title">Reply</span></a>
+									<p>No comments, be the first to leave a comment</p>
 								</div>
 							</div>
-							<div class="comment-one__single">
-								<div class="comment-one__image"> <img src="/static/images/resource/testi-thumb-2.jpg" alt=""> </div>
-								<div class="comment-one__content">
-									<h3>Sarah Albert</h3>
-									<p>Mauris non dignissim purus, ac commodo diam. Donec sit amet lacinia nulla.
-										Aliquam quis purus in justo pulvinar tempor. Aliquam tellus nulla,
-										sollicitudin at euismod.
-									</p>
-									<a href="news-details/" class="theme-btn btn-style-one comment-one__btn"><span class="btn-title">Reply</span></a>
-								</div>
-							</div>
+							{% endif %}
 							<div class="comment-form">
-								<h3 class="comment-form__title">Leave a Comment</h3>
-								<form id="contact_form" name="contact_form" class="" action="https://kodesolution.com/html/2022/oitech-html/includes/sendmail.php" method="post">
-									<div class="row">
-										<div class="col-sm-6">
-											<div class="mb-3">
-												<input name="form_name" class="form-control" type="text" placeholder="Enter Name">
-											</div>
+								<h3 class="comment-form__title">
+									{% if comment %}
+										Edit your comment on {{ post }}
+									{% else %}
+										Leave a Comment
+									{% endif %}
+								</h3>
+								{% if comment %}
+									<form id="contact_form" name="contact_form" class="" action="{% url 'blog:comment' post.slug comment.id %}" method="post">
+										{% csrf_token %}
+										<div class="mb-3">
+											<textarea name="message" required class="form-control required" rows="5" placeholder="Enter Message">{{ comment.message }}</textarea>
 										</div>
-										<div class="col-sm-6">
-											<div class="mb-3">
-												<input name="form_email" class="form-control required email" type="email" placeholder="Enter Email">
-											</div>
+										<div class="mb-3">
+											<button type="submit" class="theme-btn btn-style-one"><span class="btn-title">Submit Comment</span></button>
 										</div>
-									</div>
-									<div class="mb-3">
-										<textarea name="form_message" class="form-control required" rows="5" placeholder="Enter Message"></textarea>
-									</div>
-									<div class="mb-3">
-										<input name="form_botcheck" class="form-control" type="hidden" value="" />
-										<button type="submit" class="theme-btn btn-style-one" data-loading-text="Please wait..."><span class="btn-title">Submit Comment</span></button>
-									</div>
-								</form>
+									</form>
+								{% else %}
+									<form id="contact_form" name="contact_form" class="" action="{% url 'blog:comment' post.slug %}" method="post">
+										{% csrf_token %}
+										<div class="mb-3">
+											<textarea name="message" required class="form-control required" rows="5" placeholder="Enter Message"></textarea>
+										</div>
+										<div class="mb-3">
+											<button type="submit" class="theme-btn btn-style-one"><span class="btn-title">Submit Comment</span></button>
+										</div>
+									</form>
+								{% endif %}
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xl-4 col-lg-5">
-					<div class="sidebar">
-						<div class="sidebar__single sidebar__search">
-							<form action="#" class="sidebar__search-form">
-								<input type="search" placeholder="Search here">
-								<button type="submit"><i class="lnr-icon-search"></i></button>
-							</form>
-						</div>
-						<div class="sidebar__single sidebar__post">
-							<h3 class="sidebar__title">Latest Posts</h3>
-							<ul class="sidebar__post-list list-unstyled">
-								<li>
-									<div class="sidebar__post-image"> <img src="/static/images/resource/news-1.jpg" alt=""> </div>
-									<div class="sidebar__post-content">
-										<h3> <span class="sidebar__post-content-meta"><i
-											class="fas fa-user-circle"></i>Admin</span> <a href="news-details/">Top crypto exchange influencers</a>
-										</h3>
-									</div>
-								</li>
-								<li>
-									<div class="sidebar__post-image"> <img src="/static/images/resource/news-2.jpg" alt=""> </div>
-									<div class="sidebar__post-content">
-										<h3> <span class="sidebar__post-content-meta"><i
-											class="fas fa-user-circle"></i>Admin</span> <a href="news-details/">Necessity may give us best virtual court</a> </h3>
-									</div>
-								</li>
-								<li>
-									<div class="sidebar__post-image"> <img src="/static/images/resource/news-3.jpg" alt=""> </div>
-									<div class="sidebar__post-content">
-										<h3> <span class="sidebar__post-content-meta"><i
-											class="fas fa-user-circle"></i>Admin</span> <a href="news-details/">You should know about business plan</a> </h3>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="sidebar__single sidebar__category">
-							<h3 class="sidebar__title">Categories</h3>
-							<ul class="sidebar__category-list list-unstyled">
-								<li><a href="news-details/">Artifical Intelligence<span
-									class="icon-right-arrow"></span></a> </li>
-								<li class="active"><a href="news-details/">Cloud Solution<span
-									class="icon-right-arrow"></span></a></li>
-								<li><a href="news-details/">Cyber Data<span
-									class="icon-right-arrow"></span></a> </li>
-								<li><a href="news-details/">SEO Marketing<span
-									class="icon-right-arrow"></span></a> </li>
-								<li><a href="news-details/">UI/UX Design<span
-									class="icon-right-arrow"></span></a> </li>
-								<li><a href="news-details/">Web Development<span
-									class="icon-right-arrow"></span></a> </li>
-							</ul>
-						</div>
-						<div class="sidebar__single sidebar__tags">
-							<h3 class="sidebar__title">Tags</h3>
-							<div class="sidebar__tags-list"> <a href="#">Consulting</a> <a href="#">Cyber</a> <a href="#">Development</a> <a href="#">Digital</a> <a href="#">Software</a> <a href="#">Technology</a> </div>
-						</div>
-						<div class="sidebar__single sidebar__comments">
-							<h3 class="sidebar__title">Recent Comments</h3>
-							<ul class="sidebar__comments-list list-unstyled">
-								<li>
-									<div class="sidebar__comments-icon"> <i class="fas fa-comments"></i> </div>
-									<div class="sidebar__comments-text-box">
-										<p>A wordpress commenter on <br>
-											launch new mobile app
-										</p>
-									</div>
-								</li>
-								<li>
-									<div class="sidebar__comments-icon"> <i class="fas fa-comments"></i> </div>
-									<div class="sidebar__comments-text-box">
-										<p> <span>John Doe</span> on template:</p>
-										<h5>comments</h5>
-									</div>
-								</li>
-								<li>
-									<div class="sidebar__comments-icon"> <i class="fas fa-comments"></i> </div>
-									<div class="sidebar__comments-text-box">
-										<p>A wordpress commenter on <br>
-											launch new mobile app
-										</p>
-									</div>
-								</li>
-								<li>
-									<div class="sidebar__comments-icon"> <i class="fas fa-comments"></i> </div>
-									<div class="sidebar__comments-text-box">
-										<p> <span>John Doe</span> on template:</p>
-										<h5>comments</h5>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
+					{% include 'blog/sidebar.html' %}
 				</div>
 			</div>
 		</div>
 	</section>
 	<!--Blog Details End-->
-{% endblock %}
-
-{% block js %}
-	<script src="/static/js/jquery.js"></script>
-	<script src="/static/js/popper.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/jquery.fancybox.js"></script>
-	<script src="/static/js/jquery-ui.js"></script>
-	<script src="/static/js/jquery.countdown.js"></script>
-	<script src="/static/js/mixitup.js"></script>
-	<script src="/static/js/wow.js"></script>
-	<script src="/static/js/appear.js"></script>
-	<script src="/static/js/select2.min.js"></script>
-	<script src="/static/js/swiper.min.js"></script>
-	<script src="/static/js/owl.js"></script>
-	<script src="/static/js/script.js"></script>
-	<script src="/static/js/jquery.validate.min.js"></script>
-	<script src="/static/js/jquery.form.min.js"></script>
-	<script>
-		(function($) {
-			$("#contact_form").validate({
-				submitHandler: function(form) {
-					var form_btn = $(form).find('button[type="submit"]');
-					var form_result_div = '#form-result';
-					$(form_result_div).remove();
-					form_btn.before('<div id="form-result" class="alert alert-success" role="alert" style="display: none;"></div>');
-					var form_btn_old_msg = form_btn.html();
-					form_btn.html(form_btn.prop('disabled', true).data("loading-text"));
-					$(form).ajaxSubmit({
-						dataType:  'json',
-						success: function(data) {
-							if( data.status == 'true' ) {
-								$(form).find('.form-control').val('');
-							}
-							form_btn.prop('disabled', false).html(form_btn_old_msg);
-							$(form_result_div).html(data.message).fadeIn('slow');
-							setTimeout(function(){ $(form_result_div).fadeOut('slow') }, 6000);
-						}
-					});
-				}
-			});
-		})(jQuery);
-	</script>
 {% endblock %}
