@@ -43,7 +43,13 @@
 								{% endfor %} 
 							</p>
 							{% endif %}
-							<div class="blog-details__social-list"> <a href="news-details/"><i class="fab fa-twitter"></i></a> <a href="news-details/"><i class="fab fa-facebook"></i></a> <a href="news-details/"><i class="fab fa-pinterest-p"></i></a> <a href="news-details/"><i class="fab fa-instagram"></i></a> </div>
+							<div class="blog-details__social-list"> 
+								<span class="px-2">Share Post</span>
+								<a href="https://twitter.com/intent/tweet?text={{ blog_text }}&url={{ blog_full_url }}"><i class="fab fa-twitter"></i></a> 
+								<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ blog_full_url }}&title={{ post.title }}"><i class="fab fa-linkedin"></i></a> 
+								<a href="mailto:{{ post.author.email }}?subject={{ post.title }}&body={{ blog_text }}{{ blog_full_url }}"><i class="fa fa-envelope"></i></a> 
+								<a href="https://www.facebook.com/sharer/sharer.php?u={{ blog_full_url }}"><i class="fab fa-facebook"></i></a> 
+							</div>
 						</div>
 						<div class="nav-links">
 							{% if previous_post %}
@@ -62,7 +68,20 @@
 							{% if post.comments.all %}
 								{% for post_comment in post.comments.all %}
 									<div class="comment-one__single">
-										<div class="comment-one__image"> <img src="{% if post_comment.author.profile.image %}{{ post_comment.author.profile.image.url }}{% else %}/static/images/resource/testi-thumb-1.jpg{% endif %}" alt="{{ post_comment.author.get_full_name }}"> </div>
+										<div class="comment-one__image"> 
+											<img src="
+											{% if post_comment.author.profile.image %}
+												{{ post_comment.author.profile.image.url }}
+											{% else %}
+												{% if post_comment.author.profile.gender == 'male' %}
+													/static/images/1.png
+												{% elif post_comment.author.profile.gender == 'female' %}
+													/static/images/2.png
+												{% else %}
+													/static/images/3.png
+												{% endif %}
+											{% endif %}" alt="{{ post_comment.author.get_full_name }}">
+										 </div>
 										<div class="comment-one__content">
 											<h3>{{ post_comment.author.get_full_name }}</h3>
 											<p>

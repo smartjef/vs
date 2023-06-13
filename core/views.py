@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 from random import randint
 from service.models import Service
 from project.models import Project
@@ -14,7 +15,7 @@ def index(request):
         'title' : 'Homepage',
         'services': Service.objects.all(),
         'projects': Project.objects.filter(is_active=True),
-        'testimonies': Testimony.objects.filter(is_active=True)[:6],
+        'testimonies': Testimony.objects.filter(is_active=True)[:3],
         'partners': Partner.objects.all(),
         'faqs': FAQ.objects.filter(is_active=True)[:5],
         'blogs': Post.objects.filter(is_published=True)[:3],
@@ -51,6 +52,17 @@ def about(request):
     }
     return render(request, 'about.html', context)
 
+@login_required
+def review(request):
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        position = request.POST.get('position')
+        message = request.POST.get('message')
+        new_testimony =Testimony.objects.create(author=request.user, rating=rating, position=position, message=message)
+        new_testimony.save()
+        messages.success(request, 'Review added successfully.')
+    return redirect('testimonies')
+
 def testimonies(request):
     context = {
         'title': 'Testimonies',
@@ -70,7 +82,7 @@ def search(request):
     title = 'Search page'
     if query:
         blogs = Post.objects.filter(is_published=True, title__icontains=query) or Post.objects.filter(is_published=True, body__icontains=query)
-        testimonies = Testimony.objects.filter(is_active=True, message__icontains=query) or Testimony.objects.filter(is_active=True, name__icontains=query)
+        testimonies = Testimony.objects.filter(is_active=True, message__icontains=query) or Testimony.objects.filter(is_active=True, author__first_name__icontains=query)
         services = Service.objects.filter(title__icontains=query) or Service.objects.filter(description__icontains=query)
         projects = Project.objects.filter(is_active=True, title__icontains=query) or Project.objects.filter(is_active=True, description__icontains=query)
         faqs = FAQ.objects.filter(is_active=True, question__icontains=query) or FAQ.objects.filter(is_active=True, answer__icontains=query)

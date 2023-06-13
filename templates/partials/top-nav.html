@@ -22,6 +22,7 @@
 						</li>
 						<li><a href="{% url 'faq' %}">Help</a></li>
 						{% if request.user.is_authenticated %}
+							<li><a href="">Profile</a></li>
 							<li><a href="{% url 'account_logout' %}">Logout</a></li>
 						{% else %}				
 							<li><a href="{% url 'account_signup' %}">Register</a></li>
@@ -36,7 +37,7 @@
 					<li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}"><span class="fab fa-twitter"></span></a></li>
 					<li><a href="{{ about.facebook|default:'https://fb.com' }}"><span class="fab fa-facebook-square"></span></a></li>
 					<li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><span class="fab fa-linkedin"></span></a></li>
-					<li><a href="{{ about.instagram|default:'https://instagram.com/vstech_ltd/' }}"><span class="fab fa-instagram"></span></a></li>				
+					<li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}"><span class="fab fa-youtube"></span></a></li>				
 				</ul>
 			</div>
 		</div>
@@ -55,8 +56,8 @@
 
 					<nav class="nav main-menu">
 						<ul class="navigation">
-							<li class="current"><a href="/">Home</a></li>
-							<li class="dropdown"><a href="#">About</a>
+							<li class="{% if title == 'Homepage' %}current{% endif %}"><a href="/">Home</a></li>
+							<li class="dropdown {% if title == 'About Us' or title == 'Projects' or title == 'Team Members' or title == 'Testimonies' or title == 'FAQs' %}current{% endif %}"><a href="#">About</a>
 								<ul>
 									<li><a href="{% url 'about' %}">About</a></li>
 									<li><a href="{% url 'project:list' %}">Projects</a></li>
@@ -68,7 +69,7 @@
 									
 								</ul>
 							</li>
-							<li><a href="{% url 'services:list' %}">Services</a></li>
+							<li class="{% if title == 'Our Services' or category == 'services' %}current{% endif %}"><a href="{% url 'services:list' %}">Services</a></li>
 							<li class="dropdown"><a href="#">Shop</a>
 								<ul>
 									<li><a href="{% url 'shop:list' %}">Products</a></li>
@@ -76,8 +77,8 @@
 									<li><a href="{% url 'shop:checkout' %}">Checkout</a></li>
 								</ul>
 							</li>
-							<li><a href="{% url 'blog:list' %}">Blogs</a></li>
-							<li><a href="{% url 'contact' %}">Contact</a></li>
+							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
+							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
 						</ul>
 					</nav>
 					<!-- Main Menu End-->
@@ -97,7 +98,7 @@
 							<small>Call Anytime</small><br> {{ about.phone_number|default:'+254795067776' }}
 						</a>
 
-						<a href="{% url 'contact' %}" class="theme-btn btn-style-one"><span class="btn-title">get solution</span></a>
+						<a href="/static/VSTech Portfolio.pdf" class="theme-btn btn-style-one"><span class="btn-title">View porfolio</span></a>
 
 						<!-- Mobile Nav toggler -->
 						<div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
@@ -123,6 +124,13 @@
 				</ul>
 				<ul class="contact-list-one">
 					{% if request.user.is_authenticated %}
+						<li>
+							<div class="contact-info-box">
+								<i class="icon fa fa-power-off" aria-hidden="true"></i>
+								<span class="title">Account</span>
+								<a href="">Profile</a>
+							</div>
+						</li>
 						<li>
 							<div class="contact-info-box">
 								<i class="icon fa fa-power-off" aria-hidden="true"></i>
@@ -183,7 +191,7 @@
 					<li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}"><span class="fab fa-twitter"></span></a></li>
 					<li><a href="{{ about.facebook|default:'https://fb.com' }}"><span class="fab fa-facebook-square"></span></a></li>
 					<li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><span class="fab fa-linkedin"></span></a></li>
-					<li><a href="{{ about.instagram|default:'https://instagram.com/vstech_ltd/' }}"><span class="fab fa-instagram"></span></a></li>
+					<li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}"><span class="fab fa-youtube"></span></a></li>
 				</ul>
 			</nav>
 		</div><!-- End Mobile Menu -->

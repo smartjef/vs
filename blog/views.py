@@ -48,6 +48,8 @@ def blog_detail(request, slug, id=None):
     previous_post = Post.objects.filter(created_at__lt=post.created_at, is_published=True, author=post.author).order_by('created_at').first()
     if id:
         comment =  get_object_or_404(Comment, id=id)
+
+    blog_full_url = f"{request.scheme}://{request.get_host()}{post.get_absolute_url()}"
     context = {
         'title': post.title,
         'category_url': reverse('blog:list'),
@@ -59,7 +61,9 @@ def blog_detail(request, slug, id=None):
         'categories': Category.objects.all(),
         'comment': comment,
         'latest_posts': Post.objects.filter(is_published=True),
-        'recent_comments': Comment.objects.filter(is_approved=True)
+        'recent_comments': Comment.objects.filter(is_approved=True),
+        'blog_full_url': blog_full_url,
+        'blog_text': f"Checkout this blog, {post.title} by {post.author.get_full_name()} on VSTech Limited"
     }
     return render(request, 'blog/details.html', context)
 

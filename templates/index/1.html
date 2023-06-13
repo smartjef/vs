@@ -41,6 +41,7 @@
 	<div class="preloader"></div>
 
     {% include 'partials/top-nav.html' %}
+	{% include 'partials/messages.html' %}
 	<!--Main Slider-->
 	<section class="main-slider">
 		<div class="rev_slider_wrapper fullwidthbanner-container" id="rev_slider_one_wrapper" data-source="gallery">
@@ -453,23 +454,38 @@
 									<div class="icon-box">
 										<span class="icon icon-quote"></span>
 										<div class="rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
+											{% for star in "*****" %}
+												{% if forloop.counter <= testimony.rating %}
+													<i class="fas fa-star"></i>
+												{% else %}
+													<i class="far fa-star"></i>
+												{% endif %}
+											{% endfor %}
 										</div>
 									</div>
 									<div class="text">
 										{{ testimony.message|linebreaks }}
 									</div>
 									<div class="info-box">
-										<h4 class="name">{{ testimony.name }}</h4>
+										<h4 class="name">{{ testimony.author.get_full_name|default:'No Name' }}</h4>
 										<span class="designation">{{ testimony.position }}</span>
 									</div>
 								</div>
 								<div class="image-column col-lg-6 col-md-12">
-									<figure class="image" ><img class="rounded rounded-circle" src="{% if testimony.image %}{{ testimony.image.url }}{% else %}/static/images/resource/testimonial-1.png{% endif %}" alt="{{ testimony.name }}"></figure>
+									<figure class="image" >
+										<img class="rounded rounded-circle" src="
+											{% if testimony.author.profile.image %}
+												{{ testimony.author.profile.image.url }}
+											{% else %}
+												{% if testimony.author.profile.gender == 'male' %}
+													/static/images/1.png
+												{% elif testimony.author.profile.gender == 'female' %}
+													/static/images/2.png
+												{% else %}
+													/static/images/3.png
+												{% endif %}
+											{% endif %}" alt="{{ testimony.name }}" title="{{ testimony.name }}">
+									</figure>
 								</div>
 							</div>
 						</div>
@@ -486,7 +502,20 @@
 					<div class="swiper-wrapper">
 						{% for testimony in testimonies %}
 							<div class="swiper-slide testimonial-thumb">
-								<figure class="image"><img src="{% if testimony.image %}{{ testimony.image.url }}{% else %}/static/images/resource/testimonial-1.png{% endif %}" alt="{{ testimony.name }}"></figure>
+								<figure class="image">
+									<img class="rounded rounded-circle" src="
+										{% if testimony.author.profile.image %}
+											{{ testimony.author.profile.image.url }}
+										{% else %}
+											{% if testimony.author.profile.gender == 'male' %}
+												/static/images/1.png
+											{% elif testimony.author.profile.gender == 'female' %}
+												/static/images/2.png
+											{% else %}
+												/static/images/3.png
+											{% endif %}
+										{% endif %}" alt="{{ testimony.name }}" title="{{ testimony.name }}">
+								</figure>
 							</div>
 						{% endfor %}
 					</div>

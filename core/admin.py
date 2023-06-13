@@ -8,9 +8,9 @@ class AboutAdmin(admin.ModelAdmin):
 
 @admin.register(Testimony)
 class TestimonyAdmin(admin.ModelAdmin):
-    list_display = ['name', 'position', 'message', 'rating', 'image', 'is_active', 'created_at']
+    list_display = ['author', 'position', 'message', 'rating', 'is_active', 'created_at']
     list_filter = ['created_at', 'rating', 'is_active']
-    search_fields = ['name', 'message', 'position']
+    search_fields = ['author_username', 'message', 'position']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
 

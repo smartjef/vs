@@ -10,7 +10,7 @@ class About(models.Model):
     twitter = models.URLField(blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
-    instagram = models.URLField(blank=True, null=True)
+    youtube = models.URLField(blank=True, null=True)
     github = models.URLField(blank=True, null=True)
     
     #address
@@ -34,9 +34,8 @@ class Contact(models.Model):
         return self.subject
 
 class Testimony(models.Model):
-    name = models.CharField(max_length=100)
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     position = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='testimony/', blank=True, null=True)
     message = models.TextField()
     rating = models.PositiveSmallIntegerField(default=5)
     is_active = models.BooleanField(default=True)
@@ -46,7 +45,7 @@ class Testimony(models.Model):
         return self.message
     
     class Meta:
-        ordering = ('-created_at','-rating')
+        ordering = ('-rating',)
 
 class Partner(models.Model):
     title = models.CharField(max_length=100)
