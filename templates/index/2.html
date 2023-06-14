@@ -3,12 +3,14 @@
 
 
 <head>
-<meta charset="utf-8">
-<title>VSTech |IT Solutions & Technology HTML Template | Home Page 02</title>
+	{% include 'partials/home_meta.html' %}
 <!-- Stylesheets -->
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 <link href="/static/css/style.css" rel="stylesheet">
 <link href="/static/css/responsive.css" rel="stylesheet">
+
+<!-- Dark Theme -->
+<link href="" id="themeLink" rel="stylesheet">
 
 <link rel="shortcut icon" href="/static/images/favicon.png" type="image/x-icon">
 <link rel="icon" href="/static/images/favicon.png" type="image/x-icon">
@@ -36,15 +38,26 @@
 					<!-- Info List -->
 					<ul class="list-style-one">
 						<li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
-						<li><i class="fa fa-map-marker"></i> 88 Broklyn Golden Street. New York</li>
+						<li><i class="fa fa-map-marker"></i> {{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</li>
 					</ul>
 				</div>
 
 				<div class="top-right">
 					<ul class="useful-links">
-						{% if request.user.is_authenticated %}<li><a href="{% url 'account_logout' %}">Logout</a></li>
-{% else %}				<li><a href="{% url 'account_signup' %}">Register</a></li><li><a href="{% url 'account_login' %}">Login</a></li>{% endif %}
-						
+						<li>
+							<div class="form-check form-switch m-0 p-0">
+								<label class="form-check-label my-0 py-0" for="flexSwitchCheckChecked">Dark Theme</label>
+								<input class="form-check-input my-0 py-0" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+							</div>
+						</li>
+						<li><a href="{% url 'faq' %}">Help</a></li>
+						{% if request.user.is_authenticated %}
+							<li><a href="">Profile</a></li>
+							<li><a href="{% url 'account_logout' %}">Logout</a></li>
+						{% else %}				
+							<li><a href="{% url 'account_signup' %}">Register</a></li>
+							<li><a href="{% url 'account_login' %}">Login</a></li>
+						{% endif %}
 					</ul>
 				</div>
 			</div>
@@ -65,7 +78,7 @@
 			<!-- Main box -->
 			<div class="main-box">
 				<div class="logo-box">
-					<div class="logo"><a href="/"><img src="/static/images/logo-2.png" alt="" title="VSTech Limited"></a></div>
+					<div class="logo"><a href="/"><img src="/static/images/logo-2.png" alt="VSTech Limited" width="120" title="VSTech Limited"></a></div>
 				</div>
 
 				<!--Nav Box-->
@@ -73,8 +86,8 @@
 
 					<nav class="nav main-menu">
 						<ul class="navigation">
-							<li class="current"><a href="/">Home</a></li>
-							<li class="dropdown"><a href="#">About</a>
+							<li class="{% if title == 'Homepage' %}current{% endif %}"><a href="/">Home</a></li>
+							<li class="dropdown {% if title == 'About Us' or title == 'Projects' or title == 'Team Members' or title == 'Testimonies' or title == 'FAQs' %}current{% endif %}"><a href="#">About</a>
 								<ul>
 									<li><a href="{% url 'about' %}">About</a></li>
 									<li><a href="{% url 'project:list' %}">Projects</a></li>
@@ -86,7 +99,7 @@
 									
 								</ul>
 							</li>
-							<li><a href="{% url 'services:list' %}">Services</a></li>
+							<li class="{% if title == 'Our Services' or category == 'services' %}current{% endif %}"><a href="{% url 'services:list' %}">Services</a></li>
 							<li class="dropdown"><a href="#">Shop</a>
 								<ul>
 									<li><a href="{% url 'shop:list' %}">Products</a></li>
@@ -94,8 +107,8 @@
 									<li><a href="{% url 'shop:checkout' %}">Checkout</a></li>
 								</ul>
 							</li>
-							<li><a href="{% url 'blog:list' %}">Blogs</a></li>
-							<li><a href="{% url 'contact' %}">Contact</a></li>
+							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
+							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
 						</ul>
 					</nav>
 					<!-- Main Menu End-->
@@ -106,16 +119,16 @@
 							<button class="ui-btn ui-btn search-btn">
 								<span class="icon lnr lnr-icon-search"></span>
 							</button>
-							<a href="#" class="ui-btn"><i class="lnr-icon-shopping-cart"></i></a>
+							<a href="{% url 'shop:cart' %}" class="ui-btn"><i class="lnr-icon-shopping-cart"></i></a>
 						</div>
 
 
 						<a href="tel:{{ about.phone_number|default:'+254795067776' }}" class="info-btn">
 							<i class="icon fa fa-phone"></i>
-							<small>Call Anytime</small><br> +92 (8800) 9806
+							<small>Call Anytime</small><br> {{ about.phone_number|default:'+254795067776' }}
 						</a>
 
-						<a href="{% url 'contact' %}" class="theme-btn btn-style-one"><span class="btn-title">get solution</span></a>
+						<a href="/static/VSTech Portfolio.pdf" class="theme-btn btn-style-one"><span class="btn-title">View porfolio</span></a>
 
 						<!-- Mobile Nav toggler -->
 						<div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
@@ -125,115 +138,24 @@
 		</div>
 		<!-- End Header Lower -->
 
-		<!-- Mobile Menu  -->
-		<div class="mobile-menu">
-			<div class="menu-backdrop"></div>
+		{% include 'partials/mobile_search_header.html' %}
 
-			<!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
-			<nav class="menu-box">
-				<div class="upper-box">
-					<div class="nav-logo"><a href="/"><img src="/static/images/logo.png" alt="" width="180" title="VSTech Limited"></a></div>
-					<div class="close-btn"><i class="icon fa fa-times"></i></div>
-				</div>
-
-				<ul class="navigation clearfix">
-					<!--Keep This Empty / Menu will come through Javascript-->
-				</ul>
-				<ul class="contact-list-one">
-					<li>
-						<!-- Contact Info Box -->
-						<div class="contact-info-box">
-							<i class="icon lnr-icon-phone-handset"></i>
-							<span class="title">Call Now</span>
-							<a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a>
-						</div>
-					</li>
-					<li>
-						<!-- Contact Info Box -->
-						<div class="contact-info-box">
-							<span class="icon lnr-icon-envelope1"></span>
-							<span class="title">Send Email</span>
-							<a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a>
-						</div>
-					</li>
-					<li>
-						<!-- Contact Info Box -->
-						<div class="contact-info-box">
-							<span class="icon lnr-icon-clock"></span>
-							<span class="title">Send Email</span>
-							Mon - Sat 8:00 - 6:30, Sunday - CLOSED
-						</div>
-					</li>
-				</ul>
-
-
-				<ul class="social-links">
-					<li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}"><span class="fab fa-twitter"></span></a></li>
-					<li><a href="{{ about.facebook|default:'https://fb.com' }}"><span class="fab fa-facebook-square"></span></a></li>
-					<li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><span class="fab fa-linkedin"></span></a></li>
-					<li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}"><span class="fab fa-youtube"></span></a></li>
-				</ul>
-			</nav>
-		</div><!-- End Mobile Menu -->
-
-		<!-- Header Search -->
-		<div class="search-popup">
-			<span class="search-back-drop"></span>
-			<button class="close-search"><span class="fa fa-times"></span></button>
-
-			<div class="search-inner">
-				<form method="post" action="">
-					<div class="form-group">
-						<input type="search" name="search-field" value="" placeholder="Search..." required="">
-						<button type="submit"><i class="fa fa-search"></i></button>
-					</div>
-				</form>
-			</div>
-		</div>
-		<!-- End Header Search -->
-
-		<!-- Sticky Header  -->
-		<div class="sticky-header">
-			<div class="auto-container">
-				<div class="inner-container">
-					<!--Logo-->
-					<div class="logo">
-						<a href="/" title="VSTech Limited"><img src="/static/images/logo-2.png" alt="" title="VSTech Limited"></a>
-					</div>
-
-					<!--Right Col-->
-					<div class="nav-outer">
-						<!-- Main Menu -->
-						<nav class="main-menu">
-							<div class="navbar-collapse show collapse clearfix">
-								<ul class="navigation clearfix">
-									<!--Keep This Empty / Menu will come through Javascript-->
-								</ul>
-							</div>
-						</nav><!-- Main Menu End-->
-
-						<!--Mobile Navigation Toggler-->
-						<div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
-					</div>
-				</div>
-			</div>
-		</div><!-- End Sticky Menu -->
 	</header>
 	<!--End Main Header -->
-
+	{% include 'partials/messages.html' %}
 	<!-- Banner Section Two-->
 	<section class="banner-section">
 		<div class="banner-carousel owl-carousel owl-theme">
 			<!-- Slide Item -->
 			<div class="slide-item">
-				<div class="bg-image" style="background-image: url(/static/images/main-slider/2.jpg);"></div>
+				<div class="bg-image" style="background-image: url(/static/images/main-slider/IMG_8924.JPG);"></div>
 				<div class="auto-container">
 					<div class="content-box">
-						<span class="sub-title animate-1">Solutions for your businesses</span>
-						<h1 class="title animate-2">Innovative Tech <br>Solutions</h1>
+						<span class="sub-title animate-1">Maximize Productivity</span>
+						<h1 class="title animate-2">Empowering <br>Businesses</h1>
 						<div class="btn-box animate-3">
 							<a href="{% url 'about' %}" class="theme-btn btn-style-one"><span class="btn-title">Explore More</span></a>
-							<a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
+							<a href="https://youtu.be/Oz-SvGZsTNc" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
 						</div>
 					</div>
 				</div>
@@ -241,14 +163,14 @@
 
 			<!-- Slide Item -->
 			<div class="slide-item">
-				<div class="bg-image" style="background-image: url(/static/images/main-slider/1.jpg);"></div>
+				<div class="bg-image" style="background-image: url(/static/images/main-slider/IMG_8916.JPG);"></div>
 				<div class="auto-container">
 					<div class="content-box">
-						<span class="sub-title animate-1">Solutions for your businesses</span>
-						<h1 class="title animate-2">Innovative Tech <br>Solutions</h1>
+						<span class="sub-title animate-1">Tailored for You</span>
+						<h1 class="title animate-2">Success for <br>Businesses</h1>
 						<div class="btn-box animate-3">
 							<a href="{% url 'about' %}" class="theme-btn btn-style-one"><span class="btn-title">Explore More</span></a>
-							<a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
+							<a href="https://youtu.be/Oz-SvGZsTNc" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
 						</div>
 					</div>
 				</div>
@@ -265,7 +187,7 @@
 				<div class="feature-block-two col-xl-2 col-lg-3 col-md-4 col-sm-6 wow fadeInUp">
 					<div class="inner-box ">
 						<i class="icon flaticon-business-011-dollar"></i>
-						<h6 class="title"><a href="page-service-details/">Banking</a></h6>
+						<h6 class="title"><a href="">Banking</a></h6>
 					</div>
 				</div>
 
@@ -273,7 +195,7 @@
 				<div class="feature-block-two col-xl-2 col-lg-3 col-md-4 col-sm-6 wow fadeInUp">
 					<div class="inner-box ">
 						<i class="icon flaticon-business-049-presentation"></i>
-						<h6 class="title"><a href="page-service-details/">Healthcare</a></h6>
+						<h6 class="title"><a href="">Healthcare</a></h6>
 					</div>
 				</div>
 
@@ -281,7 +203,7 @@
 				<div class="feature-block-two col-xl-2 col-lg-3 col-md-4 col-sm-6 wow fadeInUp">
 					<div class="inner-box ">
 						<i class="icon flaticon-business-061-meeting"></i>
-						<h6 class="title"><a href="page-service-details/">Education</a></h6>
+						<h6 class="title"><a href="">Education</a></h6>
 					</div>
 				</div>
 
@@ -289,7 +211,7 @@
 				<div class="feature-block-two col-xl-2 col-lg-3 col-md-4 col-sm-6 wow fadeInUp">
 					<div class="inner-box ">
 						<i class="icon flaticon-business-030-settings"></i>
-						<h6 class="title"><a href="page-service-details/">Manufacturing</a></h6>
+						<h6 class="title"><a href="">Manufacturing</a></h6>
 					</div>
 				</div>
 
@@ -297,7 +219,7 @@
 				<div class="feature-block-two col-xl-2 col-lg-3 col-md-4 col-sm-6 wow fadeInUp">
 					<div class="inner-box ">
 						<i class="icon flaticon-business-054-graph"></i>
-						<h6 class="title"><a href="page-service-details/">Capital Markets</a></h6>
+						<h6 class="title"><a href="">Businesses</a></h6>
 					</div>
 				</div>
 
@@ -305,13 +227,13 @@
 				<div class="feature-block-two col-xl-2 col-lg-3 col-md-4 col-sm-6 wow fadeInUp">
 					<div class="inner-box ">
 						<i class="icon flaticon-business-020-hierarchy"></i>
-						<h6 class="title"><a href="page-service-details/">Networking</a></h6>
+						<h6 class="title"><a href="">Networking</a></h6>
 					</div>
 				</div>
 
 			</div>
 
-			<div class="bottom-text">IT Technology services built specifically for your business. <a href="page-services.html" class="theme-btn btn-style-one small"><span class="btn-title">Find Your Solution</span></a></div>
+			<div class="bottom-text">IT Technology services built specifically for your business. <a href="{% url 'services:list' %}" class="theme-btn btn-style-one small"><span class="btn-title">Find Your Solution</span></a></div>
 		</div>
 	</section>
 	<!-- End Features Section Two -->
@@ -323,22 +245,24 @@
 				<div class="content-column col-lg-6 col-md-12 col-sm-12 wow fadeInRight" data-wow-delay="600ms">
 					<div class="inner-column">
 						<div class="sec-title">
-							<span class="sub-title">Welcome to tech</span>
-							<h2>Best IT Technology Services you can Trust</h2>
+							<span class="sub-title">Welcome to vstech</span>
+							<h2>Unleash the Power of Cutting-Edge Tech Solutions</h2>
 							<h5>The professional approach to technology.</h5>
-							<div class="text">System is a term used to refer to an organized collection symbols and processes that may be used to operate on such symbols. Perspiciatis unde omnis natus error voluptatems accusa.</div>
+							<div class="text">
+								Experience the limitless possibilities of innovative web and mobile apps, seamless support and maintenance, interactive e-learning, reliable hosting, expert consultation, and tailored software development. Discover the transformative potential of technology for all.
+							</div>
 						</div>
 
 						<div class="content-box">
 							<div class="row">
 								<div class="about-block-three col-lg-6 col-md-6 col-sm-12">
-									<h5 class="title"><i class="icon fa fa-arrow-alt-circle-right"></i> Cloud Based </h5>
-									<p class="text">Lorem ipsum dolor sit amet not is consectetur notted</p>
+									<h5 class="title"><i class="icon fa fa-arrow-alt-circle-right"></i> Mission </h5>
+									<p class="text">To provide innovative and modern tech solutions that ...</p>
 								</div>
 
 								<div class="about-block-three col-lg-6 col-md-6 col-sm-12">
-									<h5 class="title"><i class="icon fa fa-arrow-alt-circle-right"></i> Full Backup </h5>
-									<p class="text">Lorem ipsum dolor sit amet not is consectetur notted.</p>
+									<h5 class="title"><i class="icon fa fa-arrow-alt-circle-right"></i> Vision </h5>
+									<p class="text">To lead the world into a new era of technological ...</p>
 								</div>
 							</div>
 
@@ -351,9 +275,9 @@
 									</div>
 									<div class="skill-bar">
 										<div class="bar-inner">
-											<div class="bar progress-line" data-width="77">
+											<div class="bar progress-line" data-width="98">
 												<div class="skill-percentage">
-													<div class="count-box"><span class="count-text" data-speed="3000" data-stop="77">0</span>%</div>
+													<div class="count-box"><span class="count-text" data-speed="3000" data-stop="98">0</span>%</div>
 												</div>
 											</div>
 										</div>
@@ -371,15 +295,15 @@
 				<!-- Image Column -->
 				<div class="image-column col-lg-6 col-md-12 col-sm-12">
 					<div class="inner-column wow fadeInLeft">
-						<figure class="image-1 overlay-anim wow fadeInUp"><img src="/static/images/resource/about-5.jpg" alt=""></figure>
-						<figure class="image-2 overlay-anim wow fadeInRight"><img src="/static/images/resource/about-6.jpg" alt=""></figure>
+						<figure class="image-1 overlay-anim wow fadeInUp"><img src="/static/images/resource/about-1.jpg" alt="CED, Jeff Odhiambo"></figure>
+						<figure class="image-2 overlay-anim wow fadeInRight"><img src="/static/images/resource/image-3.jpg" alt="VSTech Team"></figure>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 	<!--Emd About Section Two -->
-
+{% if projects %}
 	<!-- Project Section -->
 	<section class="project-section-two">
 		<div class="auto-container">
@@ -392,52 +316,26 @@
 				<!-- Prject Carousel -->
 				<div class="project-carousel-two owl-carousel owl-theme">
 					<!-- Project Block Two -->
+					{% for project in projects %}
 					<div class="project-block-two">
 						<div class="inner-box">
 							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-5.jpg" class="lightbox-image"><img src="/static/images/resource/project-5.jpg" alt=""></a></figure>
+								<figure class="image"><a href="{{ project.get_absolute_url }}" class="lightbox-image"><img src="{% if project.front_image %}{{ project.front_image.url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt=""></a></figure>
 							</div>
 							<div class="content-box">
-								<h5 class="title"><a href="page-project-details/">Tech Solutions</a></h5>
-								<span class="cat">DESIGN / IDEAS</span>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
+								<h5 class="title"><a href="{{ project.get_absolute_url }}">Tech Solutions</a></h5>
+								<span class="cat">{{ project.category }}</span>
+								<a href="{{ project.get_absolute_url }}" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
 							</div>
 						</div>
 					</div>
-
-					<!-- Project Block Two -->
-					<div class="project-block-two">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-6.jpg" class="lightbox-image"><img src="/static/images/resource/project-6.jpg" alt=""></a></figure>
-							</div>
-							<div class="content-box">
-								<h5 class="title"><a href="page-project-details/">Smart Visions</a></h5>
-								<span class="cat">DESIGN / IDEAS</span>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Project Block Two -->
-					<div class="project-block-two">
-						<div class="inner-box">
-							<div class="image-box">
-								<figure class="image"><a href="/static/images/resource/project-7.jpg" class="lightbox-image"><img src="/static/images/resource/project-7.jpg" alt=""></a></figure>
-							</div>
-							<div class="content-box">
-								<h5 class="title"><a href="page-project-details/">Platform Integration</a></h5>
-								<span class="cat">DESIGN / IDEAS</span>
-								<a href="page-project-details/" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
-							</div>
-						</div>
-					</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
 	</section>
 	<!--End Project Section -->
-
+{% endif %}
 	<!-- Offer Section Two -->
 	<section class="offer-section-two">
 		<div class="auto-container">
@@ -446,17 +344,16 @@
 				<div class="content-column col-lg-6 col-md-12">
 					<div class="inner-column">
 						<div class="sec-title">
-							<span class="sub-title">Welcome to tech</span>
-							<h2>Your Success with the Best IT Solutions</h2>
+							<span class="sub-title">TECH MANAGEMENT</span>
+							<h2>The Best Source for IT Solutions</h2>
 						</div>
 						<div class="info-box">
 							<span class="count">01</span>
-							<div class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry when an unknown printer.</div>
+							<div class="text">We are the premier provider of cutting-edge IT solutions, dedicated to helping businesses stay ahead in the digital age.</div>
 						</div>
 						<div class="info-box">
 							<span class="count">02</span>
-							<div class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry when an unknown printer.
-							</div>
+							<div class="text">We offer wide range of IT products and services, Provide excellent customer service and support & Deliver solutions that meet specific business needs.</div>
 						</div>
 					</div>
 				</div>
@@ -465,11 +362,11 @@
 				<div class="image-column col-lg-6 col-md-12 col-sm-12">
 					<div class="inner-column">
 						<div class="image-box">
-							<figure class="image"><img src="/static/images/resource/image-6.jpg" alt=""></figure>
+							<figure class="image"><img src="/static/images/resource/image-7.jpg" alt=""></figure>
 							<div class="video-box wow fadeIn">
 								<h4 class="title">Watch our video</h4>
 								<img class="arrow-icon" src="/static/images/icons/icon-arrow.png" alt="">
-								<a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-btn lightbox-image"><i class="icon fa fa-play"></i></a>
+								<a href="https://youtu.be/Oz-SvGZsTNc" class="play-btn lightbox-image"><i class="icon fa fa-play"></i></a>
 							</div>
 						</div>
 					</div>
@@ -488,7 +385,7 @@
 					<div class="counter-block-two col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
 						<div class="inner">
 							<i class="icon flaticon-business-060-graph"></i>
-							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="4520">0</span>
+							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="57">0</span>
 							</div>
 							<h6 class="counter-title">Project completed</h6>
 						</div>
@@ -498,7 +395,7 @@
 					<div class="counter-block-two col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="300ms">
 						<div class="inner">
 							<i class="icon flaticon-business-035-helpline"></i>
-							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="326">0</span></div>
+							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="10">0</span></div>
 							<h6 class="counter-title">IT specialists</h6>
 						</div>
 					</div>
@@ -507,7 +404,7 @@
 					<div class="counter-block-two col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="600ms">
 						<div class="inner">
 							<i class="icon flaticon-business-020-hierarchy"></i>
-							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="8600">0</span>
+							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="60">0</span>
 							</div>
 							<h6 class="counter-title">Satisfied clients</h6>
 						</div>
@@ -517,7 +414,7 @@
 					<div class="counter-block-two col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="900ms">
 						<div class="inner">
 							<i class="icon flaticon-business-048-coin"></i>
-							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="238">0</span></div>
+							<div class="count-box"><span class="count-text" data-speed="3000" data-stop="23">0</span></div>
 							<h6 class="counter-title">Smart solutions</h6>
 						</div>
 					</div>
@@ -534,19 +431,21 @@
 				<div class="content-column col-lg-6 col-md-12 col-sm-12 order-2 wow fadeInRight" data-wow-delay="600ms">
 					<div class="inner-column">
 						<div class="sec-title">
-							<span class="sub-title">What else here</span>
-							<h2>We’re Leading in IT Technology Market</h2>
-							<div class="text">There are many variations of passages of lorem free market to available, but the majority have alteration in some form, by injected humour, or randomised words.</div>
+							<span class="sub-title">Innovative</span>
+							<h2>Tech Solutions for Business Growth</h2>
+							<div class="text">
+								Empower your business with innovative web and mobile app development, support and maintenance, e-learning, hosting, consultation, and software development services. Experience the transformative power of technology for business growth.
+							</div>
 						</div>
 
-						<blockquote class="blockquote-style-one">Lorem Ipsum is simply dummy available typesetting industry been the industry standard.</blockquote>
+						<blockquote class="blockquote-style-one">"Embrace technology's transformative power. With VSTech Limited, we drive innovation to empower growth and endless possibilities." - CEO, Jeff</blockquote>
 
 						<div class="btn-box d-flex">
 							<a href="{% url 'about' %}" class="theme-btn btn-style-one"><span class="btn-title">Discover more</span></a>
 							<div class="founder-info">
-								<div class="thumb"><img src="/static/images/resource/thumb-1.jpg" alt=""></div>
-								<h5 class="name">Kevin Martin</h5>
-								<span class="designation">Co Founder</span>
+								<div class="thumb"><img src="/static/ceo.jpeg" alt="CEO"></div>
+								<h5 class="name">Jeff Odhiambo</h5>
+								<span class="designation">Founder</span>
 							</div>
 						</div>
 					</div>
@@ -555,9 +454,9 @@
 				<!-- Image Column -->
 				<div class="image-column col-lg-6 col-md-12 col-sm-12">
 					<div class="inner-column wow fadeInLeft">
-						<span class="float-text">oitech</span>
-						<figure class="image-1 overlay-anim wow fadeInUp"><img src="/static/images/resource/about-7.jpg" alt=""></figure>
-						<figure class="image-2 overlay-anim wow fadeInRight"><img src="/static/images/resource/about-8.jpg" alt=""></figure>
+						<span class="float-text">VSTech</span>
+						<figure class="image-1 overlay-anim wow fadeInUp"><img src="/static/images/resource/about-1.jpg" alt=""></figure>
+						<figure class="image-2 overlay-anim wow fadeInRight"><img src="/static/images/resource/about-2.jpg" alt=""></figure>
 						<div class="icon-box"><img src="/static/images/resource/icon-logo-2.png" alt=""></div>
 					</div>
 				</div>
@@ -566,70 +465,30 @@
 	</section>
 	<!--Emd About Section four -->
 
-	<!-- Clients Section   -->
-	<section class="clients-section alternate">
-		<div class="auto-container">
-			<!-- Sponsors Outer -->
-			<div class="sponsors-outer">
-				<!--clients carousel-->
-				<ul class="clients-carousel owl-carousel owl-theme">
-					<li class="slide-item"> <a href="#"><img src="/static/images/resource/client.png" alt=""></a> </li>
-					<li class="slide-item"> <a href="#"><img src="/static/images/resource/client.png" alt=""></a> </li>
-					<li class="slide-item"> <a href="#"><img src="/static/images/resource/client.png" alt=""></a> </li>
-					<li class="slide-item"> <a href="#"><img src="/static/images/resource/client.png" alt=""></a> </li>
-					<li class="slide-item"> <a href="#"><img src="/static/images/resource/client.png" alt=""></a> </li>
-				</ul>
-			</div>
-		</div>
-	</section>
-	<!--End Clients Section -->
-
+	{% include 'partials/clients/1.html' %}
+	{% if services %}
 	<!-- Features Section Three -->
 	<section class="features-section-three">
 		<div class="carousel-outer">
 			<div class="features-carousel owl-carousel owl-theme">
+				{% for service in services %}
 				<!-- Feature Block Three -->
 				<div class="feature-block-three">
 					<div class="inner-box ">
 						<figure class="image">
-							<a href="{% url 'about' %}"><img src="/static/images/resource/feature-1.jpg" alt=""></a>
-							<span class="icon">G</span>
+							<a href="{{ service.get_absolute_url }}"><img src="{% if service.front_image %}{{ service.front_image.url }}{% else %}/static/images/resource/service-1.jpg{% endif %}" alt="{{ service }}" style="max-width: 220px !important; min-height: 220px !important;" title="{{ service }}"></a>
+							<span class="icon">VS</span>
 						</figure>
-						<h4 class="title"><a href="{% url 'about' %}">Gaming and Enterteiment</a></h4>
-						<div class="text">There are many variations of passages of ipsum available, but the majority have suffered alteration in form.</div>
+						<h4 class="title"><a href="{{ service.get_absolute_url }}">{{ service }}</a></h4>
+						<div class="text">{{ service.description|truncatechars:120 }}</div>
 					</div>
 				</div>
-
-				<!-- Feature Block Three -->
-				<div class="feature-block-three">
-					<div class="inner-box ">
-						<figure class="image">
-							<a href="{% url 'about' %}"><img src="/static/images/resource/feature-2.jpg" alt=""></a>
-							<span class="icon">G</span>
-						</figure>
-						<h4 class="title"><a href="{% url 'about' %}">Business and Finance</a></h4>
-						<div class="text">There are many variations of passages of ipsum available, but the majority have suffered
-							alteration in form.</div>
-					</div>
-				</div>
-
-				<!-- Feature Block Three -->
-				<div class="feature-block-three">
-					<div class="inner-box ">
-						<figure class="image">
-							<a href="{% url 'about' %}"><img src="/static/images/resource/feature-3.jpg" alt=""></a>
-							<span class="icon">G</span>
-						</figure>
-						<h4 class="title"><a href="{% url 'about' %}">Business and Finance</a></h4>
-						<div class="text">There are many variations of passages of ipsum available, but the majority have suffered
-							alteration in form.</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</section>
 	<!-- End Features Section Two -->
-
+	{% endif %}
 	<!-- Services Section Two -->
 	<section class="services-section-two">
 		<div class="auto-container">
@@ -637,8 +496,8 @@
 				<div class="title-column col-lg-5 col-md-12">
 					<div class="sec-title light">
 						<span class="sub-title">What we offer</span>
-						<h2>Help you Overcome your Technology Challenges</h2>
-						<a href="page-services.html" class="theme-btn btn-style-one"><span class="btn-title">Discover more</span></a>
+						<h2>Experience the power of "Tech for All" with VSTech</h2>
+						<a href="{% url 'services:list' %}" class="theme-btn btn-style-one"><span class="btn-title">Discover more</span></a>
 					</div>
 				</div>
 
@@ -651,7 +510,7 @@
 								<div class="swiper-slide service-block-two">
 									<div class="inner-box">
 										<div class="icon fa fa-globe"></div>
-										<h6 class="title"><a href="page-service-details/">Website</a></h6>
+										<h6 class="title"><a href="">Website</a></h6>
 									</div>
 								</div>
 
@@ -659,7 +518,7 @@
 								<div class="swiper-slide service-block-two">
 									<div class="inner-box">
 										<div class="icon fab fa-apple"></div>
-										<h6 class="title"><a href="page-service-details/">IOS</a></h6>
+										<h6 class="title"><a href="">IOS</a></h6>
 									</div>
 								</div>
 
@@ -667,7 +526,7 @@
 								<div class="swiper-slide service-block-two">
 									<div class="inner-box">
 										<div class="icon fab fa-android"></div>
-										<h6 class="title"><a href="page-service-details/">Android</a></h6>
+										<h6 class="title"><a href="">Android</a></h6>
 									</div>
 								</div>
 
@@ -675,7 +534,7 @@
 								<div class="swiper-slide service-block-two">
 									<div class="inner-box">
 										<div class="icon fab fa-ioxhost"></div>
-										<h6 class="title"><a href="page-service-details/">IOT</a></h6>
+										<h6 class="title"><a href="">IOT</a></h6>
 									</div>
 								</div>
 
@@ -683,7 +542,7 @@
 								<div class="swiper-slide service-block-two">
 									<div class="inner-box">
 										<div class="icon fa fa-tv"></div>
-										<h6 class="title"><a href="page-service-details/">Television</a></h6>
+										<h6 class="title"><a href="">Television</a></h6>
 									</div>
 								</div>
 
@@ -710,8 +569,8 @@
 					<span class="location-dot"></span>
 					<div class="location-info">
 						<ul class="info-list">
-							<li><a href="tel:+880123456789">+880123456789</a></li>
-							<li>88 Broklyn Golden Street.</li>
+							<li><a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a></li>
+							<li>{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</li>
 							<li><a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
 						</ul>
 					</div>
@@ -722,8 +581,8 @@
 					<span class="location-dot"></span>
 					<div class="location-info">
 						<ul class="info-list">
-							<li><a href="tel:+880123456789">+880123456789</a></li>
-							<li>88 Broklyn Golden Street.</li>
+							<li><a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a></li>
+							<li>{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</li>
 							<li><a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
 						</ul>
 					</div>
@@ -734,8 +593,8 @@
 					<span class="location-dot"></span>
 					<div class="location-info">
 						<ul class="info-list">
-							<li><a href="tel:+880123456789">+880123456789</a></li>
-							<li>88 Broklyn Golden Street.</li>
+							<li><a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a></li>
+							<li>{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</li>
 							<li><a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
 						</ul>
 					</div>
@@ -746,8 +605,8 @@
 					<span class="location-dot"></span>
 					<div class="location-info">
 						<ul class="info-list">
-							<li><a href="tel:+880123456789">+880123456789</a></li>
-							<li>88 Broklyn Golden Street.</li>
+							<li><a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a></li>
+							<li>{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</li>
 							<li><a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
 						</ul>
 					</div>
@@ -758,8 +617,8 @@
 					<span class="location-dot"></span>
 					<div class="location-info">
 						<ul class="info-list">
-							<li><a href="tel:+880123456789">+880123456789</a></li>
-							<li>88 Broklyn Golden Street.</li>
+							<li><a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a></li>
+							<li>{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</li>
 							<li><a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
 						</ul>
 					</div>
@@ -782,7 +641,7 @@
 						</div>
 
 						<div class="image-box">
-							<figure class="image overlay-anim"><img src="/static/images/resource/why-us-2.jpg" alt=""></figure>
+							<figure class="image overlay-anim"><img src="/static/images/resource/image-2.jpg" alt=""></figure>
 							<div class="caption">Professional IT Experts for Tech Solutions</div>
 						</div>
 					</div>
@@ -791,7 +650,7 @@
 				<!-- Image Column -->
 				<div class="image-column col-lg-6 col-md-12 col-sm-12">
 					<div class="inner-column wow fadeInLeft">
-						<figure class="image overlay-anim wow fadeInUp"><img src="/static/images/resource/why-us-1.jpg" alt="">
+						<figure class="image overlay-anim wow fadeInUp"><img src="/static/images/resource/image-1.jpg" alt="">
 						</figure>
 					</div>
 				</div>
@@ -811,8 +670,8 @@
 							<figure class="image"><img src="/static/images/resource/contact.jpg" alt=""></figure>
 							<div class="info-box">
 								<span class="icon flaticon-business-035-helpline"></span>
-								<span class="sub-title">Calll us and book now</span>
-								<h3 class="title"><a href="tel:012333444">012 333 444</a></h3>
+								<span class="sub-title">Call us and book now</span>
+								<h3 class="title"><a href="tel:{{ about.phone_number|default:'0795067776' }}">{{ about.phone_number|default:'0795067776' }}</a></h3>
 							</div>
 						</div>
 					</div>
@@ -825,25 +684,28 @@
 						<div class="sec-title">
 							<span class="sub-title">Connect with us</span>
 							<h2>Feel free to contact us with any questions.</h2>
-							<div class="text">There are many variations of passages of lorem free market to available, but the majority have alteration in some form, by injected humour, or randomised of ipsum available, but the majority have suffered</div>
+							<div class="text">
+								Web design is not just a profession for us, it's a passion. Our company leverages this passion to deliver powerful software solutions that exceed our clients' expectations.
+							</div>
 						</div>
 
 						<!-- Contact Form -->
 						<div class="contact-form-two wow fadeInLeft">
 							<!--Contact Form-->
-							<form method="post" action="https://kodesolution.com/html/2022/oitech-html/get" id="contact-form">
+							<form method="post" action="{% url 'contact' %}" id="contact-form">
+								{% csrf_token %}
 								<div class="row">
 									<div class="form-group col-lg-6 col-md-12">
 										<input type="text" name="full_name" placeholder="Full Name" required>
 									</div>
 									<div class="form-group col-lg-6 col-md-12">
-										<input type="text" name="Email" placeholder="Email Address" required>
+										<input type="text" name="user_email" placeholder="Email Address" required>
 									</div>
 									<div class="form-group col-lg-6 col-md-12">
-										<input type="text" name="Phone" placeholder="Your Phone" required>
+										<input type="text" name="phone" placeholder="Your Phonenumber" required>
 									</div>
 									<div class="form-group col-lg-6 col-md-12">
-										<input type="text" name="Phone" placeholder="Subject" required>
+										<input type="text" name="subject" placeholder="Enter Subject" required>
 									</div>
 									<div class="form-group col-lg-12 col-md-12">
 										<button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Send a message</span></button>
@@ -859,81 +721,7 @@
 	</section>
 	<!--End FAQ Section -->
 
-	<!-- News Section -->
-	<section class="news-section pt-0">
-		<div class="auto-container">
-			<div class="sec-title text-center">
-				<span class="sub-title">from the blog</span>
-				<h2>News & Articles</h2>
-			</div>
-
-			<div class="row">
-				<!-- News Block -->
-				<div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
-					<div class="inner-box">
-						<div class="image-box">
-							<figure class="image"><a href="news-details/"><img src="/static/images/resource/news-1.jpg" alt=""></a></figure>
-							<span class="date"><b>28</b> OCT</span>
-						</div>
-						<div class="content-box">
-							<ul class="post-info">
-								<li><i class="fa fa-user"></i> by Admin</li>
-								<li><i class="fa fa-tag"></i> Technology</li>
-							</ul>
-							<h4 class="title"><a href="news-details/">Professional technology information & solutions are just like…</a></h4>
-						</div>
-						<div class="bottom-box">
-							<a href="news-details/" class="read-more">Read More <i class="fa fa-long-arrow-alt-right"></i></a>
-							<div class="comments"><i class="fa fa-comments"></i> 02</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- News Block -->
-				<div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="300ms">
-					<div class="inner-box">
-						<div class="image-box">
-							<figure class="image"><a href="news-details/"><img src="/static/images/resource/news-2.jpg" alt=""></a></figure>
-							<span class="date"><b>28</b> OCT</span>
-						</div>
-						<div class="content-box">
-							<ul class="post-info">
-								<li><i class="fa fa-user"></i> by Admin</li>
-								<li><i class="fa fa-tag"></i> Technology</li>
-							</ul>
-							<h4 class="title"><a href="news-details/">Professional technology information & solutions are just like…</a></h4>
-						</div>
-						<div class="bottom-box">
-							<a href="news-details/" class="read-more">Read More <i class="fa fa-long-arrow-alt-right"></i></a>
-							<div class="comments"><i class="fa fa-comments"></i> 02</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- News Block -->
-				<div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="600ms">
-					<div class="inner-box">
-						<div class="image-box">
-							<figure class="image"><a href="news-details/"><img src="/static/images/resource/news-3.jpg" alt=""></a></figure>
-							<span class="date"><b>28</b> OCT</span>
-						</div>
-						<div class="content-box">
-							<ul class="post-info">
-								<li><i class="fa fa-user"></i> by Admin</li>
-								<li><i class="fa fa-tag"></i> Technology</li>
-							</ul>
-							<h4 class="title"><a href="news-details/">Professional technology information & solutions are just like…</a></h4>
-						</div>
-						<div class="bottom-box">
-							<a href="news-details/" class="read-more">Read More <i class="fa fa-long-arrow-alt-right"></i></a>
-							<div class="comments"><i class="fa fa-comments"></i> 02</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!--End News Section -->
+	{% include 'partials/blogs.html' %}
 
 	<!-- Call To Action Three -->
 	<section class="call-to-action-three p-0">
@@ -944,120 +732,15 @@
 					<h5 class="title">Need IT solutions & services consultation?</h5>
 				</div>
 				<div class="btn-box">
-					<a href="page-services.html" class="theme-btn btn-style-one bg-light"><span class="btn-title">get solution</span></a>
+					<a href="{% url 'services:list' %}" class="theme-btn btn-style-one bg-light"><span class="btn-title">get solution</span></a>
 				</div>
 			</div>
 		</div>
 	</section>
 	<!--End Call To Action Three -->
 
-	<!-- Map Section-->
-	<section class="map-section alternate pull-up">
-		<iframe
-			class="map"
-			src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-		</iframe>
-	</section>
-	<!--End Map Section-->
-
-
-	<!-- Main Footer -->
-	<footer class="main-footer">
-		<div class="bg-image"  style="background-image: url(/static/images/background/2.jpg)"></div>
-
-		<!--Widgets Section-->
-		<div class="widgets-section">
-			<div class="auto-container">
-				<div class="row">
-					<!--Footer Column-->
-					<div class="footer-column col-xl-3 col-lg-12 col-md-6 col-sm-12">
-						<div class="footer-widget about-widget">
-							<div class="logo"><a href="/"><img src="/static/images/logo.png" alt="" width="180" ></a></div>
-							<div class="text">Desires to obtain pain of itself, because it is pain, but occasionally circumstances.</div>
-							<ul class="social-icon-two">
-								<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fab fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fab fa-pinterest"></i></a></li>
-								<li><a href="#"><i class="fab fa-instagram"></i></a></li>
-							</ul>
-						</div>
-					</div>
-
-					<!--Footer Column-->
-					<div class="footer-column col-xl-3 col-lg-4 col-md-6 col-sm-12">
-						<div class="footer-widget">
-							<h3 class="widget-title">Explore</h3>
-							<ul class="user-links">
-								<li><a href="#">About Company</a></li>
-								<li><a href="#">Meet the Team</a></li>
-								<li><a href="#">News & Media</a></li>
-								<li><a href="#">Our Projects</a></li>
-								
-							</ul>
-						</div>
-					</div>
-
-					<!--Footer Column-->
-					<div class="footer-column col-xl-3 col-lg-4 col-md-6 col-sm-12">
-						<div class="footer-widget contact-widget">
-							<h3 class="widget-title">Contact</h3>
-							<div class="widget-content">
-								<div class="text">{{ about.address|default:'52106 00100 Nairobi' }}</div>
-								<ul class="contact-info">
-									<li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a><br></li>
-									<li><i class="fa fa-phone-square"></i> <a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a><br></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-					<!--Footer Column-->
-					<div class="footer-column col-xl-3 col-lg-4 col-md-6 col-sm-12">
-						<div class="footer-widget gallery-widget">
-							<h3 class="widget-title">Gallery</h3>
-							<div class="widget-content">
-								<div class="outer clearfix">
-									<figure class="image">
-										<a href="#"><img src="/static/images/resource/project-thumb-1.jpg" alt=""></a>
-									</figure>
-									<figure class="image">
-										<a href="#"><img src="/static/images/resource/project-thumb-2.jpg" alt=""></a>
-									</figure>
-									<figure class="image">
-										<a href="#"><img src="/static/images/resource/project-thumb-3.jpg" alt=""></a>
-									</figure>
-									<figure class="image">
-										<a href="#"><img src="/static/images/resource/project-thumb-4.jpg" alt=""></a>
-									</figure>
-									<figure class="image">
-										<a href="#"><img src="/static/images/resource/project-thumb-5.jpg" alt=""></a>
-									</figure>
-									<figure class="image">
-										<a href="#"><img src="/static/images/resource/project-thumb-6.jpg" alt=""></a>
-									</figure>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-
-		<!--Footer Bottom-->
-		<div class="footer-bottom">
-			<div class="auto-container">
-				<div class="inner-container">
-					<div class="copyright-text">&copy; Copyright 2022 by  <a href="/">VSTech Limited</a>
-					</div>
-
-
-				</div>
-			</div>
-		</div>
-	</footer>
-	<!--End Main Footer -->
-
+	{% include 'partials/map.html' %}
+	{% include 'partials/footer.html' %}
 </div><!-- End Page Wrapper -->
 
 <!-- Scroll To Top -->
@@ -1074,7 +757,7 @@
 <script src="/static/js/swiper.min.js"></script>
 <script src="/static/js/owl.js"></script>
 <script src="/static/js/script.js"></script>
+{% include 'partials/theme-script.html' %}
 </body>
-
 <!-- index-2,  18:20:58 GMT -->
 </html>

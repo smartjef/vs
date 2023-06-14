@@ -1,0 +1,131 @@
+
+<!-- Mobile Menu  -->
+<div class="mobile-menu">
+    <div class="menu-backdrop"></div>
+
+    <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+    <nav class="menu-box">
+        <div class="upper-box">
+            <div class="nav-logo"><a href="/"><img src="/static/images/logo.png" alt="" width="180" title="VSTech Limited"></a></div>
+            <div class="close-btn"><i class="icon fa fa-times"></i></div>
+        </div>
+
+        <ul class="navigation clearfix">
+            <!--Keep This Empty / Menu will come through Javascript-->
+        </ul>
+        <ul class="contact-list-one">
+            {% if request.user.is_authenticated %}
+                <li>
+                    <div class="contact-info-box">
+                        <i class="icon fa fa-power-off" aria-hidden="true"></i>
+                        <span class="title">Account</span>
+                        <a href="">Profile</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="contact-info-box">
+                        <i class="icon fa fa-power-off" aria-hidden="true"></i>
+                        <span class="title">Account</span>
+                        <a href="{% url 'account_logout' %}">Logout</a>
+                    </div>
+                </li>
+            {% else %}				
+                <li>
+                    <div class="contact-info-box">
+                        <i class="icon fa fa-user-plus" aria-hidden="true"></i>
+                        <span class="title">Account</span>
+                        <a href="{% url 'account_signup' %}">Register</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="contact-info-box">
+                        <i class="icon fa fa-user-circle" aria-hidden="true"></i>
+                        <span class="title">Account</span>
+                        <a href="{% url 'account_login' %}">Login</a>
+                    </div>
+                </li>
+            {% endif %}
+            <li>
+                <!-- Contact Info Box -->
+                <div class="contact-info-box">
+                    <i class="icon lnr-icon-phone-handset"></i>
+                    <span class="title">Call Now</span>
+                    <a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a>
+                </div>
+            </li>
+            <li>
+                <!-- Contact Info Box -->
+                <div class="contact-info-box">
+                    <span class="icon lnr-icon-envelope1"></span>
+                    <span class="title">Send Email</span>
+                    <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a>
+                </div>
+            </li>
+            <li>
+                <!-- Contact Info Box -->
+                <div class="contact-info-box">
+                    <span class="icon lnr-icon-clock"></span>
+                    <span class="title">Opened</span>
+                    Sun - Fri 24hrs, Saturday - CLOSED
+                </div>
+            </li>
+            <li>
+                <div class="form-check form-switch px-4">
+                    <label class="form-check-label my-0 py-0" for="flexSwitchCheckChecked">Dark Theme</label>
+                    <input class="form-check-input my-0 py-0" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                </div>
+            </li>
+        </ul>
+
+
+        <ul class="social-links">
+            <li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}"><span class="fab fa-twitter"></span></a></li>
+            <li><a href="{{ about.facebook|default:'https://fb.com' }}"><span class="fab fa-facebook-square"></span></a></li>
+            <li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><span class="fab fa-linkedin"></span></a></li>
+            <li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}"><span class="fab fa-youtube"></span></a></li>
+        </ul>
+    </nav>
+</div><!-- End Mobile Menu -->
+
+<!-- Header Search -->
+<div class="search-popup">
+    <span class="search-back-drop"></span>
+    <button class="close-search"><span class="fa fa-times"></span></button>
+
+    <div class="search-inner">
+        <form method="get" action="{% url 'search' %}">
+            <div class="form-group">
+                <input type="search" name="q" placeholder="Search..." required>
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- End Header Search -->
+
+<!-- Sticky Header  -->
+<div class="sticky-header">
+    <div class="auto-container">
+        <div class="inner-container">
+            <!--Logo-->
+            <div class="logo">
+                <a href="/" title="VSTech Limited"><img src="/static/images/logo-2.png" alt="" title="VSTech Limited"></a>
+            </div>
+
+            <!--Right Col-->
+            <div class="nav-outer">
+                <!-- Main Menu -->
+                <nav class="main-menu">
+                    <div class="navbar-collapse show collapse clearfix">
+                        <ul class="navigation clearfix">
+                            <!--Keep This Empty / Menu will come through Javascript-->
+                        </ul>
+                    </div>
+                </nav><!-- Main Menu End-->
+
+                <!--Mobile Navigation Toggler-->
+                <div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
+            </div>
+        </div>
+    </div>
+</div><!-- End Sticky Menu -->

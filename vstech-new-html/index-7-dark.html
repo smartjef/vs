@@ -38,7 +38,7 @@
 					<!-- Info List -->
 					<ul class="list-style-one">
 						<li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
-						<li><i class="fa fa-map-marker"></i> 88 Broklyn Golden Street. New York</li>
+						<li><i class="fa fa-map-marker"></i> {{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }} New York</li>
 					</ul>
 				</div>
 
@@ -210,7 +210,7 @@
 						<h1 class="title animate-2">Innovative Tech <br>Solutions</h1>
 						<div class="btn-box animate-3">
 							<a href="{% url 'about' %}" class="theme-btn btn-style-one"><span class="btn-title">Explore More</span></a>
-							<a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
+							<a href="https://youtu.be/Oz-SvGZsTNc" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
 						</div>
 					</div>
 				</div>
@@ -225,7 +225,7 @@
 						<h1 class="title animate-2">Innovative Tech <br>Solutions</h1>
 						<div class="btn-box animate-3">
 							<a href="{% url 'about' %}" class="theme-btn btn-style-one"><span class="btn-title">Explore More</span></a>
-							<a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
+							<a href="https://youtu.be/Oz-SvGZsTNc" class="play-btn lightbox-image"><i class="icon fa fa-play"></i> watch video</a>
 						</div>
 					</div>
 				</div>
@@ -484,7 +484,7 @@
 						<div class="contact-info-box-two">
 							<span class="icon fa fa-map-marker-alt"></span>
 							<h6 class="title">Visit Us</h6>
-							<div class="text">{{ about.address|default:'52106 00100 Nairobi' }}</div>
+							<div class="text">{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</div>
 						</div>
 
 						<div class="contact-info-box-two">
@@ -690,7 +690,7 @@
 					<div class="image-box wow fadeInRight">
 						<figure class="image overlay-anim">
 							<img src="/static/images/resource/why-us-3.jpg" alt="">
-							<a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-btn lightbox-image"><i class="icon fa fa-play"></i></a>
+							<a href="https://youtu.be/Oz-SvGZsTNc" class="play-btn lightbox-image"><i class="icon fa fa-play"></i></a>
 						</figure>
 					</div>
 				</div>
@@ -962,7 +962,7 @@
 						<div class="footer-widget contact-widget">
 							<h3 class="widget-title">Contact</h3>
 							<div class="widget-content">
-								<div class="text">{{ about.address|default:'52106 00100 Nairobi' }}</div>
+								<div class="text">{{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }}</div>
 								<ul class="contact-info">
 									<li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a><br></li>
 									<li><i class="fa fa-phone-square"></i> <a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a><br></li>

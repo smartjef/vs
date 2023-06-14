@@ -23,7 +23,7 @@
 					<div class="project-block">
 						<div class="inner-box">
 							<div class="image-box">
-								<figure class="image"><a href="{% if project.front_image %}{{ project.front_image.url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" class="lightbox-image"><img src="{% if project.front_image %}{{ project.front_image.url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt=""></a></figure>
+								<figure class="image"><a href="{{ project.get_absolute_url }}" class="lightbox-image"><img src="{% if project.front_image %}{{ project.front_image.url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt=""></a></figure>
 								<a href="{{ project.get_absolute_url }}" class="icon"><i class="fa fa-long-arrow-alt-right"></i></a>
 							</div>
 							<div class="content-box">

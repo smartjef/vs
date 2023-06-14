@@ -10,7 +10,7 @@ from .models import Testimony, Partner, FAQ, Contact
 from users.models import Team
 # Create your views here.
 def index(request):
-    random_number = randint(1,10)
+    random_number = randint(1,9)
     context = {
         'title' : 'Homepage',
         'services': Service.objects.all(),
@@ -20,7 +20,7 @@ def index(request):
         'faqs': FAQ.objects.filter(is_active=True)[:5],
         'blogs': Post.objects.filter(is_published=True)[:3],
     }
-    return render(request, f'index/1.html', context)
+    return render(request, f'index/3.html', context)
 
 def contact(request):
     if request.method == "POST":
@@ -32,11 +32,16 @@ def contact(request):
         else:
             subject = 'Contact by ' + name + ' - ' + email + ' - ' + 'No Subject'
         message = request.POST.get('message')
+        if message:
+            message = message
+        else:
+            message = "No Message in the body"
+
         phone_number = request.POST.get('phone')
         contact = Contact(name=name, email=email, subject=subject, message=message, phone_number=phone_number)
         contact.save()
         messages.success(request, 'Contact request submitted successfully.')
-        # send_mail(subject,message, email, ['o.jeff3.a@gmail.com','lawiomosh3@gmail.com'],fail_silently=False,)
+        send_mail(subject,message, email, ['o.jeff3.a@gmail.com','lawiomosh3@gmail.com'],fail_silently=False,)
         return redirect('index')
 
     context = {

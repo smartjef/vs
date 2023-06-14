@@ -45,7 +45,7 @@
 						<!-- Info List -->
 						<ul class="list-style-one">
 							<li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a></li>
-							<li><i class="fa fa-map-marker"></i> 88 Broklyn Golden Street. New York</li>
+							<li><i class="fa fa-map-marker"></i> {{ about.address|default:'Ibrahim Shopping Mall, Moi Avenue, Nairobi' }} New York</li>
 						</ul>
 					</div>
 				</div>
@@ -761,7 +761,7 @@
 							<div class="info-box">
 								<span class="icon flaticon-business-035-helpline"></span>
 								<span class="sub-title">Calll us and book now</span>
-								<h3 class="title"><a href="tel:012333444">012 333 444</a></h3>
+								<h3 class="title"><a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a></h3>
 							</div>
 						</div>
 					</div>
