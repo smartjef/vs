@@ -20,7 +20,7 @@ def index(request):
         'faqs': FAQ.objects.filter(is_active=True)[:5],
         'blogs': Post.objects.filter(is_published=True)[:3],
     }
-    return render(request, f'index/3.html', context)
+    return render(request, f'index/9.html', context)
 
 def contact(request):
     if request.method == "POST":
