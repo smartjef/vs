@@ -58,8 +58,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 
     'crispy_forms',
     'crispy_bootstrap5',
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     # Local apps
     'core.apps.CoreConfig',
     'project.apps.ProjectConfig',
+    'shop.apps.ShopConfig',
     'users.apps.UsersConfig',
     'service.apps.ServiceConfig',
     'blog.apps.BlogConfig',

@@ -3,19 +3,23 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load account socialaccount %}
-
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block meta %}
+  <meta name="title" content="VSTech Limited - Login">
+  <meta name="keywords" content="login, user login, account login, VSTech Limited, software development, e-learning, shopping, consultation">
+  <meta name="description" content="Login to your VSTech Limited account and access a personalized experience across software development, e-learning, shopping, and consultation. Manage your orders, access exclusive content, and stay connected with our diverse range of services.">
+{% endblock %}
+{% block head_title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
 
-<h2 class="text-center">{% trans "Sign In" %}</h2>
+<h2 class="text-center">{% trans "Login" %}</h2>
 
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
 <p>{% blocktrans with site.name as site_name %}Please sign in with one
 of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+for {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 
 <div class="socialaccount_ballot">
 
@@ -23,7 +27,7 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
   </ul>
 
-  <div class="login-or">{% trans 'or' %}</div>
+  <div class="login-or text-center"><b>{% trans 'or' %}</b></div>
 
 </div>
 
@@ -41,7 +45,7 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
   <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction theme-btn btn-style-one w-100" type="submit">{% trans "Sign In" %}</button>
+  <button class="primaryAction theme-btn btn-style-one w-100" type="submit">{% trans "Login" %}</button>
 </form>
 
 {% endblock %}

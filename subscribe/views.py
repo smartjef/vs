@@ -18,3 +18,9 @@ def new_subscriber(request):
         messages.warning(request, "Already Subscribed")
 
     return redirect('index')
+
+def index(request):
+    context = {
+        'title': 'Subscribe Page'
+    }
+    return render(request, 'newsletter/index.html', context)

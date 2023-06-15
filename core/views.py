@@ -20,7 +20,7 @@ def index(request):
         'faqs': FAQ.objects.filter(is_active=True)[:5],
         'blogs': Post.objects.filter(is_published=True)[:3],
     }
-    return render(request, f'index/9.html', context)
+    return render(request, f'index/{ random_number }.html', context)
 
 def contact(request):
     if request.method == "POST":
@@ -85,6 +85,14 @@ def faq(request):
 def search(request):
     query = request.GET.get('q')
     title = 'Search page'
+
+    blogs = None
+    testimonies = None 
+    services = None
+    projects = None
+    faqs = None
+    teams = None
+
     if query:
         blogs = Post.objects.filter(is_published=True, title__icontains=query) or Post.objects.filter(is_published=True, body__icontains=query)
         testimonies = Testimony.objects.filter(is_active=True, message__icontains=query) or Testimony.objects.filter(is_active=True, author__first_name__icontains=query)

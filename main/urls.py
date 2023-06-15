@@ -28,7 +28,7 @@ urlpatterns = [
     path('services/', include('service.urls')),
     path('shop/', include('shop.urls')),
     path('users/', include('users.urls')),
-    path('subscribe/', include('subscribe.urls'))
+    path('newsletter/', include('subscribe.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = 'VSTech Admin'
