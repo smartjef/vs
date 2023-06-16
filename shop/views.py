@@ -117,6 +117,3 @@ def cart_detail(request):
         'category': 'Our Shop',
         'category_url': reverse('shop:list'),
     })
-
-def checkout(request):
-    return render(request, 'shop/checkout.html')

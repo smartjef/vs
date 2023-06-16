@@ -26,6 +26,7 @@ urlpatterns = [
     path('blogs/', include('blog.urls')),
     path('projects/', include('project.urls')),
     path('services/', include('service.urls')),
+    path('orders/', include('orders.urls', namespace='orders')),
     path('shop/', include('shop.urls')),
     path('users/', include('users.urls')),
     path('newsletter/', include('subscribe.urls'))
