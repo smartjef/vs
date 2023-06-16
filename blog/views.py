@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from core.models import Tag, Category
 from django.urls import reverse
 from django.db import IntegrityError
+from django.views.decorators.http import require_POST
 # Create your views here.
 def index(request, category_slug=None, tag_slug=None):
     blogs = Post.objects.filter(is_published=True)
@@ -68,6 +69,7 @@ def blog_detail(request, slug, id=None):
     return render(request, 'blog/details.html', context)
 
 @login_required
+@require_POST
 def comment(request, slug, id=None):
     post = get_object_or_404(Post, slug=slug, is_published=True)
     if request.method == 'POST':

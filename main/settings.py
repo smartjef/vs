@@ -72,9 +72,12 @@ INSTALLED_APPS = [
     'service.apps.ServiceConfig',
     'blog.apps.BlogConfig',
     'subscribe.apps.SubscribeConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 SITE_ID = 1
+
+CART_SESSION_ID = 'cart'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates/')
 

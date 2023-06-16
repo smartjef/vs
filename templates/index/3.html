@@ -95,13 +95,7 @@
 								</ul>
 							</li>
 							<li class="{% if title == 'Our Services' or category == 'services' %}current{% endif %}"><a href="{% url 'services:list' %}">Services</a></li>
-							<li class="dropdown"><a href="#">Shop</a>
-								<ul>
-									<li><a href="{% url 'shop:list' %}">Products</a></li>
-									<li><a href="{% url 'shop:cart' %}">Cart</a></li>
-									<li><a href="{% url 'shop:checkout' %}">Checkout</a></li>
-								</ul>
-							</li>
+							<li class="{% if title == 'Your Ultimate Electronics Shop' or category == 'Our Shop' %}current{% endif %}"><a href="{% url 'shop:list' %}">Shop</a></li>
 							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
 							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
 						</ul>
@@ -114,7 +108,18 @@
 								<button class="ui-btn ui-btn search-btn">
 									<span class="icon lnr lnr-icon-search"></span>
 								</button>
-								<a href="{% url 'shop:cart' %}" class="ui-btn"><i class="lnr-icon-shopping-cart"></i></a>
+								{% with total_items=cart|length %}
+								<a href="{% url 'shop:cart' %}" class="ui-btn">
+									<span class="d-flex no-wrap">
+									<i class="lnr-icon-shopping-cart"></i>
+									{% if total_items > 0 %}
+										<sup class="text-success" style="font-size: 16px;">{{ total_items }}</sup>
+									{% else %}
+										<sup class="text-danger" style="font-size: 16px;">0</sup>
+									{% endif %}
+									</span>
+								</a>
+							{% endwith %}
 							</div>
 
 							<!-- Mobile Nav toggler -->

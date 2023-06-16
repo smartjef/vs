@@ -86,13 +86,7 @@
 								</ul>
 							</li>
 							<li><a href="{% url 'services:list' %}">Services</a></li>
-							<li class="dropdown"><a href="#">Shop</a>
-								<ul>
-									<li><a href="{% url 'shop:list' %}">Products</a></li>
-									<li><a href="{% url 'shop:cart' %}">Cart</a></li>
-									<li><a href="{% url 'shop:checkout' %}">Checkout</a></li>
-								</ul>
-							</li>
+							<li class="{% if title == 'Your Ultimate Electronics Shop' or category == 'Our Shop' %}current{% endif %}"><a href="{% url 'shop:list' %}">Shop</a></li>
 							<li><a href="{% url 'blog:list' %}">Blogs</a></li>
 							<li><a href="{% url 'contact' %}">Contact</a></li>
 						</ul>

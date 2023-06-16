@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Subscriber
 from django.contrib import messages
 from django.db import IntegrityError
+from django.views.decorators.http import require_POST
 # Create your views here.
+
+@require_POST
 def new_subscriber(request):
 
     if request.method == 'POST':

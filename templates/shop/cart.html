@@ -1,4 +1,5 @@
 {% extends 'shop/base.html' %}
+{% block title %} {{ title }} - VSTech Limited {% endblock %}
 {% block meta %}
 
 {% endblock %}
@@ -16,98 +17,71 @@
                       <th></th>
                       <th>Photo</th>
                       <th>Product Name</th>
-                      <th>Price</th>
+                      <th>Price<span class="small text-muted">(after Discount)</span></th>
                       <th>Quantity</th>
                       <th>Total</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="cart_item">
-                      <td class="product-remove"><a title="Remove this item" class="remove" href="#">×</a></td>
-                      <td class="product-thumbnail"><a href="#"><img alt="product" src="/static/images/resource/products/1.jpg"></a></td>
-                      <td class="product-name"><a href="shop-product-details/">Winter Black Jacket</a>
-                        <ul class="variation">
-                          <li class="variation-size">Size: <span>Medium</span></li>
-                        </ul></td>
-                      <td class="product-price"><span class="amount">$36.00</span></td>
-                      <td class="product-quantity">
-												<div class="product-details__quantity">
-													<div class="quantity-box">
-														<button type="button" class="sub"><i class="fa fa-minus"></i></button>
-														<input type="number" id="1" value="1" />
-														<button type="button" class="add"><i class="fa fa-plus"></i></button>
-													</div>
-												</div>
-                      </td>
-                      <td class="product-subtotal"><span class="amount">$36.00</span></td>
+                    {% if cart %}
+                    {% for item in cart %}
+                      {% with product=item.product %}
+                        <tr class="cart_item">
+                          <td class="product-remove">
+                            <form action="{% url 'shop:cart_remove' product.id %}" method="post">
+                              {% csrf_token %}
+                              <button type="submit"><a title="Remove this item" class="remove">×</a></button>
+                            </form>
+                          </td>
+                          
+                          <td class="product-thumbnail">
+                            <a href="{{ product.get_absolute_url }}">
+                              <img alt="{{ product.title }}" src="{% if product.image %}{{ product.image.url }}{% else %}/static/images/resource/products/1.jpg{% endif %}">
+                            </a>
+                          </td>
+                          <td class="product-name"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                            <ul class="variation">
+                              <li class="variation-size">Discount: <span>{{ product.discount }}%</span></li>
+                            </ul></td>
+                          <td class="product-price"><span class="amount">Ksh. {{ product.current_price }}</span></td>
+                          <td class="product-quantity">
+                            <div class="product-details__quantity">
+                              <form action="{% url 'shop:cart_add' product.id %}" method="post" class="d-flex no-wrap">
+                                <div class="quantity-box">
+                                  {% csrf_token %}
+                                  <button type="button" class="sub"><i class="fa fa-minus"></i></button>
+                                  {{ item.update_quantity_form.override }}
+                                  <input type="number" id="1" name="{{ item.update_quantity_form.quantity.name }}" value="{{ item.update_quantity_form.quantity.value }}" />
+                                  <button type="button" class="add"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <input type="submit" class="btn-theme btn-style-one mx-2" value="Update">
+                              </form>
+                            </div>
+                          </td>
+                          <td class="product-subtotal"><span class="amount">Ksh. {{ item.total_price }}</span></td>
+                        </tr>
+                      {% endwith %}
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                      <td class="text-center" colspan="6">No Product in the cart</td>
                     </tr>
-                    <tr class="cart_item">
-                      <td class="product-remove"><a title="Remove this item" class="remove" href="#">×</a></td>
-                      <td class="product-thumbnail"><a href="#"><img alt="product" src="/static/images/resource/products/2.jpg"></a></td>
-                      <td class="product-name"><a href="shop-product-details/">Swan Crop V-Neck Tee</a>
-                        <ul class="variation">
-                          <li class="variation-size">Size: <span>Small</span></li>
-                        </ul></td>
-                      <td class="product-price"><span class="amount">$115.00</span></td>
-                      <td class="product-quantity">
-												<div class="product-details__quantity">
-													<div class="quantity-box">
-														<button type="button" class="sub"><i class="fa fa-minus"></i></button>
-														<input type="number" id="1" value="1" />
-														<button type="button" class="add"><i class="fa fa-plus"></i></button>
-													</div>
-												</div>
-                      </td>
-                      <td class="product-subtotal"><span class="amount">$115.00</span></td>
-                    </tr>
-                    <tr class="cart_item">
-                      <td class="product-remove"><a title="Remove this item" class="remove" href="#">×</a></td>
-                      <td class="product-thumbnail"><a href="#"><img alt="product" src="/static/images/resource/products/3.jpg"></a></td>
-                      <td class="product-name"><a href="shop-product-details/">Blue Solid Casual Shirt</a>
-                        <ul class="variation">
-                          <li class="variation-size">Size: <span>Large</span></li>
-                        </ul></td>
-                      <td class="product-price"><span class="amount">$68.00</span></td>
-                      <td class="product-quantity">
-												<div class="product-details__quantity">
-													<div class="quantity-box">
-														<button type="button" class="sub"><i class="fa fa-minus"></i></button>
-														<input type="number" id="1" value="1" />
-														<button type="button" class="add"><i class="fa fa-plus"></i></button>
-													</div>
-												</div>
-                      </td>
-                      <td class="product-subtotal"><span class="amount">$68.00</span></td>
-                    </tr>
-                    <tr class="cart_item">
-                      <td colspan="3">
-                        <form class="row g-3 coupon-form">
-                          <div class="col-auto">
-                            <input type="text" name="coupon_code" class="input-text form-control mr-1" id="coupon_code" value="" placeholder="Coupon code">
-                          </div>
-                          <div class="col-auto">
-                            <button type="submit" class="apply-button" name="apply_coupon" value="Apply Coupon"><span class="btn-title">Apply Coupon</span></button>
-                          </div>
-                        </form>
-                      </td>
-                      <td colspan="2">&nbsp;</td>
-                      <td><button type="button" class="theme-btn btn-style-one"><span class="btn-title">Update Cart</span></button></td>
-                    </tr>
+                    {% endif %}
                   </tbody>
                 </table>
               </div>
             </div>
             <div class="col-md-12 mt-30">
               <div class="row">
-                <div class="col-md-5">
-                  <h4>Calculate Shipping</h4>
+                <!-- <div class="col-md-5">
+                  <h4>Calculate Delivery Cost</h4>
                   <form class="form" action="#">
                     <div class="mb-10">
                       <select class="form-control">
-                        <option>Select Country</option>
-                        <option>Australia</option>
-                        <option>UK</option>
-                        <option>USA</option>
+                        <option>Select County</option>
+                        <option>Kiambu</option>
+                        <option>Nairobi</option>
+                        <option>Machakos</option>
                       </select>
                     </div>
                     <div class="mb-10">
@@ -120,28 +94,35 @@
                       <button type="button" class="theme-btn btn-style-one"><span class="btn-title">Update Totals</span></button>
                     </div>
                   </form>
-                </div>
-                <div class="col-md-2">
-                </div>
+                </div> -->
+                <!-- <div class="col-md-2">
+                </div> -->
                 <div class="col-md-5">
                   <h4>Cart Totals</h4>
                   <table class="table table-bordered cart-total">
                     <tbody>
-                      <tr>
+                      <!-- <tr>
                         <td>Cart Subtotal</td>
                         <td>$180.00</td>
                       </tr>
                       <tr>
                         <td>Shipping and Handling</td>
                         <td>$70.00</td>
-                      </tr>
+                      </tr> -->
                       <tr>
                         <td>Order Total</td>
-                        <td>$250.00</td>
+                        <td>Ksh. {{ cart.get_total_price }}</td>
                       </tr>
                     </tbody>
                   </table>
-                  <a class="theme-btn btn-style-one" href="shop-checkout.html"><span class="btn-title">Proceed to Checkout</span> </a> </div>
+                  <div class="row d-flex">
+                    <div class="col-md-5 m-2">
+                      <a class="theme-btn btn-style-one" href="{% url 'shop:list' %}"><span class="btn-title">Continue Shopping</span> </a> </div>
+                    </div>
+                    <div class="col-md-6 m-2">
+                      <a class="theme-btn btn-style-one" href="{% url 'shop:checkout' %}"><span class="btn-title">Proceed to Checkout</span> </a> </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -152,4 +133,16 @@
 {% endblock %}
 {% block js %}
 	{% include 'shop/partials/js.html' %}
+  <script>
+    $(document).ready(function() {
+      $('.sub').click(function() {
+        var quantityInput = $(this).siblings('input[type="number"]');
+        var currentQuantity = parseInt(quantityInput.val());
+        
+        if (currentQuantity > 1) {
+          quantityInput.val(currentQuantity - 1);
+        }
+      });
+    });
+  </script>
 {% endblock %}

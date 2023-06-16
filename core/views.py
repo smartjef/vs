@@ -8,6 +8,7 @@ from project.models import Project
 from blog.models import Post
 from .models import Testimony, Partner, FAQ, Contact
 from users.models import Team
+from django.views.decorators.http import require_POST
 # Create your views here.
 def index(request):
     random_number = randint(1,9)
@@ -58,6 +59,7 @@ def about(request):
     return render(request, 'about.html', context)
 
 @login_required
+@require_POST
 def review(request):
     if request.method == 'POST':
         rating = request.POST.get('rating')

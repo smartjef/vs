@@ -23,9 +23,9 @@ for {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 
 <div class="socialaccount_ballot">
 
-  <ul class="socialaccount_providers">
+  <span class="socialaccount_providers d-flex justify-content-center">
     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
+  </span>
 
   <div class="login-or text-center"><b>{% trans 'or' %}</b></div>
 
