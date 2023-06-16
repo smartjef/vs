@@ -7,6 +7,7 @@ class Order(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20, blank=True, null=True)
     additional_information = models.TextField(blank=True, null=True)

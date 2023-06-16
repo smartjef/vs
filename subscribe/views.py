@@ -3,6 +3,7 @@ from .models import Subscriber
 from django.contrib import messages
 from django.db import IntegrityError
 from django.views.decorators.http import require_POST
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 
 @require_POST
@@ -22,6 +23,7 @@ def new_subscriber(request):
 
     return redirect('index')
 
+@staff_member_required
 def index(request):
     context = {
         'title': 'Subscribe Page'

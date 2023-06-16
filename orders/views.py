@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
-from .models import OrderItem
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from shop.cart import Cart
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
+from .tasks import order_created
+from django.contrib.admin.views.decorators import staff_member_required
 
 @login_required
 def order_create(request):
@@ -20,6 +22,8 @@ def order_create(request):
                 # clear the cart
             cart.clear()
             messages.success(request, 'Thank You, Order Created Successfully, if payment is made via M-Pesa, please keep the message or Code!')
+            # launch asynchronous task
+            order_created.delay(order.id)
             return redirect('shop:list')
     else:
         form = OrderCreateForm()
@@ -33,3 +37,8 @@ def order_create(request):
     }
 
     return render(request,'shop/orders/order/create.html', context)
+
+@staff_member_required
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request,'shop/orders/order/detail.html', {'order': order})

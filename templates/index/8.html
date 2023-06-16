@@ -54,7 +54,7 @@
 							</li>
 							<li><a href="{% url 'faq' %}">Help</a></li>
 							{% if request.user.is_authenticated %}
-								<li><i><a href="">Profile</a></i></li>
+								<li><i><a href="{% url 'users:profile' %}">Profile</a></i></li>
 								<li><i><a href="{% url 'account_logout' %}">Logout</a></i></li>
 							{% else %}				
 								<li><i><a href="{% url 'account_signup' %}">Register</a></i></li>

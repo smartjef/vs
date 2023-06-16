@@ -9,6 +9,14 @@ from blog.models import Post
 from .models import Testimony, Partner, FAQ, Contact
 from users.models import Team
 from django.views.decorators.http import require_POST
+from .tasks import send_email
+
+def check_if_userprofile_is_updated(user):
+    if user.first_name and user.last_name and user.email:
+        return True
+    else:
+        return False
+    
 # Create your views here.
 def index(request):
     random_number = randint(1,9)
@@ -42,7 +50,7 @@ def contact(request):
         contact = Contact(name=name, email=email, subject=subject, message=message, phone_number=phone_number)
         contact.save()
         messages.success(request, 'Contact request submitted successfully.')
-        send_mail(subject,message, email, ['o.jeff3.a@gmail.com','lawiomosh3@gmail.com'],fail_silently=False,)
+        send_email.delay(contact.id)
         return redirect('index')
 
     context = {

@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
-from main.settings import LANGUAGES as LANGUAGE_CHOICES
+from main.settings import LANGUAGES as LANGUAGE_CHOICES, THEME_CHOICES  
 
 # Create your models here.
 
@@ -17,7 +17,6 @@ GENDER_CHOICES = (
 class Profile(models.Model):
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='profile')
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='other')
-    language_preference = models.CharField(max_length=100, choices=LANGUAGE_CHOICES, default='en')
     image = models.ImageField(upload_to='users/profiles/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
@@ -65,7 +64,13 @@ class Skill(models.Model):
     class Meta:
         ordering = ('-level',)
 
+class Preferences(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='preferences')
+    language = models.CharField(max_length=100, choices=LANGUAGE_CHOICES, default='en')
+    theme = models.CharField(max_length=100, choices=THEME_CHOICES, default='light')
+
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance,)
+        Preferences.objects.create(user=instance,)

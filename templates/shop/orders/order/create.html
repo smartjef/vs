@@ -18,20 +18,26 @@
                             {% csrf_token %}
                             <div class="mb-3 col-md-6">
                                 <label for="checkuot-form-fname">{{ form.first_name.label_tag }}</label>
-                                <input id="checkuot-form-fname" type="text" class="form-control" placeholder="First Name*" name="{{ form.first_name.name }}">
+                                <input id="checkuot-form-fname" type="text" class="form-control" placeholder="First Name*" name="{{ form.first_name.name }}" required>
                                 <span class="text-danger">{{ form.first_name.errors }}</span>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="checkuot-form-lname">{{ form.last_name.label_tag }}</label>
-                                <input id="checkuot-form-lname" type="text" class="form-control" placeholder="Last Name*" name="{{ form.last_name.name }}">
+                                <input id="checkuot-form-lname" type="text" class="form-control" placeholder="Last Name*" name="{{ form.last_name.name }}" required>
                                 <span class="text-danger">{{ form.last_name.errors }}</span>
                             </div>
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="checkuot-form-cname">{{ form.email.label_tag }}</label>
-                                    <input id="checkuot-form-cname" type="email" class="form-control" placeholder="Email Address*" name="{{ form.email.name }}">
-                                    <span class="text-danger">{{ form.email.errors }}</span>
-                                </div>
+							<div class="mb-3 col-md-6">
+								<label for="checkuot-form-cname">{{ form.email.label_tag }}</label>
+								<input id="checkuot-form-cname" type="email" class="form-control" placeholder="Email Address*" name="{{ form.email.name }}" required>
+								<span class="text-danger">{{ form.email.errors }}</span>
+							</div>
+							<div class="mb-3 col-md-6">
+								<label for="checkuot-form-cname">{{ form.phone_number.label_tag }}</label>
+								<input id="checkuot-form-cname" type="tel" class="form-control" placeholder="Phone Number*" name="{{ form.phone_number.name }}" required>
+								<small class="small">To be used to reach out during delivery</small>
+								<span class="text-danger">{{ form.phone_number.errors }}</span>
+							</div>
+							<div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="checkuot-form-address">{{ form.address.label_tag }}</label>
                                     <input id="checkuot-form-address" type="text" class="form-control" placeholder="Physical Address*" name="{{ form.address.name }}">
@@ -110,22 +116,22 @@
 							<li class="accordion block">
 								<div class="acc-btn">
 									<div class="icon-outer"><i class="lnr-icon-chevron-down"></i></div>
-									Cheque Payment
+									M-Pesa Payment
 								</div>
 								<div class="acc-content">
 									<div class="payment-info">
-										<p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+										<p class="mb-0">Make payment via our M-Pesa Till Number - </p>
 									</div>
 								</div>
 							</li>
 							<li class="accordion block">
 								<div class="acc-btn">
 									<div class="icon-outer"><i class="lnr-icon-chevron-down"></i></div>
-									Other Payment
+									Cash Payment
 								</div>
 								<div class="acc-content">
 									<div class="payment-info">
-										<p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+										<p class="mb-0">Cash Payment will be accepted upon delivery</p>
 									</div>
 								</div>
 							</li>
