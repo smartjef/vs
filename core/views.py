@@ -122,3 +122,15 @@ def search(request):
         'teams': teams,
     }
     return render(request, 'search.html', context)
+
+def policy(request):
+    context = {
+        'title': 'Privacy Policy',   
+    }
+    return render(request, 'policy.html', context)
+
+def terms(request):
+    context = {
+        'title': 'Terms & Conditions',   
+    }
+    return render(request, 'terms.html', context)

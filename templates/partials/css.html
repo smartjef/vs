@@ -4,4 +4,11 @@
 <link href="/static/css/responsive.css" rel="stylesheet">
 
 <!-- Dark Theme -->
-<link href="" id="themeLink" rel="stylesheet">
+<link href="/static/css/style{% if user.is_authenticated %}-{{ request.user.preferences.theme }}{% endif %}.css" id="themeLink" rel="stylesheet">
+
+<!-- Set a JavaScript variable with the user's preferred theme -->
+<script>
+  var userTheme = "{% if user.is_authenticated %}{{ request.user.preferences.theme }}{% endif %}";
+</script>
+
+<!-- ... Rest of your HTML code ... -->

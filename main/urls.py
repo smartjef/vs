@@ -18,6 +18,22 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
+from django.views.generic.base import TemplateView
+from blog.sitemaps import PostSitemap
+from project.sitemaps import ProjectSitemap
+from service.sitemaps import ServiceSitemap
+from shop.sitemaps import ProductCategorySitemap, ProductBrandSitemap, ProductSitemap
+from users.sitemaps import TeamSitemap
+
+sitemaps = {
+    'posts': PostSitemap,
+    'services': ServiceSitemap,
+    'products_by_category': ProductCategorySitemap,
+    'products_by_brand': ProductBrandSitemap,
+    'products': ProductSitemap,
+    'projects': ProjectSitemap,
+    'team': TeamSitemap,
+}
 
 urlpatterns = [
     path('', include('core.urls')),
@@ -29,7 +45,8 @@ urlpatterns = [
     path('orders/', include('orders.urls', namespace='orders')),
     path('shop/', include('shop.urls')),
     path('users/', include('users.urls')),
-    path('newsletter/', include('subscribe.urls'))
+    path('newsletter/', include('subscribe.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitempas.views.sitemap'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = 'VSTech Admin'

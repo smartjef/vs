@@ -99,22 +99,22 @@
                             <!-- Form Group (Facebook)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Facebook</label>
-                                <input class="form-control" id="inputPhone" type="url" placeholder="Enter Facebook url" value="{{ request.user.profile.facebook }}" name="facebook">
+                                <input class="form-control" id="inputPhone" type="url" placeholder="Enter Facebook url" value="{{ request.user.profile.facebook|default:'' }}"  name="facebook">
                             </div>
                             <!-- Form Group (Instagram)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputInstagram">Instagram</label>
-                                <input class="form-control" id="inputInstagram" type="text" name="instagram" placeholder="Enter your Instagram" value="{{ request.user.profile.instagram }}">
+                                <input class="form-control" id="inputInstagram" type="text" name="instagram" placeholder="Enter your Instagram" value="{{ request.user.profile.instagram|default:'' }}">
                             </div>
                             <!-- Form Group (Twitter)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Twitter</label>
-                                <input class="form-control" id="inputPhone" type="url" placeholder="Enter Twitter url" value="{{ request.user.profile.twitter }}" name="twitter">
+                                <input class="form-control" id="inputPhone" type="url" placeholder="Enter Twitter url" value="{{ request.user.profile.twitter|default:'' }}" name="twitter">
                             </div>
                             <!-- Form Group (LinkedIn)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLinkedIn">LinkedIn</label>
-                                <input class="form-control" id="inputLinkedIn" type="text" name="linkedin" placeholder="Enter your LinkedIn" value="{{ request.user.profile.linkedin }}">
+                                <input class="form-control" id="inputLinkedIn" type="text" name="linkedin" placeholder="Enter your LinkedIn" value="{{ request.user.profile.linkedin|default:'' }}">
                             </div>
                         </div>
                         <h4>Preference</h4>
