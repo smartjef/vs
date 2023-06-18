@@ -29,11 +29,11 @@ DEBUG = True
 # DEBUG = False
 
 ALLOWED_HOSTS = [
-    # 'localhost',
-    # '127.0.0.1',
-    # '20.120.102.239',
-    # 'www.vstech.co.ke',
-    # 'vstech.co.ke',
+    'localhost',
+    '127.0.0.1',
+    '20.120.102.239',
+    'www.vstech.co.ke',
+    'vstech.co.ke',
 ]
 
 ADMINS = [
@@ -118,27 +118,28 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-# if DEBUG:
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'main',
-#             'USER': 'vstech_admin',
-#             'PASSWORD': 'Jeff1234',
-#             'HOST': 'ap-main.postgres.database.azure.com',
-#             'PORT': '5432',
-#             'OPTIONS': {
-#                 'sslmode': 'require',
-#             }
-#         }
-#     }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': '****',
+            'USER': '****',
+            'PASSWORD': '****',
+            'HOST': 'ap-main.postgres.database.azure.com',
+            'PORT': '5432',
+            'OPTIONS': {
+                'sslmode': 'require',
+            }
+        }
+    }
 
 
 # Password validation
@@ -245,15 +246,6 @@ CSRF_TRUSTED_ORIGINS = [
 # EMAIL_USE_SSL = True
 
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.vstech.co.ke'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'info@vstech.co.ke'
-EMAIL_HOST_PASSWORD = 'Jeff@26726366'
-EMAIL_USE_SSL = True
-
-DEFAULT_FROM_EMAIL = 'info@vstech.co.ke'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
