@@ -24,13 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '20.120.102.239',
+    '52.147.195.49',
     'www.vstech.co.ke',
     'vstech.co.ke',
 ]
@@ -213,7 +211,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_MAX_LENGTH = 200
 ACCOUNT_MAX_EMAIL_ADDRESSES = 3
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
@@ -232,9 +230,8 @@ LOGIN_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = 'VSTech Limited - '
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://20.120.102.239',
-    'https://new.vstech.co.ke/',
-    'https://www.new.vstech.co.ke/',
+    'https://vstech.co.ke/',
+    'https://www.vstech.co.ke/',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -22,7 +22,7 @@ class Service(models.Model):
         return reverse('services:detail', kwargs={'slug': self.slug})
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ('created_at',)
 
 class ServiceFAQ(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='faqs')

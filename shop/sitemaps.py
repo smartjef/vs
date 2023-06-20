@@ -21,7 +21,7 @@ class ProductBrandSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return Brand.objects.a()
+        return Brand.objects.all()
 
     def lastmod(self, obj):
         return obj.updated_at

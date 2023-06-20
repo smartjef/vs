@@ -22,11 +22,11 @@ def index(request):
     random_number = randint(1,9)
     context = {
         'title' : 'Homepage',
-        'services': Service.objects.all(),
+        'services': Service.objects.all()[:4],
         'projects': Project.objects.filter(is_active=True),
         'testimonies': Testimony.objects.filter(is_active=True)[:3],
         'partners': Partner.objects.all(),
-        'faqs': FAQ.objects.filter(is_active=True)[:5],
+        'faqs': FAQ.objects.filter(is_active=True)[:2],
         'blogs': Post.objects.filter(is_published=True)[:3],
     }
     return render(request, f'index/{ random_number }.html', context)

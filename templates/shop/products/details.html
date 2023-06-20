@@ -232,7 +232,7 @@
 								<div class="inner-box">
 									<div class="image">
 										<a href="{{ r_product.get_absolute_url }}">
-											<img src="/static/images/resource/products/1.jpg" alt=""/>
+											<img src="{% if r_product.image %}{{ r_product.image.url }}{% else %}/static/images/resource/products/product-details.jpg{% endif %}" alt="{{ r_product }}"/>
 										</a>
 									</div>
 									<div class="content">

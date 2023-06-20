@@ -11,7 +11,11 @@
 <link href="/static/css/responsive.css" rel="stylesheet">
 
 <!-- Dark Theme -->
-<link href="/static/css/style{% if user.is_authenticated %}-{{ request.user.preferences.theme }}{% endif %}.css" id="themeLink" rel="stylesheet">
+{% if request.user.is_authenticated and request.user.preferences.theme == 'dark' %}
+    <link href="/static/css/style-dark.css" id="themeLink" rel="stylesheet">
+{% else %}
+    <link href="" id="themeLink" rel="stylesheet">
+{% endif %}
 
 <link rel="shortcut icon" href="/static/images/favicon.png" type="image/x-icon">
 <link rel="icon" href="/static/images/favicon.png" type="image/x-icon">
