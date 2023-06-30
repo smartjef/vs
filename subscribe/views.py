@@ -29,3 +29,9 @@ def index(request):
         'title': 'Subscribe Page'
     }
     return render(request, 'newsletter/index.html', context)
+
+def product(request):
+    context = {
+        'title': 'Product Page'
+    }
+    return render(request, 'newsletter/templates/products.html', context)
