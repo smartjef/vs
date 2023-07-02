@@ -31,7 +31,7 @@ class Profile(models.Model):
         return self.user.username  
 
 class Team(models.Model):
-    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='team')
     slug = models.SlugField(unique=True)
     rank = models.CharField(max_length=100)
     image = models.ImageField(upload_to='users/teams/')
