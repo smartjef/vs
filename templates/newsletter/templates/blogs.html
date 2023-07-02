@@ -229,7 +229,7 @@
                                                                                                                     class="MsoNormal"
                                                                                                                     style="color:#ffffff; font-family:Segoe UI, Helvetica Neue, Arial, Verdana, Trebuchet MS, sans-serif; font-weight:600; padding:10px 15px 10px 10px; font-size:12px; letter-spacing:1px;"
                                                                                                                     contenteditable="false">
-                                                                                                                    <a href="https://www.vstech.co.ke/{% url 'blog:list' %}"
+                                                                                                                    <a href="https://www.vstech.co.ke{% url 'blog:list' %}"
                                                                                                                         style="color:#ffffff; text-decoration:none;"
                                                                                                                         data-color="Header Button Text"
                                                                                                                         data-size="Header Button Text"
@@ -370,7 +370,7 @@
                                                                                                                             <tr>
                                                                                                                                 <td align="left"
                                                                                                                                     width="260">
-                                                                                                                                    <img src="{% if blog.front_image %} https://www.vstech.co.ke/{{blog.front_image.url }} {% else %}/static/images/resource/news-1.jpg{% endif %}"
+                                                                                                                                    <img src="{% if blog.front_image %} https://www.vstech.co.ke{{blog.front_image.url }} {% else %}/static/images/resource/news-1.jpg{% endif %}"
                                                                                                                                         alt="260x180x1"
                                                                                                                                         width="260"
                                                                                                                                         style="color:#333333; max-width:100%; width:100%; height:auto; border-radius:3px; display:block; ">
@@ -452,7 +452,7 @@
                                                                                                                                     valign="middle"
                                                                                                                                     class="MsoNormal"
                                                                                                                                     style="color:#ffaa17; font-family:Segoe UI, Helvetica Neue, Arial, Verdana, Trebuchet MS, sans-serif; font-weight:700; font-size:12px; letter-spacing:1px;">
-                                                                                                                                    <a href="https://www.vstech.co.ke/{{ blog.get_absolute_url }}"
+                                                                                                                                    <a href="https://www.vstech.co.ke{{ blog.get_absolute_url }}"
                                                                                                                                         style="color:#ffaa17; text-decoration:none;"
                                                                                                                                         data-color="Blue Button Link"
                                                                                                                                         data-size="Blue Button Link"
@@ -637,7 +637,7 @@
                                                                                                                                                         style="color:#666666;">
                                                                                                                                                         <img src="
                                                                                                                                                 {% if testimony.author.profile.image %}
-                                                                                                                                                https://www.vstech.co.ke/{{ testimony.author.profile.image.url }}
+                                                                                                                                                https://www.vstech.co.ke{{ testimony.author.profile.image.url }}
                                                                                                                                                 {% else %}
                                                                                                                                                     {% if testimony.author.profile.gender == 'male' %}
                                                                                                                                                     https://www.vstech.co.ke/static/images/1.png
@@ -785,7 +785,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="color:#ffffff; font-family:'Segoe UI', Helvetica Neue, Arial, Verdana, Trebuchet MS, sans-serif; font-size:16px; font-weight:600; letter-spacing:1px; text-align:center; padding-top:20px;">
-                                                                                <a href="https://www.vstech.co.ke/{% url 'testimonies' %}" style="color:black; text-decoration:none;">View All</a>
+                                                                                <a href="https://www.vstech.co.ke{% url 'testimonies' %}" style="color:black; text-decoration:none;">View All</a>
                                                                            </td>
                                                                         </tr>
                                                                     </tbody>
@@ -925,7 +925,7 @@
                                                                                                                                                     width="180"
                                                                                                                                                     valign="middle"
                                                                                                                                                     class="line-height:0;">
-                                                                                                                                                    <img src="https://www.vstech.co.ke/{{ team.image.url }}"
+                                                                                                                                                    <img src="https://www.vstech.co.ke{{ team.image.url }}"
                                                                                                                                                         alt="180x180x4"
                                                                                                                                                         width="180"
                                                                                                                                                         style="color:#333333;">
@@ -954,7 +954,7 @@
                                                                                                                                                     data-color="Team Name"
                                                                                                                                                     data-size="Team Name"
                                                                                                                                                     data-min="10"
-                                                                                                                                                    data-max="38"><a style="text-decoration: none; color:#333333" href="https://www.vstech.co.ke/{{ team.get_absolute_url }}">
+                                                                                                                                                    data-max="38"><a style="text-decoration: none; color:#333333" href="https://www.vstech.co.ke{{ team.get_absolute_url }}">
                                                                                                                                                     {{ team.user.first_name|default:'No Name' }}</a>
                                                                                                                                                 </td>
                                                                                                                                             </tr>
@@ -1089,7 +1089,7 @@
                                                 <td data-size="Footer List" data-color="Footer List"
                                                 mc:edit="main-9-54" align="center"
                                                 style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'contact' %}" class="text-secondary">Contact Page</a></singleline>
+                                                <singleline label="list"><a href="https://www.vstech.co.ke{% url 'contact' %}" class="text-secondary">Contact Page</a></singleline>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1138,21 +1138,21 @@
                                                 <td data-size="Footer List" data-color="Footer List"
                                                     mc:edit="main-9-57" align="center"
                                                     style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                    <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'about' %}" class="text-secondary">About Us</a></singleline>
+                                                    <singleline label="list"><a href="https://www.vstech.co.ke{% url 'about' %}" class="text-secondary">About Us</a></singleline>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td data-size="Footer List" data-color="Footer List"
                                                     mc:edit="main-9-58" align="center"
                                                     style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                    <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'users:team' %}" class="text-secondary">The Team</a></singleline>
+                                                    <singleline label="list"><a href="https://www.vstech.co.ke{% url 'users:team' %}" class="text-secondary">The Team</a></singleline>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td data-size="Footer List" data-color="Footer List"
                                                     mc:edit="main-9-59" align="center"
                                                     style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                    <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'blog:list' %}" class="text-secondary">News & Media</a></singleline>
+                                                    <singleline label="list"><a href="https://www.vstech.co.ke{% url 'blog:list' %}" class="text-secondary">News & Media</a></singleline>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -1187,21 +1187,21 @@
                                                 <td data-size="Footer List" data-color="Footer List"
                                                     mc:edit="main-9-61" align="center"
                                                     style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                    <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'project:list' %}" class="text-secondary">Projects</a></singleline>
+                                                    <singleline label="list"><a href="https://www.vstech.co.ke{% url 'project:list' %}" class="text-secondary">Projects</a></singleline>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td data-size="Footer List" data-color="Footer List"
                                                     mc:edit="main-9-62" align="center"
                                                     style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                    <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'shop:list' %}" class="text-secondary">Shop</a></singleline>
+                                                    <singleline label="list"><a href="https://www.vstech.co.ke{% url 'shop:list' %}" class="text-secondary">Shop</a></singleline>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td data-size="Footer List" data-color="Footer List"
                                                     mc:edit="main-9-63" align="center"
                                                     style="font-family: 'Open sans', Arial, sans-serif; color:#ffffff; font-size:14px;line-height:28px;">
-                                                    <singleline label="list"><a href="https://www.vstech.co.ke/{% url 'faq' %}" class="text-secondary">FAQs</a></singleline>
+                                                    <singleline label="list"><a href="https://www.vstech.co.ke{% url 'faq' %}" class="text-secondary">FAQs</a></singleline>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -1288,19 +1288,16 @@
                                                                     class="textbutton"
                                                                     style="font-family: 'Open Sans', Arial, sans-serif; font-size:13px; display:flex; flex-wrap:nowrap;">
                                                                     <webversion>
-                                                                        <ul class="d-flex">
-                                                                            <li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}" class="mx-2 text-dark"><span class="fab fa-twitter"></span></a></li>
-                                                                            <li><a href="{{ about.facebook|default:'https://fb.com' }}" class="mx-2 text-dark"><span class="fab fa-facebook-square"></span></a></li>
-                                                                            <li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}" class="mx-2 text-dark"><span class="fab fa-linkedin"></span></a></li>
-                                                                            <li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}" class="mx-2 text-dark"><span class="fab fa-youtube"></span></a></li>
+                                                                        <ul style="display: flex; flex-wrap:nowrap;">
+                                                                            <li><a href="{{ about.twitter|default:'https://twitter.com/vstech_ltd' }}">tw</span></a></li>
+                                                                            <li><a href="{{ about.facebook|default:'https://fb.com' }}" class="mx-2 text-dark">fb</a></li>
+                                                                            <li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}" class="mx-2 text-dark">in</span></a></li>
+                                                                            <li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}" class="mx-2 text-dark">yt</span></a></li>
                                                                         </ul>
                                                                     </webversion>
                                                                     <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                                                                     <unsubscribe>
-                                                                        <form action="https://www.vstech.co.ke/{% url 'subscribe:unsubscribe' %}" method="get">
-                                                                            <input type="hidden" name="email" value="{{ recipient_email }}">
-                                                                            <input type="submit" value="unsubscribe" style="background-color: transparent; color: gray;">
-                                                                        </form>
+                                                                        <a href="https://www.vstech.co.ke/unsubscribe/{{ recipient_email }}/" style="color: gray;">Unsubscribe</a>
                                                                     </unsubscribe>
                                                                 </td>
                                                             </tr>
