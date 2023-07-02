@@ -20,35 +20,7 @@
     var switchInput = document.getElementById("flexSwitchCheckChecked");
     switchInput.addEventListener("change", toggleTheme);
   </script>
-  
-  <!-- <script>
-    // Function to toggle the theme
-    function toggleTheme() {
-      var link = document.getElementById("themeLink");
-      var switchInputs = document.querySelectorAll(".flexSwitchCheckChecked");
-  
-      switchInputs.forEach(function(switchInput) {
-        if (switchInput.checked) {
-          // Switch to Dark Theme
-          link.setAttribute("href", "/static/css/style-dark.css");
-          switchInput.previousElementSibling.innerHTML = "Light Theme";
-        } else {
-          // Switch to Light Theme
-          link.setAttribute("href", "");
-          switchInput.previousElementSibling.innerHTML = "Dark Theme";
-        }
-      });
-    }
-  
-    // Get all the switches with the class name
-    var switchInputs = document.querySelectorAll(".flexSwitchCheckChecked");
-  
-    // Add event listeners to the switches
-    switchInputs.forEach(function(switchInput) {
-      switchInput.addEventListener("change", toggleTheme);
-    });
-  </script> -->
-  
+
   <script>
     var url = 'https://wati-integration-service.clare.ai/ShopifyWidget/shopifyWidget.js?42866';
     var s = document.createElement('script');

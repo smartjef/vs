@@ -169,7 +169,7 @@
                                                                     <td data-size="CTA Text" data-color="CTA Text"
                                                                         mc:edit="main-9-49" align="left"
                                                                         style="font-family: 'Open sans', Arial, sans-serif; color:#4A4A4A; font-size:18px;font-weight: bold;">
-                                                                        <singleline label="title"><a href="{% url 'services:list' %}">Dear {{ request.user.get_full_name|default:'User' }}</a></singleline>
+                                                                        <singleline label="title">Dear {{ recipient_name|default:'User' }}</singleline>
                                                                     </td>
                                                                 </tr>
                                                                 <!--end title-->
@@ -201,9 +201,9 @@
                                                                         mc:edit="main-9-51" align="left"
                                                                         style="font-family: 'Open sans', Arial, sans-serif; color:gray; font-size:14px;">
                                                                         <singleline label="link">
-                                                                            {{ request.user.get_full_name }}, <br>
-                                                                            {{ request.user.team.rank|default:'Member' }}, <br>
-                                                                            <a href="mailto:{{ request.user.email }}">{{ request.user.email }}</a> | <a href="tel:{{ request.user.profile.phone_number }}">{{ request.user.profile.phone_number }}</a>
+                                                                            {{ author.get_full_name }}, <br>
+                                                                            {{ author.team.rank|default:'Member' }}, <br>
+                                                                            <a href="mailto:{{ author.email }}">{{ author.email }}</a> | <a href="tel:{{ author.profile.phone_number }}">{{ author.profile.phone_number }}</a>
                                                                         </singleline>
                                                                     </td>
                                                                 </tr>
@@ -506,7 +506,7 @@
                                                                                         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                                                                                         <unsubscribe>
                                                                                             <form action="{% url 'subscribe:unsubscribe' %}" method="get">
-                                                                                                <input type="hidden" name="email" value="{{ subscriber.email }}">
+                                                                                                <input type="hidden" name="email" value="{{ recipient_email }}">
                                                                                                 <input type="submit" value="unsubscribe" style="background-color: transparent; color: gray;">
                                                                                             </form>
                                                                                         </unsubscribe>

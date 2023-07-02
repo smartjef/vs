@@ -1532,7 +1532,7 @@
                                                                                 <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                                                                                 <unsubscribe>
                                                                                     <form action="{% url 'subscribe:unsubscribe' %}" method="get">
-                                                                                        <input type="hidden" name="email" value="{{ subscriber.email }}">
+                                                                                        <input type="hidden" name="email" value="{{ recipient_email }}">
                                                                                         <input type="submit" value="unsubscribe" style="background-color: transparent; color: gray;">
                                                                                     </form>
                                                                                 </unsubscribe>
