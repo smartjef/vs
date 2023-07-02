@@ -77,13 +77,11 @@ def view_templates(request):
     return render(request, 'newsletter/templates/index.html', context)
 
 @login_required
-def unsubscribe(request):
-    email = request.GET.get('email')
-    if email:
-        subscriber = get_object_or_404(Subscriber, email=email, is_subscribed=True)
-        subscriber.is_subscribed = False
-        subscriber.save()
-        messages.info(request, "unsubscribed successfully")
+def unsubscribe(request, email):
+    subscriber = get_object_or_404(Subscriber, email=email, is_subscribed=True)
+    subscriber.is_subscribed = False
+    subscriber.save()
+    messages.info(request, "Unsubscribed successfully")
     return redirect('index')
 
 @login_required
