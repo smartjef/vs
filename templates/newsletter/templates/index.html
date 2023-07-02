@@ -1,0 +1,39 @@
+{% extends 'newsletter/base.html' %}
+
+{% block content %}
+<div class="container-fluid mb-4">
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="card text-left border-0 shadow">
+                <img class="card-img-top" src="/static/templates/default.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title">Default Email Template</h4>
+                  <p class="card-text">This email template requires name and email of the subscriber and Content/Body/Message to be sent as well as Subject</p>
+                  <a href="{% url 'subscribe:templates_default' %}">View Template >></a>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-left border-0 shadow">
+                <img class="card-img-top" src="/static/templates/products.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title">Products Email Template</h4>
+                  <p class="card-text">This email template only require email of subscriber and subject</p>
+                  <a href="{% url 'subscribe:templates_products' %}">View Template >></a>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-left border-0 shadow">
+                <img class="card-img-top" src="/static/templates/blogs.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title">Blogs Email Template</h4>
+                  <p class="card-text">This email template only require email of subscriber and subject</p>
+                  <a href="{% url 'subscribe:templates_blogs' %}">View Template >></a>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
