@@ -23,13 +23,16 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="container">
-                        <div class="row align-items-center justify-content-between">
+                        <div class="row align-items-center justify-content-between py-4
+                        
+                        ">
                             <div class="col-md-4">
                                 <!-- Page Heading -->
-                                <h1 class="h3 mb-2 text-gray-800 mt-5 mb-5"><a href="{% url 'subscribe:index' %}">Subscribers List</a></h1>
+                                <img src="/static/images/logo-2.png" alt="" width="120">
                             </div>
                             <div class="col-md-8">
                                 <ul class="d-flex justify-content-end">
+                                    <li><a href="{% url 'subscribe:index' %}" class="btn btn-info rounded rounded-pill">Subscribers List</a></li>
                                     <li><a href="{% url 'subscribe:templates' %}" class="btn btn-primary rounded rounded-pill mx-3">View Templates</a></li>
                                     <li><a href="{% url 'subscribe:send_email' %}" class="btn btn-success rounded rounded-pill">Send Email</a></li>
                                 </ul>
