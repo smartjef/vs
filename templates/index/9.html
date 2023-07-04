@@ -108,6 +108,12 @@
 							<li class="{% if title == 'Your Ultimate Electronics Shop' or category == 'Our Shop' %}current{% endif %}"><a href="{% url 'shop:list' %}">Shop</a></li>
 							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
 							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
+							<li class="dropdown {% if title == 'Generate Image' or title == 'Our Intelligent Chatbot' %}current{% endif %}"><a href="#">AI Tools</a>
+								<ul>
+									<li><a href="{% url 'ai:chat' %}">ChatBot</a></li>
+									<li><a href="{% url 'ai:desc_to_image' %}">Description to Image</a></li>									
+								</ul>
+							</li>
 						</ul>
 					</nav>
 					<!-- Main Menu End-->

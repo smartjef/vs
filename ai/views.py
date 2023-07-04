@@ -21,7 +21,11 @@ def chack_if_user_has_trials(request):
 # Create your views here.
 @login_required
 def chat(request):
-    return render(request, 'ai/chat.html')
+    context = {
+        'title': 'Our Intelligent Chatbot',
+
+    }
+    return render(request, 'ai/chat.html', context)
 
 @login_required
 def desc_to_image(request):
