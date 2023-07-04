@@ -1,1 +1,72 @@
 {% extends 'base.html' %}
+{% block title %}{{ title }} - AI - VSTech Limited{% endblock %}
+{% block content %}
+<section class="">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="inner-column">
+                    <!-- Contact Form -->
+                    <div class="contact-form wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                        <div class="title-box">
+                            <span class="sub-title">Generate Image</span>
+                            <h3>Get Started!</h3>
+                        </div>
+
+                        <!--Contact Form-->
+                        <form method="post" action="" id="contact-form">
+                            <div class="form-group">
+                                <textarea name="message" placeholder="Provide a description of the image to be generated" required=""></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="no_of_images">Number of Images:</label>
+                                <select name="no_of_images" id="no_of_images">
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Generate</span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--End Contact Form -->
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="col-lg-12">
+                    <p>View generated images (1 attempt left)</p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <!-- Project Block -->
+                        <div class="project-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <figure class="image">
+                                        <img src="/static/images/resource/project-1.jpg" alt="">
+                                    </figure>
+        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <!-- Project Block -->
+                        <div class="project-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <figure class="image">
+                                        <img src="/static/images/resource/project-1.jpg" alt="">
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
