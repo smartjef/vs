@@ -4,7 +4,7 @@
 <section class="">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <div class="inner-column">
                     <!-- Contact Form -->
                     <div class="contact-form wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
@@ -12,54 +12,40 @@
                             <span class="sub-title">Generate Image</span>
                             <h3>Get Started!</h3>
                         </div>
-
+                        {% if can_generate_image == 1 %}
                         <!--Contact Form-->
                         <form method="post" action="" id="contact-form">
+                            {% csrf_token %}
                             <div class="form-group">
-                                <textarea name="message" placeholder="Provide a description of the image to be generated" required=""></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="no_of_images">Number of Images:</label>
-                                <select name="no_of_images" id="no_of_images">
-                                    <option value="1" selected>1</option>
-                                    <option value="2">2</option>
-                                </select>
+                                <textarea name="description" placeholder="Provide a description of the image to be generated" required=""></textarea>
                             </div>
                             <div class="form-group">
                                 <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Generate</span></button>
                             </div>
                         </form>
+                        {% else %}
+                            <p class="alert alert-warning">No attempt left, Purchase a product from <a href="{% url 'shop:list' %}">VSTech Shop</a> to get 20 more trials/attemps</p>
+                        {% endif %}
                     </div>
                     <!--End Contact Form -->
 
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="col-lg-12">
-                    <p>View generated images (1 attempt left)</p>
+                    <p>View generated image ({{ request.user.trials.number }} attempt left)</p>
+                    <p>{% if content %}{{ content }}{% endif %}</p>
                 </div>
                 <div class="row g-3">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="col-lg-8 col-md-8 col-sm-12">
                         <!-- Project Block -->
                         <div class="project-block">
                             <div class="inner-box">
                                 <div class="image-box">
-                                    <figure class="image">
-                                        <img src="/static/images/resource/project-1.jpg" alt="">
+                                    <figure >
+                                        <img src="{% if image_url %}{{ image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt="Generated Image">
                                     </figure>
         
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <!-- Project Block -->
-                        <div class="project-block">
-                            <div class="inner-box">
-                                <div class="image-box">
-                                    <figure class="image">
-                                        <img src="/static/images/resource/project-1.jpg" alt="">
-                                    </figure>
                                 </div>
                             </div>
                         </div>
@@ -69,4 +55,55 @@
         </div>
     </div>
 </section>
+<section class="bg-light">
+    <div class="container">
+    {% if generated_images %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>Previously generated Images({{generated_images.all.count}})</h4>
+            </div>
+            {% for image in generated_images %}
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mt-2">
+                    <!-- Project Block -->
+                    <div class="project-block shadow-sm p-2 bg-white">
+                        <div class="inner-box">
+                            <div class="image-box">
+                                <figure >
+                                    <img src="{% if image.image_url %}{{ image.image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt="Generated Image">
+                                </figure>
+                            </div>
+                            <p class="small" style="line-height: 1.1;">{{ image.description|truncatechars:200 }}</p>
+                            <p>
+                                <ul class="d-flex">
+                                    <li title="Download Image">
+                                        <a href="{% if image.image_url %}{{ image.image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" download class="fancybox-button btn btn-warning btn-sm m-1"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                    </li>
+                                    <li title="View Code" class="fancybox-button btn btn-sm btn-info m-1">                                            
+                                        <i class="fa fa-code" aria-hidden="true"></i>
+                                    </li>
+                                    <li title="View Image">
+                                        <a href="{% if image.image_url %}{{ image.image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" class="fancybox-button btn btn-primary btn-sm m-1"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    </li>
+                                    <li title="Delete Image">
+                                        <a href="{% url 'ai:delete_generated_image' image.id %}" class="fancybox-button btn btn-danger btn-sm m-1"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                    </li>
+                                    <li title="Share Image on Linkedin">
+                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ image.image_url }}&title=Checkout this great Image Generated by AI from VSTech LImited" class="fancybox-button btn btn-success btn-sm m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i></a>
+                                    </li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+<pre class="bg-dark" style="display: none;" id="code"><code style="color: rgb(0, 253, 21);">{
+    "prompt": "{{ image.description }}",
+    "n": 1,
+    "size": "1024x1024"
+}</code></pre>
+            {% endfor %}
+        </div>
+    {% endif %}
+    </div>
+</section>
+
 {% endblock %}
