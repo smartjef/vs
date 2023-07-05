@@ -46,6 +46,7 @@ urlpatterns = [
     path('shop/', include('shop.urls')),
     path('users/', include('users.urls')),
     path('newsletter/', include('subscribe.urls')),
+    path('ai/', include('ai.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitempas.views.sitemap'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

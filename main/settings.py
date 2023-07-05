@@ -24,8 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 if not DEBUG:
     from .new import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'subscribe.apps.SubscribeConfig',
     'orders.apps.OrdersConfig',
+    'ai.apps.AiConfig',
 ]
 
 SITE_ID = 1

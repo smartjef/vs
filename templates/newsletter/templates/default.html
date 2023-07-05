@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <link href="https://www.vstech.co.ke/static/css/style.css" rel="stylesheet">
-    <link href="https://www.vstech.co.ke/static/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body style="justify-content:center !important;">
@@ -203,8 +201,8 @@
                                                                         <singleline label="link">
                                                                             {{ author.get_full_name }}, <br>
                                                                             {{ author.team.rank|default:'Member' }}, <br>
-                                                                            <a href="mailto:{{ author.email }}">{{ author.email }}</a> | <a href="tel:{{ author.profile.phone_number }}">{{ author.profile.phone_number }}</a>|<a href="https://www.vstech.co.ke">wwww.vstech.co.ke</a>
-                                                                            <a href="https://www.vstech.co.ke/unsubscribe/{{ recipient_email }}/" style="color: gray;">Unsubscribe</a>
+                                                                            <a href="mailto:{{ author.email }}">{{ author.email }}</a> | <a href="tel:{{ author.profile.phone_number }}">{{ author.profile.phone_number }}</a><br>
+                                                                            <a href="https://www.vstech.co.ke" style="color: gray;">www.vstech.co.ke</a> | <a href="https://www.vstech.co.ke/unsubscribe/{{ recipient_email }}/" style="color: gray;">Unsubscribe</a>
                                                                         </singleline>
                                                                     </td>
                                                                 </tr>
