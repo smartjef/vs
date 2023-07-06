@@ -56,7 +56,7 @@ def desc_to_image(request):
 
                         generated_image = GeneratedImage.objects.create(
                             user=request.user,
-                            description=description,
+#                            description=description,
                             image_url=image_url
                         )
                         generated_image.save()
