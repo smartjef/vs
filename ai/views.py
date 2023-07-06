@@ -61,7 +61,7 @@ def desc_to_image(request):
                         )
                         generated_image.save()
                         # update user's trial count
-                        user_trials.count -= 1
+                        user_trials.number -= 1
                         user_trials.save()
 
                         messages.success(request, 'Image generated successfully!')
