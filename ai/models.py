@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class GeneratedImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField(null=True, blank=True)
-    image_url = models.URLField()
+    description = models.TextField()
+    image_url = models.URLField(max_length=700)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -83,9 +83,6 @@
                                     <li title="Download Image">
                                         <a href="{% if image.image_url %}{{ image.image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" download class="fancybox-button btn btn-warning btn-sm m-1"><i class="fa fa-download" aria-hidden="true"></i></a>
                                     </li>
-                                    <li title="View Code" class="fancybox-button btn btn-sm btn-info m-1">                                            
-                                        <i class="fa fa-code" aria-hidden="true"></i>
-                                    </li>
                                     <li title="View Image">
                                         <a href="{% if image.image_url %}{{ image.image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" class="fancybox-button btn btn-primary btn-sm m-1"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     </li>
@@ -100,12 +97,8 @@
                         </div>
                     </div>
                 </div>
-<pre class="bg-dark" style="display: none;" id="code"><code style="color: rgb(0, 253, 21);">{
-    "prompt": "{{ image.description }}",
-    "n": 1,
-    "size": "1024x1024"
-}</code></pre>
             {% endfor %}
+
         </div>
     {% endif %}
     </div>
