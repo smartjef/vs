@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .new import KEY, ENDPOINT
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import GeneratedImage, Trial
+from .models import GeneratedImage, Trial, ImageDescription
 import os
 import openai
 openai.api_type = "azure"
@@ -30,11 +30,12 @@ def chat(request):
 @login_required
 def desc_to_image(request):
     chack_if_user_has_trials(request)
-    image_url = None
+    image_urls = []
     description = None
     can_generate_image = 0
-    genarated_images = GeneratedImage.objects.filter(user=request.user, is_active=True)
+    generated_images = GeneratedImage.objects.filter(description__user=request.user, is_active=True)
     user_trials = Trial.objects.filter(user=request.user).first()
+    
     if user_trials:
         if user_trials.number < 1:
             messages.warning(request, 'You have no trials left. Please buy any product from VSTech Limited to get 20 more trials.')
@@ -43,41 +44,52 @@ def desc_to_image(request):
             can_generate_image = 1
             if request.method == 'POST':
                 description = request.POST.get('description')
-                # check if user has any trials left
+                number_of_images = request.POST.get('number_of_images')
+                size = request.POST.get('size')
+
+                # Check if user has any trials left
                 if description:
-                    response = openai.Image.create(
-                        prompt=description,
-                        size='1024x1024',
-                        n=1,
-                    )
-
-                    if response.get('data') and response['data'][0].get('url'):
-                        image_url = response['data'][0]['url']
-
-                        generated_image = GeneratedImage.objects.create(
-                            user=request.user,
-                            description=description,
-                            image_url=image_url
-                        )
-                        generated_image.save()
-                        # update user's trial count
-                        user_trials.number -= 1
-                        user_trials.save()
-
-                        messages.success(request, 'Image generated successfully!')
+                    if number_of_images and (int(number_of_images) < 1 or int(number_of_images) > 4):
+                        messages.warning(request, 'Number of images must be between 1 and 4.')
                     else:
-                        messages.warning(request, 'An error occurred while generating the image. Please try again.')
+                        image_description =  ImageDescription.objects.create(description=description, user=request.user, size=size, initial_number_of_images=number_of_images)
+                        image_description.save()
+                        response = openai.Image.create(
+                            prompt=description,
+                            size=size,
+                            n=int(number_of_images),
+                        )
+
+                        if response.get('data') and len(response['data']) > 0:
+                            for image_data in response['data']:
+                                if image_data.get('url'):
+                                    image_urls.append(image_data['url'])
+                                    generated_image = GeneratedImage.objects.create(
+                                        description=image_description,
+                                        image_url=image_data['url']
+                                    )
+                                    generated_image.save()
+
+                            # Update user's trial count
+                            user_trials.number -= 1
+                            user_trials.save()
+
+                            messages.success(request, 'Image(s) generated successfully!')
+                        else:
+                            messages.warning(request, 'An error occurred while generating the image(s). Please try again.')
                 else:
                     messages.warning(request, 'Please provide a description.')
+
     context = {
         'title': 'Generate Image',
         'category': 'AI',
-        'image_url': image_url,
+        'image_urls': image_urls,
         'content': description,
         'can_generate_image': can_generate_image,
-        'generated_images': genarated_images,
+        'generated_images': generated_images,
     }
     return render(request, 'ai/desc_to_image.html', context)
+
 
 @login_required
 def delete_generated_image(request, id):
@@ -86,3 +98,54 @@ def delete_generated_image(request, id):
     image.save()
     messages.success(request, 'Image deleted successfully.')
     return redirect('ai:desc_to_image')
+
+
+def regenerate_image(request, image_id):
+    chack_if_user_has_trials(request)
+    generated_images = GeneratedImage.objects.filter(description__user=request.user, is_active=True)
+    image_urls = []
+    can_generate_image = 0
+    user_trials = Trial.objects.filter(user=request.user).first()
+    
+    if user_trials:
+        if user_trials.number < 1:
+            messages.warning(request, 'You have no trials left. Please buy any product from VSTech Limited to get 20 more trials.')
+            can_generate_image = 0
+        else:
+            can_generate_image = 1
+
+    image = get_object_or_404(GeneratedImage, id=image_id, description__user=request.user)
+    image_description = image.description.description
+    image_size = image.description.size
+
+    response = openai.Image.create(
+        prompt=image_description,
+        size=image_size,
+        n=1,
+    )
+
+    if response.get('data') and len(response['data']) > 0:
+        for image_data in response['data']:
+            if image_data.get('url'):
+                image_urls.append(image_data['url'])
+                generated_image = GeneratedImage.objects.create(
+                    description=image.description,
+                    image_url=image_data['url']
+                )
+                generated_image.save()
+
+        messages.success(request, 'Image(s) generated successfully!')
+    else:
+        messages.warning(request, 'An error occurred while generating the image(s). Please try again.')
+
+    context = {
+        'title': 'Generate Image',
+        'category': 'AI',
+        'image_urls': image_urls,
+        'content': image_description,
+        'can_generate_image': can_generate_image,
+        'generated_images': generated_images,
+    }
+    return render(request, 'ai/desc_to_image.html', context)
+
+

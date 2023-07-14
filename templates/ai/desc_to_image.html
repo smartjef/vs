@@ -18,16 +18,47 @@
                             <h3>Get Started!</h3>
                         </div>
                         {% if can_generate_image == 1 %}
-                        <!--Contact Form-->
+                       <!--Contact Form-->
                         <form method="post" action="" id="contact-form">
                             {% csrf_token %}
                             <div class="form-group">
                                 <textarea name="description" placeholder="Provide a description of the image to be generated" required=""></textarea>
                             </div>
                             <div class="form-group">
+                                <h4 class="text-light">Configurations:</h4>
+                                <div class="row">
+                                    <div class="col-xl-6 col-md-6 col-sm-6">
+                                        <label for="number_of_images">Number of Images</label>
+                                        <input type="number" placeholder="" id="number_of_images" name="number_of_images" min="1" max="4" value="1">
+                                        <small class="text-danger" style="font-size: x-small;" id="number_of_images_error"></small>
+                                    </div>
+                                    <div class="col-xl-6 col-md-6 col-sm-6">
+                                        <label for="size">Size</label>
+                                        <select name="size" id="size" required>
+                                            <option value="1024x1024" selected>1024x1024</option>
+                                            <option value="512x512">512x512</option>
+                                            <option value="256x256">256x256</option>
+                                        </select>
+                                        <div class="custom" style="display: none;">
+                                            <p class="my-2 text-light small">Provide Dimensions (in px)</p>
+                                            <div class="d-flex no-wrap">
+                                                <!-- <div class="col-md-6 col-sm-6">
+                                                    <input type="number" name="length" placeholder="Length" required>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="number" name="width" placeholder="Width" required>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <small class="text-danger" style="font-size: small;" id="numbers_only"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Generate</span></button>
                             </div>
                         </form>
+
                         {% else %}
                             <p class="alert alert-warning">No attempt left, Purchase a product from <a href="{% url 'shop:list' %}">VSTech Shop</a> to get 20 more trials/attemps <b class="fw-bold">OR</b> get free 7 days of use by referring a client to us.</p>
                         {% endif %}
@@ -37,25 +68,32 @@
                 </div>
             </div>
             <div class="col-lg-5">
+                <div class="col-lg-12 mb-2">
+                    <span class="alert alert-{% if request.user.trials.number == 0 %}danger{% else %}info{% endif %}">{{ request.user.trials.number }} attempts left</span>
+                </div>
+                {% if image_urls %}
                 <div class="col-lg-12">
-                    <p>View generated image ({{ request.user.trials.number }} attempts left)</p>
+                    <p>View generated image</p>
                     <p>{% if content %}{{ content }}{% endif %}</p>
                 </div>
                 <div class="row g-3">
-                    <div class="col-lg-8 col-md-8 col-sm-12">
+                    {% for image_url in image_urls %}
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <!-- Project Block -->
                         <div class="project-block">
                             <div class="inner-box">
                                 <div class="image-box">
                                     <figure >
-                                        <img src="{% if image_url %}{{ image_url }}{% else %}/static/images/resource/project-1.jpg{% endif %}" alt="Generated Image">
+                                        <img src="{{ image_url }}" alt="Generated Image">
                                     </figure>
         
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -92,6 +130,9 @@
                                     <li title="Share Image on Linkedin">
                                         <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ image.image_url }}&title=Checkout this great Image Generated by AI from VSTech LImited" class="fancybox-button btn btn-success btn-sm m-1"> <i class="fa fa-share-alt" aria-hidden="true"></i></a>
                                     </li>
+                                    <li title="Regenerate">
+                                        <a href="{% url 'ai:regenerate_image' image.id %}" class="fancybox-button btn btn-info btn-sm m-1"><i class="fa fa-retweet" aria-hidden="true"></i></a>
+                                    </li>
                                 </ul>
                             </p>
                         </div>
@@ -104,4 +145,19 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block js %}
+<script>
+    document.getElementById('number_of_images').addEventListener('change', function() {
+        var errorElement = document.getElementById('number_of_images_error');
+        var value = parseInt(this.value);
+
+        if (isNaN(value) || value < 1 || value > 4) {
+            errorElement.textContent = 'Number must be between 1 and 4.';
+        } else {
+            errorElement.textContent = '';
+        }
+    });
+</script>
 {% endblock %}

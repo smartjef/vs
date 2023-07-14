@@ -6,4 +6,5 @@ urlpatterns = [
     path('chat/', views.chat, name='chat'),
     path('desc-to-image/', views.desc_to_image, name='desc_to_image'),
     path('desc-to-image/<int:id>/delete/', views.delete_generated_image, name='delete_generated_image'),
+    path('regenerate-image/<int:image_id>/', views.regenerate_image, name='regenerate_image'),
 ]
