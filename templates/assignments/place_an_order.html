@@ -1,0 +1,49 @@
+{% extends 'assignments/base.html' %} {% block content %}
+<div class="container bg-white p-5">
+    <form class="user" action="{% url 'gwd:place_an_order' %}">
+        <div class="d-flex justify-content-between align-items-center">
+            <b class="h3 text-dark font-weight-bold">Amount</b>
+            <h1>Ksh. 12,500</h1>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <input type="text" class="form-control" id="exampleFirstName"
+                    placeholder="First Name" />
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="exampleLastName" placeholder="Last Name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail"
+                placeholder="Email Address" />
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <select name="" id="" class="form-control">
+                    <option value="high-school">High School</option>
+                    <option value="degree">Degree</option>
+                    <option value="master">Master</option>
+                    <option value="phd">PHD</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <select name="" id="" class="form-control">
+                    <option value="6hours">6 Hours</option>
+                    <option value="12hours">12 Hours</option>
+                    <option value="24hours">24 Hours</option>
+                    <option value="3days">3 Days</option>
+                    <option value="1week">1 Week</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <textarea name="" id="" class="form-control" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="file" name="" id="" class="form-control border-0" multiple />
+        </div>
+        <button class="btn btn-primary btn-block">Place an Order</button>
+    </form>
+</div>
+{% endblock %}

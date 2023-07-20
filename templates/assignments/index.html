@@ -4,8 +4,10 @@
 <div class="container">
     <div class="d-flex justify-content-between my-4">
         <p class="h1">Earn by refering a friend</p>
-        <a href="{% url 'assignment:dashboard' %}" class="theme-btn btn-style-one">View Dashboard</a>
-        <a href="" class="theme-btn btn-style-one">Get Referal Code</a>
+        <a href="{% url 'gwd:dashboard' %}" class="theme-btn btn-style-one">View Dashboard</a>
+        {% if not request.user.profile.code %}
+            <a href="{% url 'gwd:get_code' request.user.id %}" class="theme-btn btn-style-one">Get Referal Code</a>
+        {% endif %}
     </div>
 </div>
 <div class="container-fluid bg-light py-5">
