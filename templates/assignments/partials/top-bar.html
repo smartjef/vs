@@ -170,9 +170,19 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                <img class="img-profile rounded-circle"
-                    src="/static/sb/img/undraw_profile.svg">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:'No Name'}}{% else %}User{% endif %}</span>
+                <img class="img-profile rounded-circle" src="
+                    {% if request.user.profile.image %}
+                        {{ request.user.profile.image.url }}
+                    {% else %}
+                        {% if request.user.profile.gender == 'male' %}
+                            /static/sb/img/undraw_profile_2.svg
+                        {% elif request.user.profile.gender == 'female' %}
+                            /static/sb/img/undraw_profile_1.svg
+                        {% else %}
+                            /static/sb/img/undraw_profile.svg
+                        {% endif %}
+                    {% endif %}" alt="{{ request.user.get_full_name|default:'No Name' }}" title="{{ request.user.get_full_name|default:'No Name' }}">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

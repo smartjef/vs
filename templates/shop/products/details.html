@@ -162,11 +162,11 @@
 																{{ review.user.profile.image.url }}
 															{% else %}
 																{% if review.user.profile.gender == 'male' %}
-																	/static/images/1.png
+																	/static/sb/img/undraw_profile_2.svg
 																{% elif review.user.profile.gender == 'female' %}
-																	/static/images/2.png
+																	/static/sb/img/undraw_profile_1.svg
 																{% else %}
-																	/static/images/3.png
+																	/static/sb/img/undraw_profile.svg
 																{% endif %}
 															{% endif %}" alt="{{ review.user.get_full_name }}" title="{{ review.user.get_full_name }}">
 													</figure>

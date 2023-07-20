@@ -2,6 +2,12 @@ from django.contrib import admin
 from .models import Profile, Team, Skill, Preferences
 # Register your models here.
 
+class SkillInline(admin.TabularInline):
+    model = Skill
+    extra = 5
+    show_change_link = True
+    fields = ('title', 'level')
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user','gender', 'phone_number','linkedin', 'created_at']
@@ -17,12 +23,7 @@ class TeamAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email', 'rank')
     date_hierarchy = 'created_at'
     ordering = ('order','-created_at')
-    
-@admin.register(Skill)
-class SkillAdmin(admin.ModelAdmin):
-    list_display = ['team_member', 'title', 'level']
-    list_filter = ['team_member', 'title', 'level']
-    search_fields = ['team_member', 'title', 'level']
+    inlines = [SkillInline]
 
 @admin.register(Preferences)
 class PreferencesAdmin(admin.ModelAdmin):
