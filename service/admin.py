@@ -1,6 +1,15 @@
 from django.contrib import admin
 from .models import Service, ServiceFAQ
 # Register your models here.
+
+class ServiceFAQInline(admin.TabularInline):
+    model = ServiceFAQ
+    extra = 0
+    show_change_link = True
+    fields = ('question', 'answer', 'is_active', 'created_at')
+    readonly_fields = ('updated_at', 'created_at')
+    ordering = ('-created_at',)
+
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'icon', 'slug', 'created_at', 'updated_at']
@@ -9,11 +18,4 @@ class ServiceAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     prepopulated_fields = {'slug': ('title',)}
     ordering = ['-created_at',]
-
-@admin.register(ServiceFAQ)
-class ServiceFAQAdmin(admin.ModelAdmin):
-    list_display = ['question', 'answer', 'service', 'is_active', 'created_at', 'updated_at']
-    list_filter = ['created_at', 'updated_at', 'is_active', 'service']
-    search_fields = ['question', 'answer', 'service']
-    date_hierarchy = 'created_at'
-    ordering = ('-created_at',)
+    inlines = [ServiceFAQInline]
