@@ -47,6 +47,9 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('newsletter/', include('subscribe.urls')),
     path('ai/', include('ai.urls')),
+    path('api/', include('api.urls')),
+    path('gwd/', include('assignments.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitempas.views.sitemap'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

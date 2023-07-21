@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Homepage - GWD - VSTech Limited{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between my-4">
+        <p class="h1">Earn by refering a friend</p>
+        <a href="{% url 'gwd:dashboard' %}" class="theme-btn btn-style-one">View Dashboard</a>
+        {% if not request.user.profile.code %}
+            <a href="{% url 'gwd:get_code' request.user.id %}" class="theme-btn btn-style-one">Get Referal Code</a>
+        {% endif %}
+    </div>
+</div>
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Branch Block -->
+            <div class="branch-block col-lg-4 col-md-12 col-sm-12">
+                <div class="inner-box">
+                    <h5 class="title">Leave a Project</h5>
+                    <div class="d-flex">
+                        <a href="{% url 'gwd:place_an_order' %}" class="theme-btn btn-style-one">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Branch Block -->
+            <div class="branch-block col-lg-4 col-md-12 col-sm-12">
+                <div class="inner-box">
+                    <h5 class="title">Get Ideas on Your Project</h5>
+                    <div class="d-flex">
+                        <a href="{% url 'gwd:place_an_order' %}" class="theme-btn btn-style-one">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Branch Block -->
+            <div class="branch-block col-lg-4 col-md-12 col-sm-12">
+                <div class="inner-box">
+                    <h5 class="title">Leave assignments</h5>
+                    <div class="d-flex">
+                        <a href="{% url 'gwd:place_an_order' %}" class="theme-btn btn-style-one">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

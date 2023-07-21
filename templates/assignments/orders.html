@@ -1,0 +1,151 @@
+{% extends 'assignments/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <!-- Content Row -->
+        <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Orders</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">52</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Completed Orders</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">40</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa fa-shopping-bag fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Pending Orders</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-info-circle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Cancelled Orders</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Content Row -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
+                    <a href="#" class="btn btn-sm btn-info" data-toggle="modal" data-target="#placeAnOrder">Place an Order</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Level</th>
+                                <th>Deadline</th>
+                                <th>Created At</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Level</th>
+                                <th>Deadline</th>
+                                <th>Created At</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for i in "12345" %}
+                            <tr>
+                                <td><input type="checkbox" name="" id=""></td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>Create Cool Website</td>
+                                <td>Information Technology</td>
+                                <td>Degree</td>
+                                <td>6 Days</td>
+                                <td>10:24a.m 12th Jun 2023</td>
+                                <td><i class="fas fa-circle text-warning small"></i> Pending</td>
+                                <td class="text-end">Ksh. 25,0000</td>
+                                <td class="text-end">
+                                    <a href="#" class="btn btn-success btn-circle btn-sm">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

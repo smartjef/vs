@@ -24,8 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 if not DEBUG:
     from .new import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'crispy_bootstrap5',
+    'rest_framework',
 
     # Local apps
     'core.apps.CoreConfig',
@@ -75,6 +76,8 @@ INSTALLED_APPS = [
     'subscribe.apps.SubscribeConfig',
     'orders.apps.OrdersConfig',
     'ai.apps.AiConfig',
+    'api.apps.ApiConfig',
+    'assignments.apps.AssignmentsConfig',
 ]
 
 SITE_ID = 1
@@ -218,6 +221,7 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_MAX_LENGTH = 200
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_MAX_EMAIL_ADDRESSES = 3
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 1200
@@ -253,3 +257,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

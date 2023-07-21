@@ -74,11 +74,11 @@
 												{{ post_comment.author.profile.image.url }}
 											{% else %}
 												{% if post_comment.author.profile.gender == 'male' %}
-													/static/images/1.png
+													/static/sb/img/undraw_profile_2.svg
 												{% elif post_comment.author.profile.gender == 'female' %}
-													/static/images/2.png
+													/static/sb/img/undraw_profile_1.svg
 												{% else %}
-													/static/images/3.png
+													/static/sb/img/undraw_profile.svg
 												{% endif %}
 											{% endif %}" alt="{{ post_comment.author.get_full_name }}">
 										 </div>

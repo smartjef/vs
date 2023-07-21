@@ -12,17 +12,17 @@
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
                     <img src="
-									{% if request.user.profile.image %}
-										{{ request.user.profile.image.url }}
-									{% else %}
-										{% if request.user.profile.gender == 'male' %}
-											/static/images/1.png
-										{% elif request.user.profile.gender == 'female' %}
-											/static/images/2.png
-										{% else %}
-											/static/images/3.png
-										{% endif %}
-									{% endif %}" alt="{{ testimony.name }}" title="{{ testimony.name }}">
+                        {% if request.user.profile.image %}
+                            {{ request.user.profile.image.url }}
+                        {% else %}
+                            {% if request.user.profile.gender == 'male' %}
+                                /static/sb/img/undraw_profile_2.svg
+                            {% elif request.user.profile.gender == 'female' %}
+                                /static/sb/img/undraw_profile_1.svg
+                            {% else %}
+                                /static/sb/img/undraw_profile.svg
+                            {% endif %}
+                        {% endif %}" alt="{{ testimony.name }}" title="{{ testimony.name }}">
                     <!-- Profile picture help block-->
                     <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                     <h3>{{ request.user.get_full_name|default:'No Name' }}</h3>

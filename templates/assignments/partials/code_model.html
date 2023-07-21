@@ -1,0 +1,28 @@
+<div class="modal fade" id="getCode" tabindex="-1" role="dialog" aria-labelledby="getCode"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="getCode">Get Referal Code</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body bg-light">
+                {% if request.user.profile.code %}
+                    Your Code is: <code class="font-weight-bold">{{ request.user.profile.code|default:'-----' }}</code>
+                {% else %}
+                    You don't have any referal code, <a href="{% url 'gwd:get_code' request.user.id %}">Get One</a>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                {% if request.user.profile.code %}
+                    <a class="btn btn-success" href=""><i class="fas fa-copy"></i> Copy</a>
+                {% else %}
+                    <a class="btn btn-success" href="{% url 'gwd:get_code' request.user.id %}">Get One</a>
+                {% endif %}
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

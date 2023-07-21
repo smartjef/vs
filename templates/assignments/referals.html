@@ -1,0 +1,72 @@
+{% extends 'assignments/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+        {% include 'assignments/partials/card.html' %}
+        <!-- Content Row -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
+                    <a href="#" class="btn btn-sm btn-info" data-toggle="modal" data-target="#getCode">Get Referal Code</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Order</th>
+                                <th>Date Created</th>
+                                <th>Amount Earned</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Order</th>
+                                <th>Date Created</th>
+                                <th>Amount Earned</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for i in "12345" %}
+                            <tr>
+                                <td><input type="checkbox" name="" id=""></td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>Jeff Odhiambo</td>
+                                <td>Create Project on E-Health</td>
+                                <td>10:24a.m 12th Jun 2023</td>
+                                <td class="text-end">Ksh. 25,0000</td>
+                                <td><i class="fas fa-circle text-warning small"></i> Pending</td>
+                                <td class="text-end">
+                                    <a href="#" class="btn btn-success btn-circle btn-sm">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
