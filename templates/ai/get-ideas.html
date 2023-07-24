@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} - AI - VSTech Limited{% endblock %}
+{% block meta %} 
+	<meta name="title" content="Revolutionary AI Image Generation: VS Tech's Latest Breakthrough">
+    <meta name="keywords" content="AI image generation, VS Tech, artificial intelligence, computer vision, e-commerce, gaming, design, advertising">
+    <meta name="description" content="Discover the groundbreaking AI image generation technology by VS Tech. Transforming textual descriptions into stunning visuals, this revolutionary system has the potential to reshape e-commerce, gaming, design, and advertising industries.">
+{% endblock %}
+{% block content %}
+<section class="">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="inner-column">
+                    <!-- Contact Form -->
+                    <div class="contact-form wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                        <div class="title-box">
+                            <span class="sub-title">Get Project Ideas</span>
+                            <h3>Get Started!</h3>
+                        </div>
+                        {% if can_get_ideas == 1 %}
+                       <!--Contact Form-->
+                        <form method="post" action="" id="contact-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xl-6 col-md-6 col-sm-6">
+                                        <label for="academic_level">Academic Level</label>
+                                        <select name="level" id="academic_level" required>
+                                            {% for level_choice in level_choices %}
+                                                <option value="{{ level_choice.id }}">{{ level_choice.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 col-md-6 col-sm-6">
+                                        <label for="subject_are">Subject Area</label>
+                                        <select name="area" id="subject_area" required>
+                                            {% for area_choice in area_choices %}
+                                                <option value="{{ area_choice.id }}">{{ area_choice.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <small class="text-danger" style="font-size: small;" id="numbers_only"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="description" placeholder="Provide optional details of the kind of ideas you need."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Get Ideas</span></button>
+                            </div>
+                        </form>
+
+                        {% else %}
+                            <p class="alert alert-warning">No attempt left, Purchase a product from <a href="{% url 'shop:list' %}">VSTech Shop</a> to get 20 more trials/attemps <b class="fw-bold">OR</b> get free 7 days of use by referring a client to us.</p>
+                        {% endif %}
+                    </div>
+                    <!--End Contact Form -->
+
+                </div>
+            </div>
+            <div class="col-lg-5">
+                {% if request.user.trials.ideas_trial != 0 %}
+                    <div class="col-lg-12 mb-2">
+                        <span class="alert alert-info">{{ request.user.trials.ideas_trial }} attempts left</span>
+                    </div>
+                {% endif %}
+                {% if new_generated_ideas %}
+                <div class="col-lg-12">
+                    <p>View generated Ideas</p>
+                    <p>{% if content %}{{ content }}{% endif %}</p>
+                </div>
+                <ul class="accordion-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                    {% for new_generated_idea in new_generated_ideas %}
+                        <li class="accordion block active-block">
+                            <div class="acc-btn">{{ new_generated_idea.project_title }}
+                                <div class="icon fa fa-plus"></div>
+                            </div>
+                            <div class="acc-content">
+                                <div class="content">
+                                    <div class="text">{{ new_generated_idea.project_details }}</div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+				</ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

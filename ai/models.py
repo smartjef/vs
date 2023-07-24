@@ -1,11 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
-from django.db import models
-from django.contrib.auth.models import User
-
 class ImageDescription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
@@ -37,14 +32,65 @@ class GeneratedImage(models.Model):
 
 class Trial(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='trials')
-    number = models.IntegerField(default=5)
+    image_trial = models.IntegerField(default=5)
+    ideas_trial = models.IntegerField(default=5)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.number}'
+        return f'{self.user.username} - {self.image_trial} - {self.ideas_trial}'
     
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Trial'
         verbose_name_plural = 'Trials'
+
+class AreaChoice(models.Model):
+    title = models.CharField(max_length=50)
+    description = models.TextField(null=True, blank=True)
+    craeted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['-craeted_at']
+        verbose_name = 'Area Choice'
+        verbose_name_plural = 'Area Choices'
+
+class LevelChoice(models.Model):
+    title = models.CharField(max_length=50)
+    description = models.TextField(null=True, blank=True)
+    craeted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['-craeted_at']
+        verbose_name = 'Level Choice'
+        verbose_name_plural = 'Level Choices'
+
+class IdeaRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='idea_requests')
+    area = models.ForeignKey(AreaChoice, on_delete=models.CASCADE, related_name='idea_requests')
+    level = models.ForeignKey(LevelChoice, on_delete=models.CASCADE, related_name='idea_requests')
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.area} - {self.level}"
+
+class GeneratedIdeas(models.Model):
+    idea = models.ForeignKey(IdeaRequest, on_delete=models.CASCADE, related_name='generated_ideas')
+    project_title = models.CharField(max_length=200)
+    project_details = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.project_title
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Generated Idea'
+        verbose_name_plural = 'Generated Ideas'

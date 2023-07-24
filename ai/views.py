@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .new import KEY, ENDPOINT
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import GeneratedImage, Trial, ImageDescription
-import os
+from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas
 import openai
+
 openai.api_type = "azure"
 openai.api_base = "https://chat-gpt4.openai.azure.com/"
 openai.api_version = "2023-06-01-preview"
@@ -37,7 +37,7 @@ def desc_to_image(request):
     user_trials = Trial.objects.filter(user=request.user).first()
     
     if user_trials:
-        if user_trials.number < 1:
+        if user_trials.image_trial < 1:
             messages.warning(request, 'You have no trials left. Please buy any product from VSTech Limited to get 20 more trials.')
             can_generate_image = 0
         else:
@@ -149,3 +149,54 @@ def regenerate_image(request, image_id):
     return render(request, 'ai/desc_to_image.html', context)
 
 
+def get_ideas(request):
+    chack_if_user_has_trials(request)
+    new_generated_ideas = []
+    can_get_ideas = 0
+    generated_ideas = GeneratedIdeas.objects.filter(idea__user=request.user)
+    user_trials = Trial.objects.filter(user=request.user).first()
+
+    if user_trials:
+        if user_trials.ideas_trial < 1:
+            messages.warning(request, 'You have no trials left. Pay Ksh. 200 for Ideas.')
+            can_get_ideas = 0
+        else:
+            can_get_ideas = 1
+            if request.method == 'POST':
+                area_id = request.POST.get('area')
+                level_id = request.POST.get('level')
+                description = request.POST.get('description')
+
+                try:
+                    area_choice = AreaChoice.objects.get(pk=area_id)
+                    level_choice = LevelChoice.objects.get(pk=level_id)
+                    idea_request = IdeaRequest.objects.create(
+                        user=request.user,
+                        area=area_choice,
+                        level=level_choice,
+                        description=description
+                    )
+
+                    # for idea_data in generated_ideas:
+                    #     GeneratedIdeas.objects.create(
+                    #         idea=idea_request,
+                    #         project_title=idea_data['project_title'],
+                    #         project_details=idea_data['project_details']
+                    #     )
+
+                except AreaChoice.DoesNotExist or LevelChoice.DoesNotExist:
+                    messages.warning(request, 'Please select an area and a level.')
+
+    area_choices = AreaChoice.objects.all()
+    level_choices = LevelChoice.objects.all()
+
+    context  = {
+        'area_choices': area_choices, 
+        'level_choices': level_choices,
+        'title': 'Get Project Ideas',
+        'category': 'AI',
+        'new_generated_ideas': new_generated_ideas,
+        'can_get_ideas': can_get_ideas,
+        'generated_ideas': generated_ideas,
+    }
+    return render(request, 'ai/get-ideas.html', context)
