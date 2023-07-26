@@ -31,6 +31,7 @@ def index(request):
     }
     return render(request, f'index/{ random_number }.html', context)
 
+@login_required
 def contact(request):
     if request.method == "POST":
         name = request.POST.get('full_name')

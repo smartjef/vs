@@ -38,7 +38,7 @@ class Trial(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.image_trial} - {self.ideas_trial}'
+        return f"{self.user.username}'s trials - {self.image_trial} - {self.ideas_trial}"
     
     class Meta:
         ordering = ['-created_at']
@@ -59,8 +59,9 @@ class AreaChoice(models.Model):
         verbose_name_plural = 'Area Choices'
 
 class LevelChoice(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, help_text="e.g, High School, Degree, Masters, PHD")
     description = models.TextField(null=True, blank=True)
+    charge_rate = models.DecimalField(decimal_places=2, max_digits=3, default=1, help_text="e.g 1,1.2")
     craeted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -75,22 +76,37 @@ class IdeaRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='idea_requests')
     area = models.ForeignKey(AreaChoice, on_delete=models.CASCADE, related_name='idea_requests')
     level = models.ForeignKey(LevelChoice, on_delete=models.CASCADE, related_name='idea_requests')
+    number_of_ideas = models.PositiveSmallIntegerField(default=1)
+    is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.area} - {self.level}"
+        return f"{self.area} - {self.level} by {self.user}"
+    
+    def get_amount(self):
+        amount = 100 * self.level.charge_rate * self.number_of_ideas
+        return amount
 
 class GeneratedIdeas(models.Model):
-    idea = models.ForeignKey(IdeaRequest, on_delete=models.CASCADE, related_name='generated_ideas')
-    project_title = models.CharField(max_length=200)
-    project_details = models.TextField(null=True, blank=True)
+    idea_request = models.ForeignKey(IdeaRequest, on_delete=models.CASCADE, related_name='generated_ideas')
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.project_title
+        return self.title
     
+class Payment(models.Model):
+    idea_request = models.OneToOneField(IdeaRequest, on_delete=models.CASCADE, related_name='payment')
+    transaction_code = models.CharField(max_length=20, unique=True)
+    amount = models.DecimalField(decimal_places=2, default=0.00, max_digits=7)
+    mpesa_code = models.CharField(null=True, blank=True, unique=True, max_length=20)
+    is_paid = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.transaction_code
+
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Generated Idea'
-        verbose_name_plural = 'Generated Ideas'

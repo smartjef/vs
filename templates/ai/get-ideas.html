@@ -17,7 +17,6 @@
                             <span class="sub-title">Get Project Ideas</span>
                             <h3>Get Started!</h3>
                         </div>
-                        {% if can_get_ideas == 1 %}
                        <!--Contact Form-->
                         <form method="post" action="" id="contact-form">
                             {% csrf_token %}
@@ -43,16 +42,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="number_of_ideas">Number of Ideas:</label>
+                                <input type="number" name="number_of_ideas" id="number_of_ideas" placeholder="Provide Number of ideas you need">
+                                <small class="small text-danger" id="number_of_ideas_error"></small>
+                            </div>
+                            <div class="form-group">
                                 <textarea name="description" placeholder="Provide optional details of the kind of ideas you need."></textarea>
                             </div>
                             <div class="form-group">
                                 <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Get Ideas</span></button>
                             </div>
                         </form>
-
-                        {% else %}
-                            <p class="alert alert-warning">No attempt left, Purchase a product from <a href="{% url 'shop:list' %}">VSTech Shop</a> to get 20 more trials/attemps <b class="fw-bold">OR</b> get free 7 days of use by referring a client to us.</p>
-                        {% endif %}
                     </div>
                     <!--End Contact Form -->
 
@@ -72,12 +72,12 @@
                 <ul class="accordion-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
                     {% for new_generated_idea in new_generated_ideas %}
                         <li class="accordion block active-block">
-                            <div class="acc-btn">{{ new_generated_idea.project_title }}
+                            <div class="acc-btn">{{ new_generated_idea.title }}
                                 <div class="icon fa fa-plus"></div>
                             </div>
                             <div class="acc-content">
                                 <div class="content">
-                                    <div class="text">{{ new_generated_idea.project_details }}</div>
+                                    <div class="text">{{ new_generated_idea.description }}</div>
                                 </div>
                             </div>
                         </li>
@@ -86,6 +86,11 @@
                 {% endif %}
             </div>
         </div>
+    </div>
+</section>
+<section class="bg-dark">
+    <div class="container text-center">
+        <a href="{% url 'gwd:orders' %}" class="theme-btn btn-style-one shadow">View All Generated Ideas</a>
     </div>
 </section>
 {% endblock %}

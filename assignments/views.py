@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from users.models import Profile
+from ai.models import IdeaRequest, GeneratedIdeas
 from django.contrib.auth.models import User
 from random import randrange
 def index(request):
@@ -26,8 +27,10 @@ def referals(request):
 
 @login_required
 def orders(request):
+    idea_requests = IdeaRequest.objects.filter(user=request.user, is_active=True)
     context = {
         'title': 'Orders',
+        'idea_requests':idea_requests
     }
     return render(request, 'assignments/orders.html', context)
 
@@ -76,3 +79,37 @@ def generate_code(request, user_id):
     else:
         messages.warning(request, f'Unautherized Operation')
     return redirect('gwd:dashboard')
+
+
+@login_required
+def idea_request_detail(request, id):
+    idea_request = get_object_or_404(IdeaRequest, id=id, user=request.user, is_active=True)
+    context = {
+        'title': 'Idea Request Detail',
+        'idea_request':idea_request
+    }
+    return render(request, 'assignments/ideas_detail.html', context)
+
+@login_required
+def idea_request_delete(request, id):
+    idea_request = get_object_or_404(IdeaRequest, id=id, user=request.user, payment__is_paid=True, is_active=True)
+    idea_request.is_active = False
+    idea_request.save()
+    messages.success(request, 'Idea Request Deleted Successfully')
+    return redirect('gwd:ideas')
+
+@login_required
+def idea_delete(request, idea_id):
+    idea = get_object_or_404(GeneratedIdeas, id=idea_id, idea_request__user=request.user)
+    idea.delete()
+    messages.success(request, f'Successfully deleted {idea.title}!')
+    return redirect('gwd:request_detail', idea.idea_request.id)
+
+@login_required
+def idea_detail(request, idea_id):
+    idea = get_object_or_404(GeneratedIdeas, id=idea_id, idea_request__user=request.user)
+    context = {
+        'title': f'{idea.title}',
+        'idea':idea
+    }
+    return render(request, 'assignments/idea_detail.html', context)

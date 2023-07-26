@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .new import KEY, ENDPOINT
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas
+from assignments.views import generate_unique_code
+from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment
 import openai
 
 openai.api_type = "azure"
@@ -99,7 +100,7 @@ def delete_generated_image(request, id):
     messages.success(request, 'Image deleted successfully.')
     return redirect('ai:desc_to_image')
 
-
+@login_required
 def regenerate_image(request, image_id):
     chack_if_user_has_trials(request)
     generated_images = GeneratedImage.objects.filter(description__user=request.user, is_active=True)
@@ -149,43 +150,52 @@ def regenerate_image(request, image_id):
     return render(request, 'ai/desc_to_image.html', context)
 
 
+@login_required
 def get_ideas(request):
     chack_if_user_has_trials(request)
     new_generated_ideas = []
-    can_get_ideas = 0
-    generated_ideas = GeneratedIdeas.objects.filter(idea__user=request.user)
+    generated_ideas = GeneratedIdeas.objects.filter(idea_request__user=request.user)
     user_trials = Trial.objects.filter(user=request.user).first()
 
-    if user_trials:
-        if user_trials.ideas_trial < 1:
-            messages.warning(request, 'You have no trials left. Pay Ksh. 200 for Ideas.')
-            can_get_ideas = 0
-        else:
-            can_get_ideas = 1
-            if request.method == 'POST':
-                area_id = request.POST.get('area')
-                level_id = request.POST.get('level')
-                description = request.POST.get('description')
+    if request.method == 'POST':
+        area_id = request.POST.get('area')
+        level_id = request.POST.get('level')
+        description = request.POST.get('description')
+        number_of_ideas = int(request.POST.get('number_of_ideas'))
+        if number_of_ideas < 1:
+            messages.warning(request, 'Number of Images should be 1 or more')
+            return redirect('ai:get_ideas')
+        try:
+            area_choice = AreaChoice.objects.get(pk=area_id)
+            level_choice = LevelChoice.objects.get(pk=level_id)
+            idea_request = IdeaRequest.objects.create(
+                user=request.user,
+                area=area_choice,
+                level=level_choice,
+                description=description,
+                number_of_ideas = number_of_ideas
+            )
 
-                try:
-                    area_choice = AreaChoice.objects.get(pk=area_id)
-                    level_choice = LevelChoice.objects.get(pk=level_id)
-                    idea_request = IdeaRequest.objects.create(
-                        user=request.user,
-                        area=area_choice,
-                        level=level_choice,
-                        description=description
+            for i in range(number_of_ideas):
+                GeneratedIdeas.objects.create(
+                    idea_request = idea_request,
+                    title = "Test Generated Idea",
+                    description = "Test Generated Idea Description"
+                )
+            if user_trials:
+                if user_trials.ideas_trial < 1:
+                    amount = idea_request.get_amount()
+                    payment = Payment.objects.create(
+                        idea_request = idea_request,
+                        transaction_code = generate_unique_code(),
+                        amount = amount
                     )
-
-                    # for idea_data in generated_ideas:
-                    #     GeneratedIdeas.objects.create(
-                    #         idea=idea_request,
-                    #         project_title=idea_data['project_title'],
-                    #         project_details=idea_data['project_details']
-                    #     )
-
-                except AreaChoice.DoesNotExist or LevelChoice.DoesNotExist:
-                    messages.warning(request, 'Please select an area and a level.')
+                    payment.save()
+                    messages.warning(request, f'Make payment of Ksh. {amount} to Complete process.')
+                    return redirect('ai:make_payment', payment.transaction_code)
+        except AreaChoice.DoesNotExist or LevelChoice.DoesNotExist:
+            messages.warning(request, 'Please select an area and a level.')
+ 
 
     area_choices = AreaChoice.objects.all()
     level_choices = LevelChoice.objects.all()
@@ -196,7 +206,16 @@ def get_ideas(request):
         'title': 'Get Project Ideas',
         'category': 'AI',
         'new_generated_ideas': new_generated_ideas,
-        'can_get_ideas': can_get_ideas,
         'generated_ideas': generated_ideas,
     }
     return render(request, 'ai/get-ideas.html', context)
+
+@login_required
+def make_payment(request, payment_code):
+    payment = get_object_or_404(Payment, transaction_code=payment_code, idea_request__user=request.user)
+
+    context = {
+        'title': f'Make Payment of {payment.amount}',
+        'payment': payment
+    }
+    return render(request, 'ai/make-payment.html', context)
