@@ -3,6 +3,7 @@ from .new import KEY, ENDPOINT
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from assignments.views import generate_unique_code
+from assignments.models import Referal
 from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment
 import openai
 
@@ -162,9 +163,17 @@ def get_ideas(request):
         level_id = request.POST.get('level')
         description = request.POST.get('description')
         number_of_ideas = int(request.POST.get('number_of_ideas'))
+        referal_code = request.POST.get('referal_code')
         if number_of_ideas < 1:
             messages.warning(request, 'Number of Images should be 1 or more')
             return redirect('ai:get_ideas')
+        if referal_code:
+            referal =  Referal.objects.filter(code=referal_code)
+            if referal.exists:
+                refered_by = referal.first().user
+            else:
+                messages.warning(request, 'Invalid Referal Code!!')
+                return redirect('ai:get_ideas')
         try:
             area_choice = AreaChoice.objects.get(pk=area_id)
             level_choice = LevelChoice.objects.get(pk=level_id)
@@ -173,7 +182,8 @@ def get_ideas(request):
                 area=area_choice,
                 level=level_choice,
                 description=description,
-                number_of_ideas = number_of_ideas
+                number_of_ideas = number_of_ideas,
+                refered_by = refered_by
             )
 
             for i in range(number_of_ideas):
@@ -213,9 +223,11 @@ def get_ideas(request):
 @login_required
 def make_payment(request, payment_code):
     payment = get_object_or_404(Payment, transaction_code=payment_code, idea_request__user=request.user)
-
+    title = f'Make Payment of Ksh. {payment.amount}'
+    if payment.is_paid:
+        title = f'Payment of Ksh. {payment.amount} Completed'
     context = {
-        'title': f'Make Payment of {payment.amount}',
+        'title': title,
         'payment': payment
     }
     return render(request, 'ai/make-payment.html', context)

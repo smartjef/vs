@@ -20,7 +20,6 @@ class Profile(models.Model):
     image = models.ImageField(upload_to='users/profiles/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    code = models.CharField(max_length=10, unique=True, blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
     instagram = models.URLField(blank=True, null=True)
     twitter = models.URLField(blank=True, null=True)

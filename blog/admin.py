@@ -10,15 +10,18 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     date_hierarchy = 'published_date'
     ordering = ('-published_date',)
+    autocomplete_fields = ['category', 'author', 'tags']
+    filter_vertical = ['tags',]
 
 class ReplyInline(admin.TabularInline):
     model = Reply
-    extra = 1
+    extra = 0
     can_delete = False
     show_change_link = True
     fields = ('author', 'message', 'created_at', 'updated_at')
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
+    autocomplete_fields = ['author']
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
@@ -26,6 +29,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('is_approved', 'created_at', 'updated_at')
     search_fields = ('author', 'message')
     date_hierarchy = 'created_at'
+    autocomplete_fields = ['post', 'author']
     ordering = ('-created_at',)
     inlines = [ReplyInline]
 
@@ -33,3 +37,4 @@ class CommentAdmin(admin.ModelAdmin):
 class PostLikeAdmin(admin.ModelAdmin):
     list_display = ('post', 'user', 'value')
     search_fields = ('post', 'user')
+    autocomplete_fields = ['post', 'user']

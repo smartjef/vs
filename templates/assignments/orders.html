@@ -207,14 +207,14 @@
                                 <td>{{ idea_request.created_at }}</td>
                                 <td class="text-end">
                                     {% if idea_request.payment.is_paid %}
-                                    <a href="{% url 'gwd:request_detail' idea_request.id %}" class="btn btn-success btn-sm">
+                                    <a href="{{  idea_request.get_absolute_url }}" class="btn btn-success btn-sm">
                                        View
                                     </a>
                                     <a href="{% url 'gwd:request_delete' idea_request.id %}" class="btn btn-danger btn-sm">
                                        Delete
                                     </a>
                                     {% else %}
-                                        <a href="{% url 'ai:make_payment' idea_request.payment.transaction_code %}" class="btn btn-primary btn-sm">
+                                        <a href="{{ idea_request.payment.get_absolute_url }}" class="btn btn-primary btn-sm">
                                             Make Payment
                                         </a>
                                     {% endif %}

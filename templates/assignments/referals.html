@@ -16,51 +16,52 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="" id=""></th>
-                                <th>No</th>
                                 <th>Name</th>
-                                <th>Order</th>
+                                <th>Order ID</th>
                                 <th>Date Created</th>
+                                <th>Time Created</th>
                                 <th>Amount Earned</th>
-                                <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th><input type="checkbox" name="" id=""></th>
-                                <th>No</th>
                                 <th>Name</th>
-                                <th>Order</th>
+                                <th>Order ID</th>
                                 <th>Date Created</th>
+                                <th>Time Created</th>
                                 <th>Amount Earned</th>
-                                <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
+                            {% for idea in idea_referal %}
+                            <tr>
+                                <td><input type="checkbox" name="" id=""></td>
+                                <td>{{ idea.user.get_full_name|default:'-'}}</td>
+                                <td class="text-uppercase">GetIdeas-#{{ idea.id }}</td>
+                                <td>{{ idea.created_at|date:'D' }}. {{ idea.created_at|date }}</td>
+                                <td>{{ idea.created_at|time }}</td>
+                                <td class="text-end">Ksh. {% if idea.payment.get_amount_earned_by_referer %}{{ idea.payment.get_amount_earned_by_referer }}{% else %}0.00{% endif %}</td>
+                            </tr>
+                            {% endfor %}
                             {% for i in "12345" %}
                             <tr>
                                 <td><input type="checkbox" name="" id=""></td>
-                                <td>{{ forloop.counter }}</td>
                                 <td>Jeff Odhiambo</td>
-                                <td>Create Project on E-Health</td>
-                                <td>10:24a.m 12th Jun 2023</td>
+                                <td class="text-uppercase">Project-#{{ forloop.counter}}</td>
+                                <td>Fri. 12th Jun 2023</td>
+                                <td>10:24a.m</td>
                                 <td class="text-end">Ksh. 25,0000</td>
-                                <td><i class="fas fa-circle text-warning small"></i> Pending</td>
-                                <td class="text-end">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% for i in "12345" %}
+                            <tr>
+                                <td><input type="checkbox" name="" id=""></td>
+                                <td>Jeff Odhiambo</td>
+                                <td class="text-uppercase">Assignment-#{{ forloop.counter}}</td>
+                                <td>Fri. 12th Jun 2023</td>
+                                <td>10:24a.m</td>
+                                <td class="text-end">Ksh. 25,0000</td>
                             </tr>
                             {% endfor %}
                         </tbody>

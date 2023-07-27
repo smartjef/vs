@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class ImageDescription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -78,6 +79,7 @@ class IdeaRequest(models.Model):
     level = models.ForeignKey(LevelChoice, on_delete=models.CASCADE, related_name='idea_requests')
     number_of_ideas = models.PositiveSmallIntegerField(default=1)
     is_active = models.BooleanField(default=True)
+    refered_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -87,6 +89,12 @@ class IdeaRequest(models.Model):
     def get_amount(self):
         amount = 100 * self.level.charge_rate * self.number_of_ideas
         return amount
+    
+    def get_absolute_url(self):
+         return reverse('gwd:request_detail', kwargs={'id': self.id})
+    
+    class Meta:
+        ordering = ['-created_at']
 
 class GeneratedIdeas(models.Model):
     idea_request = models.ForeignKey(IdeaRequest, on_delete=models.CASCADE, related_name='generated_ideas')
@@ -96,6 +104,9 @@ class GeneratedIdeas(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('gwd:ideas_detail', kwargs={'idea_id': self.id})
     
 class Payment(models.Model):
     idea_request = models.OneToOneField(IdeaRequest, on_delete=models.CASCADE, related_name='payment')
@@ -110,3 +121,9 @@ class Payment(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+    def get_absolute_url(self):
+        return reverse('ai:make_payment', kwargs={'payment_code': self.transaction_code})
+    
+    def get_amount_earned_by_referer(self):
+        return .05 * float(self.amount)

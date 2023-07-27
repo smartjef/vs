@@ -15,5 +15,5 @@ urlpatterns = [
     path('earnings/', views.earnings, name='earnings'),
     path('withdrawals/', views.withdrawals, name='withdrawals'),
     path('place-an-order/', views.place_an_order, name='place_an_order'),
-    path('<int:user_id>/get-code/', views.generate_code, name='get_code'),
+    path('get-code/', views.generate_code, name='get_code'),
 ]

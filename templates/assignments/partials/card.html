@@ -7,8 +7,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. 40,000</div>
+                            Total Earnings</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.earnings }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -24,8 +24,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Earnings (Annual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. 215,000</div>
+                            Total Withdrawals</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.withdrawals }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -40,31 +40,9 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase no-wrap mb-1">Orders
-                            <span class="small text-dark">
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-success"></i> Completed
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-warning"></i> Pending
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-danger"></i> Cancelled
-                                </span>
-                            </span>
+                        <div class="text-xs font-weight-bold text-info text-uppercase no-wrap mb-1">Account Balance
                         </div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                        style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                        aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.balance }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
@@ -81,7 +59,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Total Referals</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_referal }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-users fa-2x text-gray-300"></i>

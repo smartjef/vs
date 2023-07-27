@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from users.models import Profile
+from .models import Referal
 from ai.models import IdeaRequest, GeneratedIdeas
 from django.contrib.auth.models import User
 from random import randrange
@@ -13,15 +14,26 @@ def index(request):
 
 @login_required
 def dashboard(request):
+    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=True).count()
+    assignment_referal = 15
+    project_referal = 10
+    total_referals = ideas_referal + assignment_referal + project_referal
     context = {
         'title': 'Dashboard',
+        'total_referal': total_referals
     }
     return render(request, 'assignments/dashboard.html', context)
 
 @login_required
 def referals(request):
+    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=True)
+    assignment_referal = 15
+    project_referal = 10
+    total_referals = ideas_referal.count() + assignment_referal + project_referal
     context = {
         'title': 'Referals',
+        'total_referal': total_referals,
+        'idea_referal': ideas_referal,
     }
     return render(request, 'assignments/referals.html', context)
 
@@ -64,20 +76,21 @@ def generate_unique_code():
     return new_code
 
 @login_required
-def generate_code(request, user_id):
-    if request.user == get_object_or_404(User, id=user_id):
-        profile = get_object_or_404(Profile, user=request.user)
-        if profile.code != None:
-            messages.info(request, f'You already have referal code, your Code is {profile.code}')
-        else:
-            new_code = generate_unique_code()
-            if Profile.objects.filter(code=new_code).exists():
-                new_code = generate_code()
-            profile.code = new_code
-            profile.save()
-            messages.success(request, f'Code generated successfully, your Code is {new_code}')
+def generate_code(request):
+    referal = Referal.objects.filter(user=request.user)
+    if referal.exists():
+        code = request.user.referal.code
+        messages.info(request, f'You already have referal code, your Code is {code}')
     else:
-        messages.warning(request, f'Unautherized Operation')
+        new_code = generate_unique_code()
+        if Referal.objects.filter(code=new_code).exists():
+            new_code = generate_code()
+        new_referal = Referal.objects.create(
+            user = request.user,
+            code = new_code
+        )
+        new_referal.save()
+        messages.success(request, f'Code generated successfully, your Code is {new_code}')
     return redirect('gwd:dashboard')
 
 

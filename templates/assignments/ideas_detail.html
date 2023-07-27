@@ -9,7 +9,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
                         {% if not idea_request.payment.is_paid %}
-                        <a href="{% url 'ai:make_payment' idea_request.payment.transaction_code %}"
+                        <a href="{{ idea_request.payment.get_absolute_url }}"
                             class="btn btn-sm btn-info">Make Payment</a>
                         {% endif %}
                     </div>
@@ -134,7 +134,7 @@
                                 </td>
                                 {% if idea.idea_request.payment.is_paid %}
                                 <td class="text-end">
-                                    <a href="{% url 'gwd:ideas_detail' idea.id %}" class="btn btn-info btn-sm">View</a>
+                                    <a href="{{ idea.get_absolute_url }}" class="btn btn-info btn-sm">View</a>
                                     <a href="" class="btn btn-secondary btn-sm">Request Implementation</a>
                                     <a href="{% url 'gwd:ideas_delete' idea.id %}" class="btn btn-danger btn-sm">Delete</a>
                                 </td>

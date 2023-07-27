@@ -17,6 +17,7 @@
                             <span class="sub-title">{{ title }}</span>
                             <h3>Get Started!</h3>
                         </div>
+                        {% if not payment.is_paid %}
                         <form method="post" action="" id="contact-form">
                             {% csrf_token %}
                             <div class="form-group">
@@ -28,6 +29,11 @@
                                 <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Pay</span></button>
                             </div>
                         </form>
+                        {% else %}
+                            <div class="alert alert-success">
+                                <h5>Payment was Completed, Thanks!</h5>
+                            </div>
+                        {% endif %}
                     </div>
                     <!--End Contact Form -->
 
@@ -73,30 +79,30 @@
 </section>
 <section>
     <div class="container">
-        <h5><i class="fa fa-list-ol" aria-hidden="true"></i> Generated Ideas:</h5>
+        <h5><i class="fa fa-list-ol" aria-hidden="true"></i> Generated Ideas: [<a href="{{ payment.idea_request.get_absolute_url }}">View Request</a>]</h5>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th></th>
                     <th>Idea Title</th>
+                    {% if payment.is_paid %}
                     <th>Action</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for idea in payment.idea_request.generated_ideas.all %}
                 <tr>
                     <td>{{ forloop.counter}}.</td>
-                    <td>{% if payment.is_paid %}{{ idea.title }}{% else %}This is the Coolest Idea, Pay to Access{% endif %}</td>
+                    <td>{% if payment.is_paid %}{{ idea.title }}{% else %}<div class="alert alert-danger alert-sm fw-bold">Access Denied!</div>{% endif %}</td>
+                    {% if payment.is_paid %}
                     <td>
                         <div class="d-flex justify-content-evenly">
-                            {% if payment.is_paid %}
-                                <a href="" class="text-primary" title="View idea">View</a>
-                                <a href="" class="text-success" title="Request Implementation">Request Implementation</a>
-                            {% else %}
-                                <span class="text-danger">Make Payment to Access</span>
-                            {% endif %}
+                            <a href="{{ idea.get_absolute_url }}" class="text-primary" title="View idea">View</a>
+                            <a href="" class="text-success" title="Request Implementation">Request Implementation</a>
                         </div>
                     </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
@@ -104,7 +110,9 @@
                 <tr>
                     <th></th>
                     <th>Idea Title</th>
+                    {% if payment.is_paid %}
                     <th>Action</th>
+                    {% endif %}
                 </tr>
             </tfoot>
         </table> 
