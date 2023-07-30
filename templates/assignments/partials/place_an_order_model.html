@@ -1,59 +1,146 @@
-<div class="modal fade" id="placeAnOrder" tabindex="-1" role="dialog" aria-labelledby="placeAnOrder"
+<div class="modal fade" id="AssignmentModel" tabindex="-1" role="dialog" aria-labelledby="AssignmentModel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="placeAnOrder">Place an Order</h5>
+                <h5 class="modal-title" id="AssignmentModel">Leave assignment(s)</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="container bg-white">
-                    <form class="user" action="{% url 'gwd:place_an_order' %}">
+                    <form class="user" action="{% url 'gwd:leave_assignment' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="d-flex justify-content-between align-items-center">
                             <b class="h3 text-dark font-weight-bold">Amount</b>
-                            <h1>Ksh. 12,500</h1>
+                            <h1><span id="calculated-amount">Ksh. 0</span></h1>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-3 mb-sm-0">
+                                <label for="title">Title*</label>
+                                <input type="text" class="form-control" id="title" placeholder="Enter Assignment Title" name="title" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-3 mb-sm-0">
+                                <label for="code">Referal Code</label>
+                                <input type="text" class="form-control" id="code" placeholder="If refered, please enter, CODE e.g VS-JEF" name="referal-code"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="academic_level">Select Academic Level*</label>
+                            <select name="academic_level" id="academic_level" class="form-control" required>
+                                    <option value="" selected>-----------</option>
+                                {% for level in academic_level %}
+                                    <option value="{{ level.id }}">{{ level }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input type="text" class="form-control" id="exampleFirstName"
-                                    placeholder="First Name" />
+                                <label for="subject_area">Subject Area</label>
+                                <select name="subject_area" id="subject_area" class="form-control">
+                                    <option value="" selected>-----------</option>
+                                    {% for subject in subject_area %}
+                                        <option value="{{ subject.id }}">{{ subject }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="exampleLastName" placeholder="Last Name" />
+                                <label for="period">Select Job Duration*</label>
+                                <select name="period" id="period" class="form-control" required>
+                                    <option value="" selected>-----------</option>
+                                    {% for ass_period in period %}
+                                        <option value="{{ ass_period.id }}">{{ ass_period }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" id="exampleInputEmail"
-                                placeholder="Email Address" />
+                            <label for="description">Provide Additional Information</label>
+                            <textarea name="additional_information" id="description" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="files">Attach Assignment File(s)(<small>if any</small>)</label>
+                            <input type="file" name="files" id="files" class="form-control border-0" multiple />
+                        </div>
+                        <button class="btn btn-primary btn-block">Leave Assignment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ProjectModel" tabindex="-1" role="dialog" aria-labelledby="ProjectModel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ProjectModel">Leave Project(s)</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container bg-white">
+                    <form class="user" action="{% url 'gwd:leave_project' %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <b class="h3 text-dark font-weight-bold">Amount</b>
+                            <h1><span id="calculated-amount">Ksh. 0</span></h1>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-3 mb-sm-0">
+                                <label for="title">Title*</label>
+                                <input type="text" class="form-control" id="title" placeholder="Enter Project Title" name="title" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-3 mb-sm-0">
+                                <label for="code">Referal Code</label>
+                                <input type="text" class="form-control" id="code" placeholder="If refered, please enter, CODE e.g VS-JEF" name="referal-code"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="academic_level">Select Academic Level*</label>
+                            <select name="academic_level" id="academic_level" class="form-control" required>
+                                    <option value="" selected>-----------</option>
+                                {% for level in academic_level %}
+                                    <option value="{{ level.id }}">{{ level }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <select name="" id="" class="form-control">
-                                    <option value="high-school">High School</option>
-                                    <option value="degree">Degree</option>
-                                    <option value="master">Master</option>
-                                    <option value="phd">PHD</option>
+                                <label for="subject_area">Subject Area</label>
+                                <select name="subject_area" id="subject_area" class="form-control">
+                                    <option value="" selected>-----------</option>
+                                    {% for subject in subject_area %}
+                                        <option value="{{ subject.id }}">{{ subject }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="col-sm-6">
-                                <select name="" id="" class="form-control">
-                                    <option value="6hours">6 Hours</option>
-                                    <option value="12hours">12 Hours</option>
-                                    <option value="24hours">24 Hours</option>
-                                    <option value="3days">3 Days</option>
-                                    <option value="1week">1 Week</option>
+                                <label for="period">Select Job Duration*</label>
+                                <select name="period" id="period" class="form-control" required>
+                                    <option value="" selected>-----------</option>
+                                    {% for pr_period in project_period %}
+                                        <option value="{{ ass_period.id }}">{{ pr_period }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <textarea name="" id="" class="form-control" rows="5"></textarea>
+                            <label for="description">Provide Additional Information</label>
+                            <textarea name="additional_information" id="description" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="file" name="" id="" class="form-control border-0" multiple />
+                            <label for="files">Attach Project File(s)(<small>if any</small>)</label>
+                            <input type="file" name="files" id="files" class="form-control border-0" multiple />
                         </div>
-                        <button class="btn btn-primary btn-block">Place an Order</button>
+                        <button class="btn btn-primary btn-block">Leave a Project</button>
                     </form>
                 </div>
             </div>

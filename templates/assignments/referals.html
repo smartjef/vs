@@ -44,24 +44,24 @@
                                 <td class="text-end">Ksh. {% if idea.payment.get_amount_earned_by_referer %}{{ idea.payment.get_amount_earned_by_referer }}{% else %}0.00{% endif %}</td>
                             </tr>
                             {% endfor %}
-                            {% for i in "12345" %}
+                            {% for assignment in assignment_referal %}
                             <tr>
                                 <td><input type="checkbox" name="" id=""></td>
-                                <td>Jeff Odhiambo</td>
-                                <td class="text-uppercase">Project-#{{ forloop.counter}}</td>
-                                <td>Fri. 12th Jun 2023</td>
-                                <td>10:24a.m</td>
-                                <td class="text-end">Ksh. 25,0000</td>
+                                <td>{{ assignment.user.get_full_name|default:'-' }}</td>
+                                <td class="text-uppercase">Assignment-#{{ assignment.id }}</td>
+                                <td>{{ assignment.created_at|date:'D'}}. {{ assignment.created_at|date }}</td>
+                                <td>{{ assignment.created_at|time }}</td>
+                                <td class="text-end">Ksh. {{ assignment.payment.get_amount_earned_by_referer|default:'-' }}</td>
                             </tr>
                             {% endfor %}
-                            {% for i in "12345" %}
+                            {% for project in project_referal %}
                             <tr>
                                 <td><input type="checkbox" name="" id=""></td>
-                                <td>Jeff Odhiambo</td>
-                                <td class="text-uppercase">Assignment-#{{ forloop.counter}}</td>
-                                <td>Fri. 12th Jun 2023</td>
-                                <td>10:24a.m</td>
-                                <td class="text-end">Ksh. 25,0000</td>
+                                <td>{{ project.user.get_full_name|default:'-' }}</td>
+                                <td class="text-uppercase">Project-#{{ project.id }}</td>
+                                <td>{{ project.created_at|date:'D'}}. {{ project.created_at|date }}</td>
+                                <td>{{ project.created_at|time }}</td>
+                                <td class="text-end">Ksh. {{ project.payment.get_amount_earned_by_referer|default:'-' }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

@@ -84,7 +84,7 @@ class IdeaRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.area} - {self.level} by {self.user}"
+        return f"ID-{self.id} - {self.area} - {self.level} by {self.user}"
     
     def get_amount(self):
         amount = 100 * self.level.charge_rate * self.number_of_ideas

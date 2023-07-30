@@ -14,6 +14,9 @@ urlpatterns = [
     path('requests/ideas/<int:idea_id>/delete/', views.idea_delete, name='ideas_delete'),
     path('earnings/', views.earnings, name='earnings'),
     path('withdrawals/', views.withdrawals, name='withdrawals'),
-    path('place-an-order/', views.place_an_order, name='place_an_order'),
     path('get-code/', views.generate_code, name='get_code'),
+    path('projects/<int:project_id>/', views.project_detail, name='project_detail'),
+    path('assignments/<int:assignment_id>/', views.assignment_detail, name='assignment_detail'),
+    path('leave-assignment/', views.AssignmentOrderCreateView, name='leave_assignment'),
+    path('leave-project/', views.ProjectOrderCreateView, name='leave_project'),
 ]

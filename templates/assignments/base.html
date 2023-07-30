@@ -110,6 +110,26 @@
     {% include 'assignments/partials/code_model.html' %}
     {% include 'assignments/partials/place_an_order_model.html' %}
     {% include 'assignments/partials/js.html' %}
+    {% block js %}
+
+    {% endblock %}
+    <script>
+        function calculateAmount() {
+            const academicLevel = document.getElementById('academic_level');
+            const period = document.getElementById('period');
+            const calculatedAmount = document.getElementById('calculated-amount');
+    
+            const academicLevelChargeRate = 300;
+    
+            const amount = academicLevelChargeRate * parseFloat(academicLevel.value) * parseFloat(period.value);
+            calculatedAmount.textContent = 'Ksh. ' + amount.toFixed(2);
+        }
+    
+        document.getElementById('academic_level').addEventListener('change', calculateAmount);
+        document.getElementById('period').addEventListener('change', calculateAmount);
+    
+        calculateAmount();
+    </script>
 </body>
 
 </html>

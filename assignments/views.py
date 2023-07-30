@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from users.models import Profile
-from .models import Referal
-from ai.models import IdeaRequest, GeneratedIdeas
-from django.contrib.auth.models import User
+from .models import Referal, AssignmentOrder, ProjectOrder, Period, AssignmentFiles, Payment, ProjectFiles, ProjectPeriod
+from ai.models import IdeaRequest, GeneratedIdeas, AreaChoice,LevelChoice
 from random import randrange
+
 def index(request):
     context = {
         'title': 'Get Work Done',
@@ -14,35 +13,52 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=True).count()
-    assignment_referal = 15
-    project_referal = 10
-    total_referals = ideas_referal + assignment_referal + project_referal
+    total_referals = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user).count() + AssignmentOrder.objects.filter(refered_by=request.user, status='Completed').count() + ProjectOrder.objects.filter(refered_by=request.user, status='Completed').count()
+    completed_orders = ProjectOrder.objects.filter(user=request.user, status="Completed").count()+AssignmentOrder.objects.filter(user=request.user, status="Completed").count()+IdeaRequest.objects.filter(user=request.user, is_active=True).count()
+    cancelled_orders = ProjectOrder.objects.filter(user=request.user, status="Cancelled").count()+AssignmentOrder.objects.filter(user=request.user, status="Cancelled").count()+IdeaRequest.objects.filter(user=request.user, is_active=False).count()
+    pending_orders = ProjectOrder.objects.filter(user=request.user, status="Pending").count()+AssignmentOrder.objects.filter(user=request.user, status="Pending").count()
     context = {
         'title': 'Dashboard',
-        'total_referal': total_referals
+        'total_referal': total_referals,
+        'completed_orders': completed_orders,
+        'cancelled_orders': cancelled_orders,
+        'pending_orders': pending_orders
     }
     return render(request, 'assignments/dashboard.html', context)
 
 @login_required
 def referals(request):
     ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=True)
-    assignment_referal = 15
-    project_referal = 10
-    total_referals = ideas_referal.count() + assignment_referal + project_referal
+    assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
+    project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
+    total_referals = ideas_referal.count() + assignment_referal.count() + project_referal.count()
     context = {
         'title': 'Referals',
         'total_referal': total_referals,
         'idea_referal': ideas_referal,
+        'assignment_referal': assignment_referal,
+        'project_referal': project_referal
     }
     return render(request, 'assignments/referals.html', context)
 
 @login_required
 def orders(request):
     idea_requests = IdeaRequest.objects.filter(user=request.user, is_active=True)
+    projects = ProjectOrder.objects.filter(user=request.user)
+    assignments = AssignmentOrder.objects.filter(user=request.user)
+    completed_orders = ProjectOrder.objects.filter(user=request.user, status="Completed").count()+AssignmentOrder.objects.filter(user=request.user, status="Completed").count()+IdeaRequest.objects.filter(user=request.user, is_active=True).count()
+    cancelled_orders = ProjectOrder.objects.filter(user=request.user, status="Cancelled").count()+AssignmentOrder.objects.filter(user=request.user, status="Cancelled").count()+IdeaRequest.objects.filter(user=request.user, is_active=False).count()
+    pending_orders = ProjectOrder.objects.filter(user=request.user, status="Pending").count()+AssignmentOrder.objects.filter(user=request.user, status="Pending").count()
+    total_orders = completed_orders + cancelled_orders + pending_orders
     context = {
         'title': 'Orders',
-        'idea_requests':idea_requests
+        'idea_requests':idea_requests,
+        'projects': projects,
+        'assignments': assignments,
+        'total_orders': total_orders,
+        'completed_orders': completed_orders,
+        'cancelled_orders': cancelled_orders,
+        'pending_orders': pending_orders
     }
     return render(request, 'assignments/orders.html', context)
 
@@ -59,13 +75,6 @@ def withdrawals(request):
         'title': 'Withdrawals',
     }
     return render(request, 'assignments/withdrawals.html', context)
-
-@login_required
-def place_an_order(request):
-    context = {
-        'title': 'Place an Order',
-    }
-    return render(request, 'assignments/place_an_order.html', context)
 
 def generate_unique_code():
     alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','S','T','U','V','W','X','Y','Z']
@@ -126,3 +135,111 @@ def idea_detail(request, idea_id):
         'idea':idea
     }
     return render(request, 'assignments/idea_detail.html', context)
+
+@login_required
+def project_detail(request, project_id):
+    pass
+
+@login_required
+def assignment_detail(request, assignment_id):
+    pass
+
+@login_required
+def AssignmentOrderCreateView(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        academic_level_id = request.POST.get('academic_level')
+        subject_area_id = request.POST.get('subject_area')
+        period_id = request.POST.get('period')
+        additional_information = request.POST.get('additional_information')
+        referal_code = request.POST.get('referal_code')
+        user = request.user
+        refered_by = None
+        subject_area = None
+        academic_level = LevelChoice.objects.get(id=academic_level_id)
+        period = Period.objects.get(id=period_id)
+        if subject_area_id:
+            subject_area = AreaChoice.objects.get(id=subject_area_id)
+
+        if referal_code:
+            if Referal.objects.filter(code=referal_code).exists():
+                referal = Referal.objects.get(code=referal_code)
+                refered_by = referal.user
+            else:
+                messages.warning(request, 'Invalid Referal Code!')
+                return redirect('gwd:leave_assignment')
+
+        assignment = AssignmentOrder.objects.create(
+            user=user,
+            title=title,
+            academic_level=academic_level,
+            subject_area=subject_area,
+            period=period,
+            additional_information=additional_information,
+            refered_by=refered_by
+        )
+
+        files = request.FILES.getlist('files')
+
+        for f in files:
+            assignment_file = AssignmentFiles.objects.create(assignment=assignment, file=f)
+            assignment_file.save()
+        payment = Payment.objects.create(assignment=assignment, transaction_code=generate_unique_code(), amount=assignment.get_amount())
+        payment.save()
+        messages.success(request, 'Assignment and files successfully submitted.')
+        return redirect('gwd:orders')
+    else:
+        context = {
+            'title':'Leave An Assignment',
+        }
+        return render(request, 'assignments/leave-assignment.html', context)
+
+@login_required
+def ProjectOrderCreateView(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        academic_level_id = request.POST.get('academic_level')
+        subject_area_id = request.POST.get('subject_area')
+        period_id = request.POST.get('period')
+        additional_information = request.POST.get('additional_information')
+        referal_code = request.POST.get('referal_code')
+        user = request.user
+        refered_by = None
+        subject_area = None
+        academic_level = LevelChoice.objects.get(id=academic_level_id)
+        period = ProjectPeriod.objects.get(id=period_id)
+        if subject_area_id:
+            subject_area = AreaChoice.objects.get(id=subject_area_id)
+
+        if referal_code:
+            if Referal.objects.filter(code=referal_code).exists():
+                referal = Referal.objects.get(code=referal_code)
+                refered_by = referal.user
+            else:
+                messages.warning(request, 'Invalid Referal Code!')
+                return redirect('gwd:leave_project')
+
+        project = ProjectOrder.objects.create(
+            user=user,
+            title=title,
+            academic_level=academic_level,
+            subject_area=subject_area,
+            period=period,
+            additional_information=additional_information,
+            refered_by=refered_by
+        )
+
+        files = request.FILES.getlist('files')
+
+        for f in files:
+            project_file = ProjectFiles.objects.create(project=project, file=f)
+            project_file.save()
+        payment = Payment.objects.create(project=project, transaction_code=generate_unique_code(), amount=project.get_amount())
+        payment.save()
+        messages.success(request, 'Project and files successfully submitted.')
+        return redirect('gwd:orders')
+    else:
+        context = {
+            'title':'Leave A Project',
+        }
+        return render(request, 'assignments/leave-project.html', context)
