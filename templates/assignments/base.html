@@ -110,26 +110,31 @@
     {% include 'assignments/partials/code_model.html' %}
     {% include 'assignments/partials/place_an_order_model.html' %}
     {% include 'assignments/partials/js.html' %}
+    <script src="/static/sb/js/calculateAssAmount.js"></script>
+    <script src="/static/sb/js/calculateProAmount.js"></script>
     {% block js %}
 
     {% endblock %}
+
     <script>
-        function calculateAmount() {
-            const academicLevel = document.getElementById('academic_level');
-            const period = document.getElementById('period');
-            const calculatedAmount = document.getElementById('calculated-amount');
+        document.getElementById('getCode').addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('btn-success')) {
+                const referalCodeElement = document.getElementById('referalCode');
+                const copyButton = event.target;
+                const referalCode = referalCodeElement.textContent;
     
-            const academicLevelChargeRate = 300;
-    
-            const amount = academicLevelChargeRate * parseFloat(academicLevel.value) * parseFloat(period.value);
-            calculatedAmount.textContent = 'Ksh. ' + amount.toFixed(2);
-        }
-    
-        document.getElementById('academic_level').addEventListener('change', calculateAmount);
-        document.getElementById('period').addEventListener('change', calculateAmount);
-    
-        calculateAmount();
+                navigator.clipboard.writeText(referalCode).then(function() {
+                    copyButton.innerHTML = '<i class="fas fa-check"></i> Copied';
+                        setTimeout(function() {
+                        copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    }, 1000);
+                }).catch(function() {
+                    console.error('Copying to clipboard failed.');
+                });
+            }
+        });
     </script>
+  
 </body>
 
 </html>

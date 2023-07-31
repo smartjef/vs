@@ -89,9 +89,10 @@
 {% endblock %}
 
 {% block js %}
+ <script src="/static/sb/js/demo/chart-area-demo.js"></script>
+ <script src="/static/sb/js/demo/chart-bar-demo.js"></script>
 <script>
     
-// Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 var data_list = []
@@ -133,5 +134,4 @@ var myPieChart = new Chart(ctx, {
   },
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}

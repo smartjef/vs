@@ -19,4 +19,5 @@ urlpatterns = [
     path('assignments/<int:assignment_id>/', views.assignment_detail, name='assignment_detail'),
     path('leave-assignment/', views.AssignmentOrderCreateView, name='leave_assignment'),
     path('leave-project/', views.ProjectOrderCreateView, name='leave_project'),
+    
 ]

@@ -10,14 +10,14 @@
             </div>
             <div class="modal-body bg-light">
                 {% if request.user.referal.code %}
-                    Your Code is: <code class="font-weight-bold">{{ request.user.referal.code|default:'-----' }}</code>
+                    Your Code is: <code class="font-weight-bold" id="referalCode">{{ request.user.referal.code|default:'-----' }}</code>
                 {% else %}
                     You don't have any referal code, <a href="{% url 'gwd:get_code' %}">Get One</a>
                 {% endif %}
             </div>
             <div class="modal-footer">
                 {% if request.user.referal.code %}
-                    <a class="btn btn-success" href=""><i class="fas fa-copy"></i> Copy</a>
+                    <span class="btn btn-success"><i class="fas fa-copy"></i> Copy</span>
                 {% else %}
                     <a class="btn btn-success" href="{% url 'gwd:get_code' %}">Get One</a>
                 {% endif %}
