@@ -1,5 +1,10 @@
-{% extends 'assignments/base.html' %} {% block content %}
-
+{% extends 'assignments/base.html' %} 
+{% block meta %}
+    <meta name="title" content="GWD - Leave Project">
+    <meta name="keyword" content="GWD, Get Work Done, Leave Project, Submit Project, Project Assistance, Subject Area, Duration, Academic Level, Attach Files">
+    <meta name="description" content="Submit your project on GWD's Leave Project page. Choose the subject area, provide the project title, set the duration, specify the academic level, and attach any necessary files. Get the assistance you need to complete your projects efficiently and effectively.">
+{% endblock %}
+{% block content %}
     <div class="container bg-white p-5">
         <form class="user" action="{% url 'gwd:leave_project' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
