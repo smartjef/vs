@@ -9,17 +9,17 @@
                 </button>
             </div>
             <div class="modal-body bg-light">
-                {% if request.user.profile.code %}
-                    Your Code is: <code class="font-weight-bold">{{ request.user.profile.code|default:'-----' }}</code>
+                {% if request.user.referal.code %}
+                    Your Code is: <code class="font-weight-bold" id="referalCode">{{ request.user.referal.code|default:'-----' }}</code>
                 {% else %}
-                    You don't have any referal code, <a href="{% url 'gwd:get_code' request.user.id %}">Get One</a>
+                    You don't have any referal code, <a href="{% url 'gwd:get_code' %}">Get One</a>
                 {% endif %}
             </div>
             <div class="modal-footer">
-                {% if request.user.profile.code %}
-                    <a class="btn btn-success" href=""><i class="fas fa-copy"></i> Copy</a>
+                {% if request.user.referal.code %}
+                    <span class="btn btn-success"><i class="fas fa-copy"></i> Copy</span>
                 {% else %}
-                    <a class="btn btn-success" href="{% url 'gwd:get_code' request.user.id %}">Get One</a>
+                    <a class="btn btn-success" href="{% url 'gwd:get_code' %}">Get One</a>
                 {% endif %}
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
             </div>

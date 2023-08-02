@@ -2,88 +2,7 @@
 {% block content %}
 <div class="container-fluid">
     <!-- Content Row -->
-    <div class="row">
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. 40,000</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Earnings (Annual)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. 215,000</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Withdrawals(<span
-                                    class="small">KSh. 12300</span>)
-                            </div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Account Balance</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   {% include 'assignments/partials/card.html' %}
     <div class="row">
         <div class="col-lg-8 col-md-7 col-sm-12">
             <!-- Content Row -->
@@ -101,48 +20,37 @@
                                 <tr>
                                     <th><input type="checkbox" name="" id=""></th>
                                     <th>No</th>
-                                    <th>Order</th>
-                                    <th>User</th>
+                                    <th>Order Title</th>
+                                    <th>User Refered</th>
                                     <th>Amount Earned</th>
-                                    <th>Created date</th>
-                                    <th>Action</th>
+                                    <th>Transaction Date</th>
+                                    <th>Transaction Time</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th><input type="checkbox" name="" id=""></th>
                                     <th>No</th>
-                                    <th>Order</th>
-                                    <th>User</th>
+                                    <th>Order Title</th>
+                                    <th>User Refered</th>
                                     <th>Amount Earned</th>
-                                    <th>Created date</th>
-                                    <th>Action</th>
+                                    <th>Transaction Date</th>
+                                    <th>Transaction Time</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                {% for i in "12345" %}
-                                <tr>
-                                    <td><input type="checkbox" name="" id=""></td>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>Create Project on E-Health</td>
-                                    <td>Jeff Odhiambo</td>
-                                    <td class="text-end">Ksh. 25,0000</td>
-                                    <td>10:24a.m 12th Jun 2023</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                            <i class="fas fa-check"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-info btn-circle btn-sm">
-                                            <i class="fas fa-info-circle"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                            <i class="fas fa-exclamation-triangle"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-circle btn-sm">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                {% for earning in earnings %}
+                                    {% for i in earning %}
+                                        <tr>
+                                            <td><input type="checkbox" name="" id=""></td>
+                                            <td>{{ i.id }}</td>
+                                            <td>{{ i.title|default:'-' }}</td>
+                                            <td>{{ i.user.get_full_name|default:'-' }}</td>
+                                            <td class="text-end">Ksh. {{ i.payment.get_amount_earned_by_referer }}</td>
+                                            <td>{{ i.payment.created_at|date }}</td>
+                                            <td>{{ i.payment.created_at|time }}</td>
+                                        </tr>
+                                    {% endfor %}
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -169,4 +77,7 @@
         </div>
     </div>
 </div>
+    {% endblock %}
+    {% block js %}
+    <script src="/static/sb/js/demo/chart-area-demo.js"></script>
     {% endblock %}

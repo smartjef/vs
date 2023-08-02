@@ -34,7 +34,7 @@
     <li class="nav-item {% if title == 'Orders' %}active{% endif %}">
         <a class="nav-link" href="{% url 'gwd:orders' %}">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Orders</span>
+            <span>Orders & Ideas</span>
         </a>
     </li>
 
@@ -49,7 +49,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Transactions:</h6>
                 <a class="collapse-item {% if title == 'Earnings' %}active{% endif %}" href="{% url 'gwd:earnings' %}">Earnings</a>
-                <a class="collapse-item {% if title == 'Withdrawals' %}active{% endif %}" href="{% url 'gwd:withdrawals' %}">Withdrawals</a>
+                <!-- <a class="collapse-item {% if title == 'Withdrawals' %}active{% endif %}" href="{% url 'gwd:withdrawals' %}">Withdrawals</a> -->
             </div>
         </div>
     </li>

@@ -5,8 +5,8 @@
     <div class="d-flex justify-content-between my-4">
         <p class="h1">Earn by refering a friend</p>
         <a href="{% url 'gwd:dashboard' %}" class="theme-btn btn-style-one">View Dashboard</a>
-        {% if not request.user.profile.code and request.user.is_authenticated %}
-            <a href="{% url 'gwd:get_code' request.user.id %}" class="theme-btn btn-style-one">Get Referal Code</a>
+        {% if not request.user.referal.code %}
+            <a href="{% url 'gwd:get_code' %}" class="theme-btn btn-style-one">Get Referal Code</a>
         {% endif %}
     </div>
 </div>
@@ -18,7 +18,7 @@
                 <div class="inner-box">
                     <h5 class="title">Leave a Project</h5>
                     <div class="d-flex">
-                        <a href="{% url 'gwd:place_an_order' %}" class="theme-btn btn-style-one">Get Started</a>
+                        <a href="{% url 'gwd:leave_project' %}" class="theme-btn btn-style-one">Get Started</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="inner-box">
                     <h5 class="title">Get Ideas on Your Project</h5>
                     <div class="d-flex">
-                        <a href="{% url 'gwd:place_an_order' %}" class="theme-btn btn-style-one">Get Started</a>
+                        <a href="{% url 'ai:get_ideas' %}" class="theme-btn btn-style-one">Get Started</a>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="inner-box">
                     <h5 class="title">Leave assignments</h5>
                     <div class="d-flex">
-                        <a href="{% url 'gwd:place_an_order' %}" class="theme-btn btn-style-one">Get Started</a>
+                        <a href="{% url 'gwd:leave_assignment' %}" class="theme-btn btn-style-one">Get Started</a>
                     </div>
                 </div>
             </div>

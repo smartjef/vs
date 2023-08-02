@@ -1,0 +1,67 @@
+{% extends 'assignments/base.html' %} 
+{% block meta %}
+    <meta name="title" content="GWD - Leave Project">
+    <meta name="keyword" content="GWD, Get Work Done, Leave Project, Submit Project, Project Assistance, Subject Area, Duration, Academic Level, Attach Files">
+    <meta name="description" content="Submit your project on GWD's Leave Project page. Choose the subject area, provide the project title, set the duration, specify the academic level, and attach any necessary files. Get the assistance you need to complete your projects efficiently and effectively.">
+{% endblock %}
+{% block content %}
+    <div class="container bg-white p-5">
+        <form class="user" action="{% url 'gwd:leave_project' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between align-items-center">
+                <b class="h3 text-dark font-weight-bold">Amount</b>
+                <h1><span id="pro-calculated-amount">Ksh. 0</span></h1>
+            </div>
+            <div class="form-group">
+                <div class="mb-3 mb-sm-0">
+                    <label for="pro-title">Title*</label>
+                    <input type="text" class="form-control" id="pro-title" placeholder="Enter Project Title" name="title" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="mb-3 mb-sm-0">
+                    <label for="pro-code">Referal Code</label>
+                    <input type="text" class="form-control" id="pro-code" placeholder="If refered, please enter, CODE e.g VS-JEF" name="referal_code"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pro-academic_level">Select Academic Level*</label>
+                <select name="academic_level" id="pro-academic_level" class="form-control" required>
+                        <option value="" selected>-----------</option>
+                    {% for level in academic_level %}
+                        <option value="{{ level.id }}"  data-charge-rate="{{ level.charge_rate }}">{{ level }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label for="pro-subject_area">Subject Area</label>
+                    <select name="subject_area" id="pro-subject_area" class="form-control">
+                        <option value="" selected>-----------</option>
+                        {% for subject in subject_area %}
+                            <option value="{{ subject.id }}">{{ subject }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="pro-period">Select Job Duration*</label>
+                    <select name="period" id="pro-period" class="form-control" required>
+                        <option value="" selected>-----------</option>
+                        {% for project_period_id in project_period %}
+                            <option value="{{ project_period_id.id }}" data-rate="{{ project_period_id.rate }}">{{ project_period_id }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pro-description">Provide Additional Information</label>
+                <textarea name="additional_information" id="pro-description" class="form-control" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pro-files">Attach Project File(s)(<small>if any</small>)</label>
+                <input type="file" name="files" id="pro-files" class="form-control border-0" multiple />
+            </div>
+            <button class="btn btn-primary btn-block">Leave Project</button>
+        </form>
+    </div>    
+{% endblock %}

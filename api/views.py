@@ -171,7 +171,7 @@ class ProductImageViewSet(viewsets.ReadOnlyModelViewSet):
     
 
 class ContactCreateViewSet(viewsets.ViewSet):
-    permission_classes = []
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Contact.objects.none()

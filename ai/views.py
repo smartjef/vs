@@ -2,9 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .new import KEY, ENDPOINT
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import GeneratedImage, Trial, ImageDescription
-import os
+from assignments.views import generate_unique_code
+from assignments.models import Referal
+from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment
 import openai
+
 openai.api_type = "azure"
 openai.api_base = "https://chat-gpt4.openai.azure.com/"
 openai.api_version = "2023-06-01-preview"
@@ -37,7 +39,7 @@ def desc_to_image(request):
     user_trials = Trial.objects.filter(user=request.user).first()
     
     if user_trials:
-        if user_trials.number < 1:
+        if user_trials.image_trial < 1:
             messages.warning(request, 'You have no trials left. Please buy any product from VSTech Limited to get 20 more trials.')
             can_generate_image = 0
         else:
@@ -71,7 +73,7 @@ def desc_to_image(request):
                                     generated_image.save()
 
                             # Update user's trial count
-                            user_trials.number -= 1
+                            user_trials.image_trial -= 1
                             user_trials.save()
 
                             messages.success(request, 'Image(s) generated successfully!')
@@ -93,13 +95,13 @@ def desc_to_image(request):
 
 @login_required
 def delete_generated_image(request, id):
-    image = get_object_or_404(GeneratedImage, id=id, user=request.user)
+    image = get_object_or_404(GeneratedImage, id=id, description__user=request.user)
     image.is_active = False
     image.save()
     messages.success(request, 'Image deleted successfully.')
     return redirect('ai:desc_to_image')
 
-
+@login_required
 def regenerate_image(request, image_id):
     chack_if_user_has_trials(request)
     generated_images = GeneratedImage.objects.filter(description__user=request.user, is_active=True)
@@ -149,3 +151,83 @@ def regenerate_image(request, image_id):
     return render(request, 'ai/desc_to_image.html', context)
 
 
+@login_required
+def get_ideas(request):
+    chack_if_user_has_trials(request)
+    new_generated_ideas = []
+    generated_ideas = GeneratedIdeas.objects.filter(idea_request__user=request.user)
+    user_trials = Trial.objects.filter(user=request.user).first()
+
+    if request.method == 'POST':
+        area_id = request.POST.get('area')
+        level_id = request.POST.get('level')
+        description = request.POST.get('description')
+        number_of_ideas = int(request.POST.get('number_of_ideas'))
+        referal_code = request.POST.get('referal_code')
+        if number_of_ideas < 1:
+            messages.warning(request, 'Number of Images should be 1 or more')
+            return redirect('ai:get_ideas')
+        if referal_code:
+            referal =  Referal.objects.filter(code=referal_code)
+            if referal.exists:
+                refered_by = referal.first().user
+            else:
+                messages.warning(request, 'Invalid Referal Code!!')
+                return redirect('ai:get_ideas')
+        try:
+            area_choice = AreaChoice.objects.get(pk=area_id)
+            level_choice = LevelChoice.objects.get(pk=level_id)
+            idea_request = IdeaRequest.objects.create(
+                user=request.user,
+                area=area_choice,
+                level=level_choice,
+                description=description,
+                number_of_ideas = number_of_ideas,
+                refered_by = refered_by
+            )
+
+            for i in range(number_of_ideas):
+                GeneratedIdeas.objects.create(
+                    idea_request = idea_request,
+                    title = "Test Generated Idea",
+                    description = "Test Generated Idea Description"
+                )
+            if user_trials:
+                if user_trials.ideas_trial < 1:
+                    amount = idea_request.get_amount()
+                    payment = Payment.objects.create(
+                        idea_request = idea_request,
+                        transaction_code = generate_unique_code(),
+                        amount = amount
+                    )
+                    payment.save()
+                    messages.warning(request, f'Make payment of Ksh. {amount} to Complete process.')
+                    return redirect('ai:make_payment', payment.transaction_code)
+        except AreaChoice.DoesNotExist or LevelChoice.DoesNotExist:
+            messages.warning(request, 'Please select an area and a level.')
+ 
+
+    area_choices = AreaChoice.objects.all()
+    level_choices = LevelChoice.objects.all()
+
+    context  = {
+        'area_choices': area_choices, 
+        'level_choices': level_choices,
+        'title': 'Get Project Ideas',
+        'category': 'AI',
+        'new_generated_ideas': new_generated_ideas,
+        'generated_ideas': generated_ideas,
+    }
+    return render(request, 'ai/get-ideas.html', context)
+
+@login_required
+def make_payment(request, payment_code):
+    payment = get_object_or_404(Payment, transaction_code=payment_code, idea_request__user=request.user)
+    title = f'Make Payment of Ksh. {payment.amount}'
+    if payment.is_paid:
+        title = f'Payment of Ksh. {payment.amount} Completed'
+    context = {
+        'title': title,
+        'payment': payment
+    }
+    return render(request, 'ai/make-payment.html', context)

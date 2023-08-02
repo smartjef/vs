@@ -1,4 +1,9 @@
 {% extends 'assignments/base.html' %}
+{% block meta %}
+    <meta name="title" content="GWD - Orders">
+    <meta name="keyword" content="GWD, Get Work Done, Orders, Order History, Project Orders, Assignment Orders">
+    <meta name="description" content="Access your GWD Orders page to view a list of all your project and assignment orders. Keep track of your order history, including unique order IDs, subject areas, titles, and durations. Stay organized and manage your projects and assignments efficiently.">
+{% endblock %}
 {% block content %}
     <div class="container-fluid">
         <!-- Content Row -->
@@ -12,7 +17,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Total Orders</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">52</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_orders }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
@@ -30,10 +35,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Completed Orders</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">40</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ completed_orders }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-shopping-bag fa-2x text-gray-300"></i>
+                                <i class="fa fa-check-circle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -47,10 +52,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Pending Orders</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_orders }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-info-circle fa-2x text-gray-300"></i>
+                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -64,10 +69,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                     Cancelled Orders</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cancelled_orders }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                <i class="fa fa-times-circle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -79,13 +84,13 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
-                    <a href="#" class="btn btn-sm btn-info" data-toggle="modal" data-target="#placeAnOrder">Place an Order</a>
+                    <h6 class="m-0 font-weight-bold text-primary">Assignment Orders</h6>
+                    <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#AssignmentModel">Leave Assignment(s)</a>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered small" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="" id=""></th>
@@ -95,7 +100,8 @@
                                 <th>Level</th>
                                 <th>Deadline</th>
                                 <th>Created At</th>
-                                <th>Status</th>
+                                <th>Order Status</th>
+                                <th>Payment Status</th>
                                 <th>Amount</th>
                                 <th>Action</th>
                             </tr>
@@ -109,36 +115,205 @@
                                 <th>Level</th>
                                 <th>Deadline</th>
                                 <th>Created At</th>
-                                <th>Status</th>
+                                <th>Order Status</th>
+                                <th>Payment Status</th>
                                 <th>Amount</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            {% for i in "12345" %}
+                            {% for assignment in assignments %}
                             <tr>
                                 <td><input type="checkbox" name="" id=""></td>
-                                <td>{{ forloop.counter }}</td>
-                                <td>Create Cool Website</td>
-                                <td>Information Technology</td>
-                                <td>Degree</td>
-                                <td>6 Days</td>
-                                <td>10:24a.m 12th Jun 2023</td>
-                                <td><i class="fas fa-circle text-warning small"></i> Pending</td>
-                                <td class="text-end">Ksh. 25,0000</td>
+                                <td>{{ assignment.id }}</td>
+                                <td><a href="{{ assignment.get_absolute_url }}">{{ assignment.title }}</a></td>
+                                <td>{{ assignment.subject_area }}</td>
+                                <td>{{ assignment.academic_level }}</td>
+                                <td>{{ assignment.period }}</td>
+                                <td>{{ assignment.created_at }}</td>
+                                <td><i class="fas fa-circle text-{% if assignment.status == 'Pending' %}warning{% elif assignment.status == 'Assigned' %}primary{% elif assignment.status == 'Cancelled' %}danger{% else %}success{% endif %}"></i> {{ assignment.status }}</td>
+                                <td>
+                                    {% if assignment.payment.is_paid %}
+                                        <i class="fa fa-check-circle text-success" aria-hidden="true"></i> Paid
+                                    {% else %}
+                                        <i class="fa fa-exclamation-circle text-warning"></i> Pending
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">Ksh. {{ assignment.payment.amount }}</td>
                                 <td class="text-end">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i>
+                                    {% if assignment.response and assignment.status == 'Completed' and assignment.payment.is_paid %}
+                                        <a href="{{ assignment.response.link }}" class="btn btn-outline-dark btn-sm">View Response</a>
+                                    {% else %}
+                                        <a href="{{ assignment.get_absolute_url }}" class="btn btn-success btn-sm">
+                                            View
+                                        </a>
+                                        {% endif %}
+                                    {% if not assignment.payment.is_paid %}
+                                    <a href="{{ assignment.payment.get_absolute_url }}" class="btn btn-info btn-sm">
+                                        Make Payment
                                     </a>
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-info-circle"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+         <!-- Content Row -->
+         <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Project Orders</h6>
+                    <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#ProjectModel">Leave a Project</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered small">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Level</th>
+                                <th>Deadline</th>
+                                <th>Created At</th>
+                                <th>Order Status</th>
+                                <th>Payment Status</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Level</th>
+                                <th>Deadline</th>
+                                <th>Created At</th>
+                                <th>Order Status</th>
+                                <th>Payment Status</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr>
+                                <td><input type="checkbox" name="" id=""></td>
+                                <td>{{ project.id }}</td>
+                                <td><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></td>
+                                <td>{{ project.subject_area }}</td>
+                                <td>{{ project.academic_level }}</td>
+                                <td>{{ project.period }}</td>
+                                <td>{{ project.created_at }}</td>
+                                <td><i class="fas fa-circle text-{% if project.status == 'Pending' %}warning{% elif project.status == 'Assigned' %}primary{% elif project.status == 'Cancelled' %}danger{% else %}success{% endif %}"></i> {{ project.status }}</td>
+                                <td>
+                                    {% if project.payment.is_paid %}
+                                        <i class="fa fa-check-circle text-success" aria-hidden="true"></i> Paid
+                                    {% else %}
+                                        <i class="fa fa-exclamation-circle text-warning"></i> Pending
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">Ksh. {{ project.payment.amount }}</td>
+                                <td class="text-end">
+                                    <a href="{{ project.get_absolute_url }}" class="btn btn-success btn-sm">
+                                        {% if project.responce and project.status == 'Completed' and project.payment.is_paid %}
+                                            View Responce
+                                        {% else %}
+                                            View
+                                        {% endif %}
                                     </a>
-                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                        <i class="fas fa-exclamation-triangle"></i>
+                                    {% if not project.payment.is_paid %}
+                                    <a href="{{ project.payment.get_absolute_url }}" class="btn btn-info btn-sm">
+                                        Make Payment
                                     </a>
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
-                                        <i class="fas fa-trash"></i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+         <!-- Content Row -->
+         <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Idea Requests</h6>
+                    <a href="{% url 'ai:get_ideas' %}" class="btn btn-sm btn-info">Get Ideas</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered small">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Order ID</th>
+                                <th>Subject Area</th>
+                                <th>Level</th>
+                                <th>Payment Status</th>
+                                <th>No. of Ideas</th>
+                                <th>Amount</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th><input type="checkbox" name="" id=""></th>
+                                <th>No</th>
+                                <th>Order ID</th>
+                                <th>Subject Area</th>
+                                <th>Level</th>
+                                <th>Payment Status</th>
+                                <th>No. of Ideas</th>
+                                <th>Amount</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for idea_request in idea_requests %}
+                            <tr>
+                                <td><input type="checkbox" name="" id=""></td>
+                                <td class="text-danger fw-bold">{{ forloop.counter }}</td>
+                                <td>{{ idea_request.id }}</td>
+                                <td>{{ idea_request.area }}</td>
+                                <td>{{ idea_request.level }}</td>
+                                <td>
+                                    {% if idea_request.payment.is_paid %}
+                                        <i class="fa fa-check-circle text-success" aria-hidden="true"></i> Paid
+                                    {% else %}
+                                        <i class="fa fa-exclamation-circle text-warning"></i> Pending
+                                    {% endif %}
+                                </td>
+                                <td>{{ idea_request.number_of_ideas }}</td>
+                                <td class="text-end">Ksh. {{ idea_request.payment.amount }}</td>
+                                <td>{{ idea_request.created_at }}</td>
+                                <td class="text-end">
+                                    {% if idea_request.payment.is_paid %}
+                                    <a href="{{  idea_request.get_absolute_url }}" class="btn btn-success btn-sm">
+                                       View
                                     </a>
+                                    <a href="{% url 'gwd:request_delete' idea_request.id %}" class="btn btn-danger btn-sm">
+                                       Delete
+                                    </a>
+                                    {% else %}
+                                        <a href="{{ idea_request.payment.get_absolute_url }}" class="btn btn-primary btn-sm">
+                                            Make Payment
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}

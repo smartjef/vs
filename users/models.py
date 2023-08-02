@@ -20,7 +20,6 @@ class Profile(models.Model):
     image = models.ImageField(upload_to='users/profiles/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    code = models.CharField(max_length=10, unique=True, blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
     instagram = models.URLField(blank=True, null=True)
     twitter = models.URLField(blank=True, null=True)
@@ -29,7 +28,7 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.username  
+        return f"{self.user.username}'s Profile"
 
 class Team(models.Model):
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='team')
@@ -70,6 +69,9 @@ class Preferences(models.Model):
     language = models.CharField(max_length=100, choices=LANGUAGE_CHOICES, default='en')
     theme = models.CharField(max_length=100, choices=THEME_CHOICES, default='light')
 
+    def __str__(self):
+        return f"{self.user.username}'s Preferences"
+    
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:

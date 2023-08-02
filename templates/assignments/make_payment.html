@@ -1,0 +1,37 @@
+{% extends 'assignments/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="container p-3 bg-white">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{title}}</h3>
+            </div>
+            <div class="card-body">
+                {% if payment.is_paid %}
+                <div class="alert alert-success">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> Payment Completed, Thank You. Go to <a href="{% url 'gwd:dashboard' %}">Dashboard</a> to view your Order Status.
+                </div>
+                {% else %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="phone_number">
+                            {% if request.user.profile.phone_number and request.user.profile.phone_number != "None" %}
+                                Should We Use the Number below
+                            {% else %}
+                                Enter Safaricom Number:
+                            {% endif %}
+                        </label>
+                        <input type="tel" name="phone_number" required class="form form-control" value="{% if request.user.profile.phone_number and request.user.profile.phone_number != 'None' %}{{ request.user.profile.phone_number }}{% endif %}">
+                        <small class="text-info"><i class="fa fa-question-circle" aria-hidden="true"></i> We will send STK Push to the provided number to complete transaction</small>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Make Payment" class="btn btn-primary">
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

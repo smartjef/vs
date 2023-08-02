@@ -42,12 +42,6 @@
                                         <div class="custom" style="display: none;">
                                             <p class="my-2 text-light small">Provide Dimensions (in px)</p>
                                             <div class="d-flex no-wrap">
-                                                <!-- <div class="col-md-6 col-sm-6">
-                                                    <input type="number" name="length" placeholder="Length" required>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <input type="number" name="width" placeholder="Width" required>
-                                                </div> -->
                                             </div>
                                         </div>
                                         <small class="text-danger" style="font-size: small;" id="numbers_only"></small>
@@ -68,9 +62,11 @@
                 </div>
             </div>
             <div class="col-lg-5">
+                {% if request.user.trials.image_trial != 0 %}
                 <div class="col-lg-12 mb-2">
-                    <span class="alert alert-{% if request.user.trials.number == 0 %}danger{% else %}info{% endif %}">{{ request.user.trials.number }} attempts left</span>
+                    <span class="alert alert-info">{{ request.user.trials.image_trial }} attempts left</span>
                 </div>
+                {% endif %}
                 {% if image_urls %}
                 <div class="col-lg-12">
                     <p>View generated image</p>
