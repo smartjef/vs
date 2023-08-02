@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse
 from .models import Referal, AssignmentOrder, ProjectOrder, Period, AssignmentFiles, Payment, ProjectFiles, ProjectPeriod
 from ai.models import IdeaRequest, GeneratedIdeas, AreaChoice,LevelChoice
 from random import randrange
@@ -28,7 +29,7 @@ def dashboard(request):
 
 @login_required
 def referals(request):
-    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=True)
+    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user)
     assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
     project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
     total_referals = ideas_referal.count() + assignment_referal.count() + project_referal.count()
@@ -64,15 +65,27 @@ def orders(request):
 
 @login_required
 def earnings(request):
+    earnings = []
+    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user)
+    assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
+    project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
+    total_referals = ideas_referal.count() + assignment_referal.count() + project_referal.count()
+    earnings.append(ideas_referal)
+    earnings.append(assignment_referal)
+    earnings.append(project_referal)
     context = {
         'title': 'Earnings',
+        'total_referal': total_referals,
+        'earnings':earnings
     }
     return render(request, 'assignments/earnings.html', context)
 
 @login_required
 def withdrawals(request):
+    total_referals = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user).count() + AssignmentOrder.objects.filter(refered_by=request.user, status='Completed').count() + ProjectOrder.objects.filter(refered_by=request.user, status='Completed').count()
     context = {
         'title': 'Withdrawals',
+        'total_referal': total_referals
     }
     return render(request, 'assignments/withdrawals.html', context)
 
@@ -138,11 +151,25 @@ def idea_detail(request, idea_id):
 
 @login_required
 def project_detail(request, project_id):
-    pass
+    obj = get_object_or_404(ProjectOrder, id=project_id, user=request.user)
+    context = {
+        'title': obj.title,
+        'category': 'Project - GWD',
+        'category_url_': reverse('gwd:orders'),
+        'obj': obj
+    }
+    return render(request, 'assignments/order-details.html', context)
 
 @login_required
 def assignment_detail(request, assignment_id):
-    pass
+    obj = get_object_or_404(AssignmentOrder, id=assignment_id, user=request.user)
+    context = {
+        'title': obj.title,
+        'category': 'Assignments - GWD',
+        'category_url_': reverse('gwd:orders'),
+        'obj': obj
+    }
+    return render(request, 'assignments/order-details.html', context)
 
 @login_required
 def AssignmentOrderCreateView(request):
@@ -168,7 +195,12 @@ def AssignmentOrderCreateView(request):
             else:
                 messages.warning(request, 'Invalid Referal Code!')
                 return redirect('gwd:leave_assignment')
+        files = request.FILES.getlist('files')
 
+        if not files and not additional_information:
+            messages.warning(request, 'Provide additional Information or attach Assignment File(s)!')
+            return redirect('gwd:leave_assignment')
+        
         assignment = AssignmentOrder.objects.create(
             user=user,
             title=title,
@@ -179,15 +211,13 @@ def AssignmentOrderCreateView(request):
             refered_by=refered_by
         )
 
-        files = request.FILES.getlist('files')
-
         for f in files:
             assignment_file = AssignmentFiles.objects.create(assignment=assignment, file=f)
             assignment_file.save()
         payment = Payment.objects.create(assignment=assignment, transaction_code=generate_unique_code(), amount=assignment.get_amount())
         payment.save()
         messages.success(request, 'Assignment and files successfully submitted.')
-        return redirect('gwd:orders')
+        return redirect('gwd:make_payment', payment.transaction_code)
     else:
         context = {
             'title':'Leave An Assignment',
@@ -218,6 +248,12 @@ def ProjectOrderCreateView(request):
             else:
                 messages.warning(request, 'Invalid Referal Code!')
                 return redirect('gwd:leave_project')
+            
+        files = request.FILES.getlist('files')
+
+        if not files and not additional_information:
+            messages.warning(request, 'Provide additional Information or attach project File(s)!')
+            return redirect('gwd:leave_project')
 
         project = ProjectOrder.objects.create(
             user=user,
@@ -229,18 +265,29 @@ def ProjectOrderCreateView(request):
             refered_by=refered_by
         )
 
-        files = request.FILES.getlist('files')
-
         for f in files:
             project_file = ProjectFiles.objects.create(project=project, file=f)
             project_file.save()
         payment = Payment.objects.create(project=project, transaction_code=generate_unique_code(), amount=project.get_amount())
         payment.save()
         messages.success(request, 'Project and files successfully submitted.')
-        return redirect('gwd:orders')
+        return redirect('gwd:make_payment', payment.transaction_code)
     else:
         context = {
             'title':'Leave A Project',
         }
         return render(request, 'assignments/leave-project.html', context)
 
+@login_required    
+def payment(request, code):
+    payment = get_object_or_404(Payment, transaction_code=code)
+
+    title = f"Make payment of {payment.amount}"
+    if payment.is_paid:
+        title = f'Payment of Ksh. {payment.amount} Completed'
+
+    context = {
+        'title' : title,
+        'payment': payment
+    }
+    return render(request, 'assignments/make_payment.html', context)

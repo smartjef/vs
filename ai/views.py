@@ -73,7 +73,7 @@ def desc_to_image(request):
                                     generated_image.save()
 
                             # Update user's trial count
-                            user_trials.number -= 1
+                            user_trials.image_trial -= 1
                             user_trials.save()
 
                             messages.success(request, 'Image(s) generated successfully!')
@@ -95,7 +95,7 @@ def desc_to_image(request):
 
 @login_required
 def delete_generated_image(request, id):
-    image = get_object_or_404(GeneratedImage, id=id, user=request.user)
+    image = get_object_or_404(GeneratedImage, id=id, description__user=request.user)
     image.is_active = False
     image.save()
     messages.success(request, 'Image deleted successfully.')

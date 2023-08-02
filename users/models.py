@@ -28,7 +28,7 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.username  
+        return f"{self.user.username}'s Profile"
 
 class Team(models.Model):
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='team')
@@ -69,6 +69,9 @@ class Preferences(models.Model):
     language = models.CharField(max_length=100, choices=LANGUAGE_CHOICES, default='en')
     theme = models.CharField(max_length=100, choices=THEME_CHOICES, default='light')
 
+    def __str__(self):
+        return f"{self.user.username}'s Preferences"
+    
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:

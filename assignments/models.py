@@ -74,6 +74,9 @@ class AssignmentFiles(models.Model):
     assignment = models.ForeignKey(AssignmentOrder, on_delete=models.CASCADE, related_name='files')
     file = models.FileField(upload_to='assignments/')
 
+    def __str__(self):
+        return self.file.name
+
 class ProjectPeriod(models.Model):
     period = models.ForeignKey(Period, on_delete=models.CASCADE)
     rate = models.FloatField(default=1)
@@ -113,10 +116,14 @@ class ProjectFiles(models.Model):
     project = models.ForeignKey(ProjectOrder, on_delete=models.CASCADE, related_name='files')
     file = models.FileField(upload_to='projects/')
 
+    def __str__(self):
+        return self.file.name
+
 class Payment(models.Model):
     assignment = models.OneToOneField(AssignmentOrder, on_delete=models.CASCADE, related_name='payment', null=True, blank=True)
     project = models.OneToOneField(ProjectOrder, on_delete=models.CASCADE, related_name='payment', null=True, blank=True)
     transaction_code = models.CharField(max_length=20, unique=True)
+    description = models.CharField(max_length=500, null=True, blank=True)
     amount = models.DecimalField(decimal_places=2, default=0.00, max_digits=7)
     mpesa_code = models.CharField(null=True, blank=True, unique=True, max_length=20)
     is_paid = models.BooleanField(default=False)
@@ -130,3 +137,19 @@ class Payment(models.Model):
     
     def get_amount_earned_by_referer(self):
         return .05 * float(self.amount)
+    
+    def get_absolute_url(self):
+        return reverse('gwd:make_payment', kwargs={'code': self.transaction_code})
+    
+class Response(models.Model):
+    assignment = models.OneToOneField(AssignmentOrder, on_delete=models.CASCADE, related_name='response', null=True, blank=True)
+    project = models.OneToOneField(ProjectOrder, on_delete=models.CASCADE, related_name='response', null=True, blank=True)
+    link = models.URLField()
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.link
+
+    class Meta:
+        ordering = ['-created_at']

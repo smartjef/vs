@@ -23,7 +23,7 @@
                             <div class="form-group">
                                 {% if request.user.profile.phone_number and request.user.profile.phone_number != "None" %}<h5 class="text-light">Should we use the Number below?</h5>{% endif %}
                                 <input type="tel" name="phone_number" id="phone_number" placeholder="Enter Phonenumber" {% if request.user.profile.phone_number and request.user.profile.phone_number != "None" %}value="{{request.user.profile.phone_number}}"{% endif %}/>
-                                <small>We will send STK Push to the provided number, Use valid Number</small>
+                                <small><i class="fa fa-question-circle" aria-hidden="true"></i> We will send STK Push to the provided number, Use valid Number</small>
                             </div>
                             <div class="form-group">
                                 <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Pay</span></button>

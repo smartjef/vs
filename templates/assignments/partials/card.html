@@ -8,7 +8,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Total Earnings</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.earnings }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.earnings|default:'0' }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -25,7 +25,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Total Withdrawals</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.withdrawals }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.withdrawals|default:'0' }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -42,7 +42,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase no-wrap mb-1">Account Balance
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.balance }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">KSh. {{ request.user.referal.balance|default:'0' }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>

@@ -33,7 +33,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ completed_orders }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-shopping-bag fa-2x text-gray-300"></i>
+                                <i class="fa fa-check-circle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_orders }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-info-circle fa-2x text-gray-300"></i>
+                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cancelled_orders }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                <i class="fa fa-times-circle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered small" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="" id=""></th>
@@ -121,7 +121,7 @@
                             <tr>
                                 <td><input type="checkbox" name="" id=""></td>
                                 <td>{{ assignment.id }}</td>
-                                <td>{{ assignment.title }}</td>
+                                <td><a href="{{ assignment.get_absolute_url }}">{{ assignment.title }}</a></td>
                                 <td>{{ assignment.subject_area }}</td>
                                 <td>{{ assignment.academic_level }}</td>
                                 <td>{{ assignment.period }}</td>
@@ -136,15 +136,15 @@
                                 </td>
                                 <td class="text-end">Ksh. {{ assignment.payment.amount }}</td>
                                 <td class="text-end">
-                                    <a href="{{ assignment.get_absolute_url }}" class="btn btn-success btn-sm">
-                                        {% if assignment.responce and assignment.status == 'Completed' %}
-                                            View Responce
-                                        {% else %}
+                                    {% if assignment.response and assignment.status == 'Completed' and assignment.payment.is_paid %}
+                                        <a href="{{ assignment.response.link }}" class="btn btn-outline-dark btn-sm">View Response</a>
+                                    {% else %}
+                                        <a href="{{ assignment.get_absolute_url }}" class="btn btn-success btn-sm">
                                             View
+                                        </a>
                                         {% endif %}
-                                    </a>
                                     {% if not assignment.payment.is_paid %}
-                                    <a href="#" class="btn btn-info btn-sm">
+                                    <a href="{{ assignment.payment.get_absolute_url }}" class="btn btn-info btn-sm">
                                         Make Payment
                                     </a>
                                     {% endif %}
@@ -167,7 +167,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered small">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="" id=""></th>
@@ -203,7 +203,7 @@
                             <tr>
                                 <td><input type="checkbox" name="" id=""></td>
                                 <td>{{ project.id }}</td>
-                                <td>{{ project.title }}</td>
+                                <td><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></td>
                                 <td>{{ project.subject_area }}</td>
                                 <td>{{ project.academic_level }}</td>
                                 <td>{{ project.period }}</td>
@@ -219,14 +219,14 @@
                                 <td class="text-end">Ksh. {{ project.payment.amount }}</td>
                                 <td class="text-end">
                                     <a href="{{ project.get_absolute_url }}" class="btn btn-success btn-sm">
-                                        {% if project.responce and project.status == 'Completed' %}
+                                        {% if project.responce and project.status == 'Completed' and project.payment.is_paid %}
                                             View Responce
                                         {% else %}
                                             View
                                         {% endif %}
                                     </a>
                                     {% if not project.payment.is_paid %}
-                                    <a href="#" class="btn btn-info btn-sm">
+                                    <a href="{{ project.payment.get_absolute_url }}" class="btn btn-info btn-sm">
                                         Make Payment
                                     </a>
                                     {% endif %}
@@ -249,7 +249,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered small">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="" id=""></th>

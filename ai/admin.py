@@ -60,3 +60,11 @@ class IdeaPaymentAdmin(admin.ModelAdmin):
     list_filter = ['is_paid', 'created_at']
     search_fields = ['transaction_code', 'amount', 'mpesa_code', 'description', 'idea_request_area', 'idea_request_level']
     autocomplete_fields = ['idea_request',]
+    readonly_fields = ['is_paid', 'transaction_code']
+    actions = ['mark_as_paid', 'mark_as_unpaid']
+
+    def mark_as_unpaid(self, request, queryset):
+        queryset.update(is_paid=False)
+
+    def mark_as_paid(self, request, queryset):
+        queryset.update(is_paid=True)

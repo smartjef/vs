@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Referal, Period, AssignmentOrder, ProjectOrder, ProjectPeriod, AssignmentFiles, ProjectFiles, Payment
+from .models import Referal, Period, AssignmentOrder, ProjectOrder, ProjectPeriod, AssignmentFiles, ProjectFiles, Payment, Response
 # Register your models here.
 
 @admin.register(Referal)
@@ -34,6 +34,7 @@ class AssignmentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['academic_level', 'subject_area', 'period', 'user', 'refered_by']
     list_filter = ['status', 'updated_at', 'academic_level', 'period', 'created_at']
     inlines = [AssignmentFilesInline]
+    readonly_fields = ['refered_by',]
 
 @admin.register(ProjectPeriod)
 class ProjectPeriodAdmin(admin.ModelAdmin):
@@ -49,10 +50,26 @@ class ProjectAdmin(admin.ModelAdmin):
     autocomplete_fields = ['academic_level', 'subject_area', 'period', 'user', 'refered_by']
     list_filter = ['status', 'updated_at', 'academic_level', 'period', 'created_at']
     inlines = [ProjectFilesInline]
+    readonly_fields = ['refered_by',]
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['transaction_code', 'project', 'assignment', 'amount', 'mpesa_code', 'is_paid', 'created_at']
+    list_display = ['transaction_code', 'project', 'assignment', 'amount', 'mpesa_code', 'description', 'is_paid', 'created_at']
     list_filter = ['is_paid', 'created_at']
     search_fields = ['transaction_code', 'project', 'assignment', 'amount', 'mpesa_code', 'description',]
+    autocomplete_fields = ['project','assignment']
+    readonly_fields = ['is_paid', 'transaction_code']
+    actions = ['mark_as_paid', 'mark_as_unpaid']
+    
+    def mark_as_unpaid(self, request, queryset):
+        queryset.update(is_paid=False)
+
+    def mark_as_paid(self, request, queryset):
+        queryset.update(is_paid=True)
+
+@admin.register(Response)
+class ResponseAdmin(admin.ModelAdmin):
+    list_display = ['link', 'project', 'assignment', 'updated_at', 'created_at']
+    list_filter = ['updated_at', 'created_at']
+    search_fields = ['link', 'project', 'assignment',]
     autocomplete_fields = ['project','assignment']
