@@ -37,7 +37,7 @@ class Period(models.Model):
         return f'{self.quantity} - {self.unit}'
     
     class Meta:
-        ordering = ['unit'] 
+        ordering = ['created_at'] 
 
 STATUS_CHOICES = [
     ('Pending', 'Pending'),
