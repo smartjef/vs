@@ -29,9 +29,11 @@ class TeamAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ('order','-created_at')
     inlines = [SkillInline]
+    list_per_page = 10
 
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline, PreferencesInline)
+    list_per_page = 15
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)

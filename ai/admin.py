@@ -17,6 +17,7 @@ class ImageDescriptionAdmin(admin.ModelAdmin):
     search_fields = ['user', 'size', 'description']
     autocomplete_fields = ['user',]
     inlines = [GeneratedImageInline]
+    list_per_page = 20
 
 @admin.register(Trial)
 class TrialAdmin(admin.ModelAdmin):
@@ -24,18 +25,21 @@ class TrialAdmin(admin.ModelAdmin):
     list_filter = ['user', 'created_at', 'updated_at']
     autocomplete_fields = ['user',]
     search_fields = ['user', 'image_url', 'image_trial', 'ideas_trial']
+    list_per_page = 20
 
 @admin.register(AreaChoice)
 class AreaChoiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'craeted_at']
     list_filter = ['craeted_at']
     search_fields = ['title', 'description']
+    list_per_page = 20
 
 @admin.register(LevelChoice)
 class LevelChoiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'charge_rate', 'craeted_at']
     list_filter = ['craeted_at']
     search_fields = ['title', 'description', 'charge_rate']
+    list_per_page = 20
 
 class GeneratedIdeasInline(admin.TabularInline):
     model = GeneratedIdeas
@@ -53,6 +57,7 @@ class IdeaRequestAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user', 'area', 'level', 'refered_by']
     inlines = [GeneratedIdeasInline]
     readonly_fields = ['refered_by',]
+    list_per_page = 20
 
 @admin.register(Payment)
 class IdeaPaymentAdmin(admin.ModelAdmin):
@@ -62,6 +67,7 @@ class IdeaPaymentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['idea_request',]
     readonly_fields = ['is_paid', 'transaction_code']
     actions = ['mark_as_paid', 'mark_as_unpaid']
+    list_per_page = 20
 
     def mark_as_unpaid(self, request, queryset):
         queryset.update(is_paid=False)

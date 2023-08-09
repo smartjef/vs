@@ -17,5 +17,6 @@ class ServiceAdmin(admin.ModelAdmin):
     list_filter = ['created_at', 'updated_at']
     date_hierarchy = 'created_at'
     prepopulated_fields = {'slug': ('title',)}
+    list_per_page = 10
     ordering = ['-created_at',]
     inlines = [ServiceFAQInline]

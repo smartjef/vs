@@ -8,12 +8,14 @@ class ReferalAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user',]
     search_fields = ['code', 'earnings', 'withdrawals', 'balance', 'user']
     list_filter = ['user',]
+    list_per_page = 20
 
 @admin.register(Period)
 class PeriodAdmin(admin.ModelAdmin):
     list_display = ['quantity', 'unit', 'is_active', 'rate', 'created_at']
     search_fields = ['quantity', 'unit', 'rate']
     list_filter = ['is_active', 'created_at']
+    list_per_page = 20
 
 class AssignmentFilesInline(admin.TabularInline):
     model = AssignmentFiles
@@ -35,6 +37,7 @@ class AssignmentAdmin(admin.ModelAdmin):
     list_filter = ['status', 'updated_at', 'academic_level', 'period', 'created_at']
     inlines = [AssignmentFilesInline]
     readonly_fields = ['refered_by',]
+    list_per_page = 20
 
 @admin.register(ProjectPeriod)
 class ProjectPeriodAdmin(admin.ModelAdmin):
@@ -42,6 +45,7 @@ class ProjectPeriodAdmin(admin.ModelAdmin):
     search_fields = ['period',]
     autocomplete_fields = ['period']
     list_filter = ['updated_at', 'period', 'created_at']
+    list_per_page = 20
 
 @admin.register(ProjectOrder)
 class ProjectAdmin(admin.ModelAdmin):
@@ -51,6 +55,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ['status', 'updated_at', 'academic_level', 'period', 'created_at']
     inlines = [ProjectFilesInline]
     readonly_fields = ['refered_by',]
+    list_per_page = 20
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
@@ -60,6 +65,7 @@ class PaymentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['project','assignment']
     readonly_fields = ['is_paid', 'transaction_code']
     actions = ['mark_as_paid', 'mark_as_unpaid']
+    list_per_page = 20
     
     def mark_as_unpaid(self, request, queryset):
         queryset.update(is_paid=False)
@@ -73,3 +79,4 @@ class ResponseAdmin(admin.ModelAdmin):
     list_filter = ['updated_at', 'created_at']
     search_fields = ['link', 'project', 'assignment',]
     autocomplete_fields = ['project','assignment']
+    list_per_page = 20

@@ -10,5 +10,15 @@ class ProjectAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     prepopulated_fields = {'slug': ('title',)}
     ordering = ('-created_at','updated_at')
-    # readonly_fields = ('title', 'description', 'image', 'slug', 'created')
-    # list_editable = ('icon', 'slug')
+    list_per_page = 10
+    autocomplete_fields = ['category', ]
+    actions = ['mark_as_active', 'mark_as_inactive']
+
+    def mark_as_active(self, request, queryset):
+        queryset.update(is_active=True)
+        self.message_user(request, 'Selected projects have been marked as active')
+
+    def mark_as_inactive(self, request, queryset):
+        queryset.update(is_active=False)
+        self.message_user(request, 'Selected projects have been marked as inactive')
+

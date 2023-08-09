@@ -9,6 +9,7 @@ class SubcriberAdmin(admin.ModelAdmin):
     search_fields = ('name','email')
     ordering = ('-created_at',)
     date_hierarchy = 'created_at'
+    list_per_page = 10
 
 @admin.register(MailMessage)
 class MailMessageAdmin(admin.ModelAdmin):
@@ -17,3 +18,4 @@ class MailMessageAdmin(admin.ModelAdmin):
     search_fields = ('subject','message')
     ordering = ('-created_at',)
     date_hierarchy = 'created_at'
+    list_per_page = 10

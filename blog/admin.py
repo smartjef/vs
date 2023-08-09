@@ -12,6 +12,7 @@ class PostAdmin(admin.ModelAdmin):
     ordering = ('-published_date',)
     autocomplete_fields = ['category', 'author', 'tags']
     filter_vertical = ['tags',]
+    list_per_page = 10
 
 class ReplyInline(admin.TabularInline):
     model = Reply
@@ -32,9 +33,11 @@ class CommentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['post', 'author']
     ordering = ('-created_at',)
     inlines = [ReplyInline]
+    list_per_page = 20
 
 @admin.register(PostLike)
 class PostLikeAdmin(admin.ModelAdmin):
     list_display = ('post', 'user', 'value')
     search_fields = ('post', 'user')
     autocomplete_fields = ['post', 'user']
+    list_per_page = 20

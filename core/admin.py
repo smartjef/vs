@@ -13,6 +13,7 @@ class TestimonyAdmin(admin.ModelAdmin):
     search_fields = ['author_username', 'message', 'position']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
+    list_per_page = 10
 
 @admin.register(Partner)
 class PartnerAdmin(admin.ModelAdmin):
@@ -21,6 +22,7 @@ class PartnerAdmin(admin.ModelAdmin):
     search_fields = ['title', 'website']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
+    list_per_page = 10
 
 @admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
@@ -29,18 +31,21 @@ class FAQAdmin(admin.ModelAdmin):
     search_fields = ['question', 'answer']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
+    list_per_page = 10
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     search_fields = ('title', 'slug')
     prepopulated_fields = {'slug': ('title',)}
+    list_per_page = 10
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     search_fields = ('title', 'slug')
     prepopulated_fields = {'slug': ('title',)}
+    list_per_page = 10
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
@@ -49,3 +54,23 @@ class ContactAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
     list_filter = ('created_at', 'is_addressed')
+    readonly_fields = ('subject', 'name', 'email', 'phone_number', 'message', 'created_at')
+    list_per_page = 20
+    actions = ('mark_as_addressed',)
+
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        
+        return actions
+    
+    def mark_as_addressed(self, request, queryset):
+        queryset.update(is_addressed=True)
+        self.message_user(request, 'Selected contact messages have been marked as addressed')
