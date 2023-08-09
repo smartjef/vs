@@ -1,4 +1,5 @@
 from django.contrib import admin
+from decimal import Decimal
 from .models import Referal, Period, AssignmentOrder, ProjectOrder, ProjectPeriod, AssignmentFiles, ProjectFiles, Payment, Response
 # Register your models here.
 
@@ -68,10 +69,44 @@ class PaymentAdmin(admin.ModelAdmin):
     list_per_page = 20
     
     def mark_as_unpaid(self, request, queryset):
-        queryset.update(is_paid=False)
+        for payment in queryset:
+            payment.is_paid = False
+            payment.save()
+
+            self.update_referer_earnings(payment, subtract=True)
+
+        self.message_user(request, "Selected payments have been marked as unpaid.")
 
     def mark_as_paid(self, request, queryset):
-        queryset.update(is_paid=True)
+        for payment in queryset:
+            payment.is_paid = True
+            payment.save()
+
+            self.update_referer_earnings(payment, subtract=False)
+
+        self.message_user(request, "Selected payments have been marked as paid.")
+
+    def update_referer_earnings(self, payment, subtract=False):
+        referer = None
+
+        if payment.project:
+            referer = payment.project.refered_by
+        elif payment.assignment:
+            referer = payment.assignment.refered_by
+
+        if referer:
+            referal_instance, created = Referal.objects.get_or_create(user=referer)
+
+            if not subtract:
+                amount_earned = Decimal(payment.get_amount_earned_by_referer())
+                referal_instance.earnings += amount_earned
+                referal_instance.balance += amount_earned
+            else:
+                amount_deducted = Decimal(payment.get_amount_earned_by_referer())
+                referal_instance.earnings -= amount_deducted
+                referal_instance.balance -= amount_deducted
+
+            referal_instance.save()
 
 @admin.register(Response)
 class ResponseAdmin(admin.ModelAdmin):

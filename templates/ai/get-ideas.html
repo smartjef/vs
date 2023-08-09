@@ -25,6 +25,7 @@
                                     <div class="col-xl-6 col-md-6 col-sm-6">
                                         <label for="academic_level">Academic Level</label>
                                         <select name="level" id="academic_level" required>
+                                            <option value="" selected>--------------</option>
                                             {% for level_choice in level_choices %}
                                                 <option value="{{ level_choice.id }}">{{ level_choice.title }}</option>
                                             {% endfor %}
@@ -33,6 +34,7 @@
                                     <div class="col-xl-6 col-md-6 col-sm-6">
                                         <label for="subject_are">Subject Area</label>
                                         <select name="area" id="subject_area" required>
+                                            <option value="" selected>--------------</option>
                                             {% for area_choice in area_choices %}
                                                 <option value="{{ area_choice.id }}">{{ area_choice.title }}</option>
                                             {% endfor %}

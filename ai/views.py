@@ -7,11 +7,6 @@ from assignments.models import Referal
 from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment
 import openai
 
-openai.api_type = "azure"
-openai.api_base = "https://chat-gpt4.openai.azure.com/"
-openai.api_version = "2023-06-01-preview"
-openai.api_key = KEY
-
 def chack_if_user_has_trials(request):
     user_trials = Trial.objects.filter(user=request.user)
     if user_trials:
@@ -54,6 +49,10 @@ def desc_to_image(request):
                     if number_of_images and (int(number_of_images) < 1 or int(number_of_images) > 4):
                         messages.warning(request, 'Number of images must be between 1 and 4.')
                     else:
+                        openai.api_type = "azure"
+                        openai.api_base = "https://chat-gpt4.openai.azure.com/"
+                        openai.api_version = "2023-06-01-preview"
+                        openai.api_key = KEY
                         image_description =  ImageDescription.objects.create(description=description, user=request.user, size=size, initial_number_of_images=number_of_images)
                         image_description.save()
                         response = openai.Image.create(
@@ -119,7 +118,10 @@ def regenerate_image(request, image_id):
     image = get_object_or_404(GeneratedImage, id=image_id, description__user=request.user)
     image_description = image.description.description
     image_size = image.description.size
-
+    openai.api_type = "azure"
+    openai.api_base = "https://chat-gpt4.openai.azure.com/"
+    openai.api_version = "2023-06-01-preview"
+    openai.api_key = KEY
     response = openai.Image.create(
         prompt=image_description,
         size=image_size,
@@ -167,6 +169,7 @@ def get_ideas(request):
         if number_of_ideas < 1:
             messages.warning(request, 'Number of Images should be 1 or more')
             return redirect('ai:get_ideas')
+        refered_by = None
         if referal_code:
             referal =  Referal.objects.filter(code=referal_code)
             if referal.exists:
@@ -185,13 +188,28 @@ def get_ideas(request):
                 number_of_ideas = number_of_ideas,
                 refered_by = refered_by
             )
+            idea_request.save()
 
-            for i in range(number_of_ideas):
+            prompt = f"list {number_of_ideas} final year projects in sector {area_choice} for {level_choice} student, Additional information: {description}"
+            openai.api_key = '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'
+            openai.organization = "org-kpcU78IgM2NOUcWVA2W6EK4T"
+            response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=prompt,
+                max_tokens=1024,
+            )
+
+            response_text = response.choices[0].text.strip()
+            
+            new_generated_ideas.append(response_text.split('\n'))
+
+            for idea_text in new_generated_ideas:
                 GeneratedIdeas.objects.create(
-                    idea_request = idea_request,
-                    title = "Test Generated Idea",
-                    description = "Test Generated Idea Description"
+                    idea_request=idea_request,
+                    title=idea_text.strip(),
+                    description=""
                 )
+
             if user_trials:
                 if user_trials.ideas_trial < 1:
                     amount = idea_request.get_amount()
