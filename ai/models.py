@@ -69,7 +69,7 @@ class LevelChoice(models.Model):
         return self.title
     
     class Meta:
-        ordering = ['-craeted_at']
+        ordering = ['craeted_at']
         verbose_name = 'Level Choice'
         verbose_name_plural = 'Level Choices'
 
