@@ -190,13 +190,27 @@ def get_ideas(request):
             )
             idea_request.save()
 
-            prompt = f"list {number_of_ideas} final year projects in sector {area_choice} for {level_choice} student, Additional information: {description}"
-            openai.api_key = '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'
-            openai.organization = "org-kpcU78IgM2NOUcWVA2W6EK4T"
+            prompt = f"list {number_of_ideas} final year projects in {area_choice} sector for {level_choice} student, Additional information: {description}"
+            # openai.api_key = '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'
+            # openai.organization = "org-kpcU78IgM2NOUcWVA2W6EK4T"
+            openai.api_key = '81118aa6ee704c709492b006bfccf6c2'
+            openai.api_type = "azure"
+            openai.api_base = "https://chat-gpt4.openai.azure.com/"
+            openai.api_version = "2022-12-01"
+            # response = openai.Completion.create(
+            #     engine="text-davinci-003",
+            #     prompt=prompt,
+            #     max_tokens=1024,
+            # )
             response = openai.Completion.create(
-                engine="text-davinci-003",
+                engine="VSTech",
                 prompt=prompt,
+                temperature=0,
                 max_tokens=1024,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+                stop=None
             )
 
             response_text = response.choices[0].text.strip()
@@ -206,7 +220,7 @@ def get_ideas(request):
             for idea_text in new_generated_ideas:
                 GeneratedIdeas.objects.create(
                     idea_request=idea_request,
-                    title=idea_text.strip(),
+                    title=idea_text,
                     description=""
                 )
 

@@ -29,7 +29,7 @@ def index(request):
         'faqs': FAQ.objects.filter(is_active=True)[:2],
         'blogs': Post.objects.filter(is_published=True)[:3],
     }
-    return render(request, f'index/{ random_number }.html', context)
+    return render(request, f'index/{random_number}.html', context)
 
 @login_required
 def contact(request):

@@ -110,8 +110,18 @@
 							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
 							<li class="dropdown {% if title == 'Generate Image' or title == 'Our Intelligent Chatbot' %}current{% endif %}"><a href="#">AI Tools</a>
 								<ul>
-									<li><a href="{% url 'ai:chat' %}">ChatBot</a></li>
+									<li><a href="https://vstechwebapp.azurewebsites.net/" target="_blank">ChatBot</a></li>
+									<li><a href="{% url 'ai:get_ideas' %}">Get Ideas</a></li>
 									<li><a href="{% url 'ai:desc_to_image' %}">Description to Image</a></li>									
+								</ul>
+							</li>
+							<li class="dropdown {% if title == 'Get Work Done' or title == 'Get Project Ideas' %}current{% endif %}"><a href="#">G.W.D</a>
+								<ul>
+									<li><a href="{% url 'gwd:index' %}">GWD Homepage</a></li>
+									<li><a href="{% url 'gwd:dashboard' %}">Dashboard</a></li>
+									<li><a href="{% url 'ai:get_ideas' %}">Get Ideas</a></li>
+									<li><a href="{% url 'gwd:leave_project' %}">Leave a Project</a></li>
+									<li><a href="{% url 'gwd:leave_assignment' %}">Leave Assignment</a></li>									
 								</ul>
 							</li>
 						</ul>
