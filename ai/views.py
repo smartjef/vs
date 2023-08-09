@@ -197,11 +197,6 @@ def get_ideas(request):
             openai.api_type = "azure"
             openai.api_base = "https://chat-gpt4.openai.azure.com/"
             openai.api_version = "2022-12-01"
-            # response = openai.Completion.create(
-            #     engine="text-davinci-003",
-            #     prompt=prompt,
-            #     max_tokens=1024,
-            # )
             response = openai.Completion.create(
                 engine="VSTech",
                 prompt=prompt,
@@ -214,16 +209,10 @@ def get_ideas(request):
             )
 
             response_text = response.choices[0].text.strip()
-            
-            new_generated_ideas.append(response_text.split('\n'))
-
-            for idea_text in new_generated_ideas:
-                GeneratedIdeas.objects.create(
-                    idea_request=idea_request,
-                    title=idea_text,
-                    description=""
-                )
-
+            new_generated_ideas.append(response_text)
+            idea_request.description = response_text
+            idea_request.save()
+            messages.success(request, 'Project Ideas Generated Successfully!')
             if user_trials:
                 if user_trials.ideas_trial < 1:
                     amount = idea_request.get_amount()
