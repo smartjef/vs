@@ -73,6 +73,24 @@ class LevelChoice(models.Model):
         verbose_name = 'Level Choice'
         verbose_name_plural = 'Level Choices'
 
+class IdeaPoolCategory(models.Model):
+    academic_level = models.ForeignKey(LevelChoice, on_delete=models.CASCADE, related_name='pool_category')
+    subject_area = models.ForeignKey(AreaChoice, on_delete=models.CASCADE, related_name='pool_category')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.subject_area} - {self.academic_level}'
+    
+class IdeaPool(models.Model):
+    pool_category = models.ForeignKey(IdeaPoolCategory, on_delete=models.CASCADE, related_name='ideas')
+    title = models.CharField(max_length=250)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True) 
+
+    def __str__(self):
+        return self.title
+       
+
 class IdeaRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='idea_requests')
     area = models.ForeignKey(AreaChoice, on_delete=models.CASCADE, related_name='idea_requests')
@@ -98,12 +116,11 @@ class IdeaRequest(models.Model):
 
 class GeneratedIdeas(models.Model):
     idea_request = models.ForeignKey(IdeaRequest, on_delete=models.CASCADE, related_name='generated_ideas')
-    title = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True)
+    idea = models.ForeignKey(IdeaPool, on_delete=models.CASCADE, related_name="generated_ideas")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.idea.title
     
     def get_absolute_url(self):
         return reverse('gwd:ideas_detail', kwargs={'idea_id': self.id})

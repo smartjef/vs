@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment
+from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment, IdeaPool, IdeaPoolCategory
 # Register your models here.
-
+from decimal import Decimal
+from assignments.models import Referal
 class GeneratedImageInline(admin.TabularInline):
     model = GeneratedImage
     extra = 0
@@ -45,7 +46,8 @@ class GeneratedIdeasInline(admin.TabularInline):
     model = GeneratedIdeas
     extra = 0
     show_change_link = True
-    fields = ('id', 'title', 'description', 'created_at')
+    autocomplete_fields = ['idea',]
+    fields = ('idea', 'created_at')
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
 
@@ -70,7 +72,55 @@ class IdeaPaymentAdmin(admin.ModelAdmin):
     list_per_page = 20
 
     def mark_as_unpaid(self, request, queryset):
-        queryset.update(is_paid=False)
+        for payment in queryset:
+            payment.is_paid = False
+            payment.save()
+
+            self.update_referer_earnings(payment, subtract=True)
+
+        self.message_user(request, "Selected payments have been marked as unpaid.")
 
     def mark_as_paid(self, request, queryset):
-        queryset.update(is_paid=True)
+        for payment in queryset:
+            payment.is_paid = True
+            payment.save()
+
+            self.update_referer_earnings(payment, subtract=False)
+        
+        self.message_user(request, "Selected payments have been marked as paid.")
+
+    def update_referer_earnings(self, payment, subtract=False):
+        referer = None
+
+        if payment.idea_request:
+            referer = payment.idea_request.refered_by
+
+        if referer:
+            referal_instance, created = Referal.objects.get_or_create(user=referer)
+
+            if not subtract:
+                amount_earned = Decimal(payment.get_amount_earned_by_referer())
+                referal_instance.earnings += amount_earned
+                referal_instance.balance += amount_earned
+            else:
+                amount_deducted = Decimal(payment.get_amount_earned_by_referer())
+                referal_instance.earnings -= amount_deducted
+                referal_instance.balance -= amount_deducted
+
+            referal_instance.save()
+
+@admin.register(IdeaPoolCategory)
+class IdeaPoolCategoryAdmin(admin.ModelAdmin):
+    list_display = ['academic_level', 'subject_area', 'created_at']
+    list_filter = ['academic_level', 'subject_area']
+    search_fields = ['academic_level', 'subject_area']
+    autocomplete_fields = ['academic_level', 'subject_area']
+    list_per_page = 20
+
+@admin.register(IdeaPool)
+class IdeaPoolAdmin(admin.ModelAdmin):
+    list_display = ['title', 'pool_category', 'created_at']
+    list_filter = ['pool_category', 'created_at']
+    search_fields = ['title', 'description']
+    autocomplete_fields = ['pool_category']
+    list_per_page = 20

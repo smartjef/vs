@@ -137,14 +137,14 @@ def idea_request_delete(request, id):
 def idea_delete(request, idea_id):
     idea = get_object_or_404(GeneratedIdeas, id=idea_id, idea_request__user=request.user)
     idea.delete()
-    messages.success(request, f'Successfully deleted {idea.title}!')
+    messages.success(request, f'Successfully deleted {idea}!')
     return redirect('gwd:request_detail', idea.idea_request.id)
 
 @login_required
 def idea_detail(request, idea_id):
     idea = get_object_or_404(GeneratedIdeas, id=idea_id, idea_request__user=request.user)
     context = {
-        'title': f'{idea.title}',
+        'title': f'{idea}',
         'idea':idea
     }
     return render(request, 'assignments/idea_detail.html', context)

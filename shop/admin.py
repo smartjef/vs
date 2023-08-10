@@ -9,7 +9,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
     search_fields =['title', 'slug',]
     prepopulated_fields = {'slug': ('title',)}
     date_hierarchy = 'created_at'
-    list_per_page = 10
+    list_per_page = 20
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
@@ -18,7 +18,7 @@ class BrandAdmin(admin.ModelAdmin):
     search_fields =['title', 'slug',]
     prepopulated_fields = {'slug': ('title',)}
     date_hierarchy = 'created_at'
-    list_per_page = 10
+    list_per_page = 20
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -31,7 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     date_hierarchy = 'created_at'
     inlines = [ProductImageInline]
-    list_per_page = 10
+    list_per_page = 20
 
 
 @admin.register(Review)
@@ -41,4 +41,4 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ['author_username', 'message',]
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
-    list_per_page = 10
+    list_per_page = 20

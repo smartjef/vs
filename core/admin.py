@@ -13,7 +13,7 @@ class TestimonyAdmin(admin.ModelAdmin):
     search_fields = ['author_username', 'message', 'position']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
-    list_per_page = 10
+    list_per_page = 20
 
 @admin.register(Partner)
 class PartnerAdmin(admin.ModelAdmin):
@@ -22,7 +22,7 @@ class PartnerAdmin(admin.ModelAdmin):
     search_fields = ['title', 'website']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
-    list_per_page = 10
+    list_per_page = 20
 
 @admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
@@ -31,21 +31,21 @@ class FAQAdmin(admin.ModelAdmin):
     search_fields = ['question', 'answer']
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
-    list_per_page = 10
+    list_per_page = 20
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     search_fields = ('title', 'slug')
     prepopulated_fields = {'slug': ('title',)}
-    list_per_page = 10
+    list_per_page = 20
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     search_fields = ('title', 'slug')
     prepopulated_fields = {'slug': ('title',)}
-    list_per_page = 10
+    list_per_page = 20
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):

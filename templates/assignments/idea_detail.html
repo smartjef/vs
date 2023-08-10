@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="card-body">
-            <p>{{ idea.description|linebreaks|default:'-' }}</p>
+            <p>{{ idea.idea.description|linebreaks|default:'-' }}</p>
         </div>
         <div class="card-footer">
             <a href="" class="btn btn-sm btn-success">Request Implementation</a>
@@ -19,7 +19,7 @@
 </div>
 {% else %}
 <div class="alert alert-danger">
-    <i class="fa fa-exclamation-triangle mr-3" aria-hidden="true"></i><b> Access Denied!</b>, <a href="{% url 'ai:make_payment' idea.idea_request.payment.transaction_code %}">Pay Ksh. {{ idea.idea_request.payment.amount }}</a> to Access
+    <i class="fa fa-exclamation-triangle mr-3" aria-hidden="true"></i><b> Access Denied!</b>, <a href="{{ idea.idea_request.payment.get_absolute_url }}">Pay Ksh. {{ idea.idea_request.payment.amount }}</a> to Access
 </div>
 {% endif %}
 {% endblock %}

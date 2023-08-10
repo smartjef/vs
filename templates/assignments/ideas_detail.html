@@ -120,16 +120,16 @@
                                 <td class="text-success text-end">{{ forloop.counter }}</td>
                                 <td>
                                     {% if idea.idea_request.payment.is_paid %}
-                                        {{ idea.title }}
+                                        {{ idea.idea.title }}
                                     {% else %}
                                        <span class="alert alert-danger">Access Denied!</span>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if idea.idea_request.payment.is_paid %}
-                                        {{ idea.description|truncatechars:80 }}
+                                        {{ idea.idea.description|truncatechars:80 }}
                                     {% else %}
-                                        The coolest Ideas Generated, <a href="{% url 'ai:make_payment' idea_request.payment.transaction_code %}">Pay Ksh. {{ idea_request.payment.amount }}</a> to Access!
+                                        The coolest Ideas Generated, <a href="{{ idea_request.payment.get_absolute_url }}">Pay Ksh. {{ idea_request.payment.amount }}</a> to Access!
                                     {% endif %}
                                 </td>
                                 {% if idea.idea_request.payment.is_paid %}

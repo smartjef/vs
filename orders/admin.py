@@ -18,6 +18,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'first_name', 'last_name', 'email', 'address', 'postal_code', 'paid', 'created_at', 'updated_at', order_detail]
     list_filter = ['paid', 'created_at', 'updated_at']
     inlines = [OrderItemInline]
-    list_per_page = 10
+    list_per_page = 20
     search_fields = ['id', 'user__username', 'first_name', 'last_name', 'email', 'address', 'postal_code']
     autocomplete_fields = ['user']

@@ -94,7 +94,7 @@
                 {% for idea in payment.idea_request.generated_ideas.all %}
                 <tr>
                     <td>{{ forloop.counter}}.</td>
-                    <td>{% if payment.is_paid %}{{ idea.title }}{% else %}<div class="alert alert-danger alert-sm fw-bold">Access Denied!</div>{% endif %}</td>
+                    <td>{% if payment.is_paid %}{{ idea }}{% else %}<div class="alert alert-danger alert-sm fw-bold">Access Denied!</div>{% endif %}</td>
                     {% if payment.is_paid %}
                     <td>
                         <div class="d-flex justify-content-evenly">

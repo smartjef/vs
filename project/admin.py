@@ -10,7 +10,7 @@ class ProjectAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     prepopulated_fields = {'slug': ('title',)}
     ordering = ('-created_at','updated_at')
-    list_per_page = 10
+    list_per_page = 20
     autocomplete_fields = ['category', ]
     actions = ['mark_as_active', 'mark_as_inactive']
 

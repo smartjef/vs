@@ -223,13 +223,14 @@
                                 </td>
                                 <td class="text-end">Ksh. {{ project.payment.amount }}</td>
                                 <td class="text-end">
-                                    <a href="{{ project.get_absolute_url }}" class="btn btn-success btn-sm">
-                                        {% if project.responce and project.status == 'Completed' and project.payment.is_paid %}
+                                    {% if project.response and project.status == 'Completed' and project.payment.is_paid %}
+                                        <a href="{{ project.response }}" class="btn btn-outline-dark btn-sm">
                                             View Responce
+                                        </a>
                                         {% else %}
-                                            View
+                                        <a href="{{ project.get_absolute_url }}" class="btn btn-success btn-sm">
+                                            View</a>
                                         {% endif %}
-                                    </a>
                                     {% if not project.payment.is_paid %}
                                     <a href="{{ project.payment.get_absolute_url }}" class="btn btn-info btn-sm">
                                         Make Payment

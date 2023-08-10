@@ -145,7 +145,7 @@
 
 {% block js %}
 <script>
-    document.getElementById('number_of_images').addEventListener('change', function() {
+    document.getElementById('number_of_images').addEventListener('keyup', function() {
         var errorElement = document.getElementById('number_of_images_error');
         var value = parseInt(this.value);
 

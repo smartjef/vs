@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from assignments.views import generate_unique_code
 from assignments.models import Referal
-from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment
+from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment, IdeaPool, IdeaPoolCategory
 import openai
 
 def chack_if_user_has_trials(request):
@@ -166,8 +166,8 @@ def get_ideas(request):
         description = request.POST.get('description')
         number_of_ideas = int(request.POST.get('number_of_ideas'))
         referal_code = request.POST.get('referal_code')
-        if number_of_ideas < 1:
-            messages.warning(request, 'Number of Images should be 1 or more')
+        if number_of_ideas < 1 and number_of_ideas > 10:
+            messages.warning(request, 'Number of Images should be between 1 and 10')
             return redirect('ai:get_ideas')
         refered_by = None
         if referal_code:
@@ -180,6 +180,11 @@ def get_ideas(request):
         try:
             area_choice = AreaChoice.objects.get(pk=area_id)
             level_choice = LevelChoice.objects.get(pk=level_id)
+            ideas_pool = IdeaPool.objects.filter(pool_category__academic_level=level_choice, pool_category__subject_area=area_choice)
+            if ideas_pool.count() < number_of_ideas:
+                messages.warning(request, f'{ideas_pool.count()} ideas Found, {number_of_ideas} required! Try a number less than or equal to {ideas_pool.count()}')
+                return redirect('ai:get_ideas')
+
             idea_request = IdeaRequest.objects.create(
                 user=request.user,
                 area=area_choice,
@@ -189,29 +194,13 @@ def get_ideas(request):
                 refered_by = refered_by
             )
             idea_request.save()
-
-            prompt = f"list {number_of_ideas} final year projects in {area_choice} sector for {level_choice} student, Additional information: {description}"
-            # openai.api_key = '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'
-            # openai.organization = "org-kpcU78IgM2NOUcWVA2W6EK4T"
-            openai.api_key = '81118aa6ee704c709492b006bfccf6c2'
-            openai.api_type = "azure"
-            openai.api_base = "https://chat-gpt4.openai.azure.com/"
-            openai.api_version = "2022-12-01"
-            response = openai.Completion.create(
-                engine="VSTech",
-                prompt=prompt,
-                temperature=0,
-                max_tokens=1024,
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-                stop=None
-            )
-
-            response_text = response.choices[0].text.strip()
-            new_generated_ideas.append(response_text)
-            idea_request.description = response_text
-            idea_request.save()
+            for idea in ideas_pool[:number_of_ideas]:
+                new_generated_ideas.append(idea)
+                new_idea = GeneratedIdeas.objects.create(
+                    idea_request=idea_request,
+                    idea=idea,
+                )
+                new_idea.save()
             messages.success(request, 'Project Ideas Generated Successfully!')
             if user_trials:
                 if user_trials.ideas_trial < 1:
