@@ -5,6 +5,8 @@ from django.urls import reverse
 from .models import Referal, AssignmentOrder, ProjectOrder, Period, AssignmentFiles, Payment, ProjectFiles, ProjectPeriod
 from ai.models import IdeaRequest, GeneratedIdeas, AreaChoice,LevelChoice
 from random import randrange
+from collections import defaultdict
+from datetime import date, timedelta
 
 def index(request):
     context = {
@@ -291,3 +293,46 @@ def payment(request, code):
         'payment': payment
     }
     return render(request, 'assignments/make_payment.html', context)
+
+@login_required
+def montly_earnings(request):
+    data = []
+    label = []
+    start_date = date.today() - timedelta(days=365)
+
+    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user)
+    assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
+    project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
+    all_orders = list(ideas_referal) + list(assignment_referal) + list(project_referal)
+
+    current_date = start_date
+    month_counter = 0
+
+    while month_counter < 13:
+        month_name = current_date.strftime('%b')
+        year = current_date.year
+        orders_for_month = [order for order in all_orders if order.created_at.month == current_date.month and order.created_at.year == year]
+        month_earnings = sum(order.payment.get_amount_earned_by_referer() for order in orders_for_month)
+        
+        if month_counter > 0:
+            label.append(month_name)
+            data.append(int(month_earnings))
+        
+        if current_date.month == 12:
+            current_date = current_date.replace(year=current_date.year + 1, month=1)
+        else:
+            current_date = current_date.replace(month=current_date.month + 1)
+        
+        month_counter += 1
+
+
+    context = {
+        'title': 'Monthly Earnings',
+        'data': data,
+        'label': label
+    }
+    return render(request, 'assignments/monthly-earnings.html', context)
+
+
+
+
