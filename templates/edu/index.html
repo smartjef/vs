@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="content-box">
                                             <ul class="post-info">
-                                                <li><i class="fa fa-user"></i> by Jeff Odhiambo</li>
+                                                <li><i class="fa fa-user"></i> by {{ note.user.get_full_name|default:'No Name'}}</li>
                                                 <li><i class="fa fa-tag"></i> <a href="{{ note.unit_name.get_absolute_url }}">{{ note.unit_name }}</a>, <a href="{{ note.school.get_absolute_url }}">{{ note.school }}</a></li>
                                             </ul>
                                             <h4 class="title small"><a href="{{ note.file.url }}">{{ note }}</a></h4>
