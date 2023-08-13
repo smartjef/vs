@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'partials/css.html' %}    
+    <style>
+        .flow{
+            max-height: 15rem;
+            overflow-y: scroll;
+            background-color: white;
+        }
+    </style>
+    <title>VSTech Academy | Notes</title>
+</head>
+
+<body>
+       {% include 'partials/top-nav.html' %}
+        <div class="container-fluid bg-light py-4">
+            <div class="container">
+                <div class="row">
+                    <aside class="col-md-4 col-sm-6">
+                        <div class="contact-form">
+                            <div class="title-box">
+                                <span class="sub-title">Find your notes here!</span>
+                                <h3>Find Notes!</h3>
+                            </div>
+                            <form class="form-group" id="contact-form">
+                                <div class="form-group d-flex no-wrap align-items-center">
+                                    <input type="search" placeholder="Provide Search Key" required name="q">
+                                    <button class="theme-btn btn-style-one m-0 p-3" type="submit"><span class="btn-title"><i class="fa fa-search" aria-hidden="true"></i></span></button>
+                                </div>
+                            </form>
+                        </div>
+                        {% if schools %}
+                        <h4 class="mt-3">Filter By School</h4>
+                        <div class="sidebar-widget bg-white">
+							<div class="" data-wow-delay="0.1s" data-wow-duration="1200m" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+							    <div class="service-list">	
+									<ul class="flow">
+                                        <li><a href="{% url 'edu:index' %}" class="current py-1 m-0"><i class="fas fa-angle-right"></i><span>All Schools</span></a></li>
+                                        {% for school in schools %}
+                                        <li><a href="{{ school.get_absolute_url }}" class="py-1 m-0"><i class="fas fa-angle-right"></i><span>{{ school }}</span></a></li>
+                                        {% endfor %}
+									</ul>	
+							    </div>
+							</div>
+						</div>
+                        {% endif %}
+                        {% if units %}
+                        <div class="bg-primary p-3 mt-3">
+                            <h4 class="text-dark">Filter By Unit Name</h4>
+                            <ul class="flow">
+                                {% for unit in units %}
+                                <a href="{{ unit.get_absolute_url }}" class="nav-link py-0">
+                                    <li>{{ unit }}</li>
+                                </a>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </aside>
+
+                    <div class="col-md-8">
+                        <div class="d-flex justify-content-between bg-white p-2">
+                            <div class="wm-normal-btn">
+                                <a href="#" class="btn btn-sm bg-primary">Free</a>
+                                <a href="#" class="btn btn-sm btn-dark">Paid</a>
+                            </div>
+                            <div class="wm-view-btn">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <i class="fa fa-align-center" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        {% if notes %}
+                        <div class="row py-3">
+                            {% for note in notes %}
+                                <div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <figure class="image">
+                                                <a href="{{ note.file.url }}">
+                                                    {% if note.get_extension == ".pdf" or note.get_extension == "docx" %}
+                                                        <embed src="{{ note.file|urlencode }}" type="application/pdf" class="w-100 h-100">
+                                                    {% else %}
+                                                        <img src="{{ note.file.url }}" alt="{{ note }}" title="{{ note }}">
+                                                    {% endif %}
+                                                </a>
+                                            </figure>
+                                        </div>
+                                        <div class="content-box">
+                                            <ul class="post-info">
+                                                <li><i class="fa fa-user"></i> by Jeff Odhiambo</li>
+                                                <li><i class="fa fa-tag"></i> <a href="{{ note.unit_name.get_absolute_url }}">{{ note.unit_name }}</a>, <a href="{{ note.school.get_absolute_url }}">{{ note.school }}</a></li>
+                                            </ul>
+                                            <h4 class="title small"><a href="{{ note.file.url }}">{{ note }}</a></h4>
+                                        </div>
+                                        <div class="bottom-box">
+                                            <a href="{{ note.file.url }}" class="read-more">View <i class="fa fa-long-arrow-alt-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="d-flex justify-content-end bg-white p-2">
+                            <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                </li>
+                            </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+
+    {% include 'partials/js.html' %}
+</body>
+
+</html>
