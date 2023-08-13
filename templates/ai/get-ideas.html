@@ -115,8 +115,10 @@
         var button = document.getElementById("button")
         if (isNaN(value) || value < 1 || value > 10) {
             errorElement.textContent = 'Number must be between 1 and 10.';
+            button.classList.add('d-none');
         } else {
             errorElement.textContent = '';
+            button.classList.remove('d-none');
         }
     });
     function calculateideaAmount() {

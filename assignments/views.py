@@ -16,7 +16,34 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    total_referals = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user).count() + AssignmentOrder.objects.filter(refered_by=request.user, status='Completed').count() + ProjectOrder.objects.filter(refered_by=request.user, status='Completed').count()
+    data = []
+    label = []
+    start_date = date.today() - timedelta(days=365)
+
+    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user)
+    assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
+    project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
+    all_orders = list(ideas_referal) + list(assignment_referal) + list(project_referal)
+    total_referals = ideas_referal.count()+assignment_referal.count()+project_referal.count()
+    current_date = start_date
+    month_counter = 0
+
+    while month_counter < 13:
+        month_name = current_date.strftime('%b')
+        year = current_date.year
+        orders_for_month = [order for order in all_orders if order.created_at.month == current_date.month and order.created_at.year == year]
+        month_earnings = sum(order.payment.get_amount_earned_by_referer() for order in orders_for_month)
+        
+        if month_counter > 0:
+            label.append(month_name)
+            data.append(month_earnings)
+        
+        if current_date.month == 12:
+            current_date = current_date.replace(year=current_date.year + 1, month=1)
+        else:
+            current_date = current_date.replace(month=current_date.month + 1)
+        
+        month_counter += 1
     completed_orders = ProjectOrder.objects.filter(user=request.user, status="Completed").count()+AssignmentOrder.objects.filter(user=request.user, status="Completed").count()+IdeaRequest.objects.filter(user=request.user, is_active=True).count()
     cancelled_orders = ProjectOrder.objects.filter(user=request.user, status="Cancelled").count()+AssignmentOrder.objects.filter(user=request.user, status="Cancelled").count()+IdeaRequest.objects.filter(user=request.user, is_active=False).count()
     pending_orders = ProjectOrder.objects.filter(user=request.user, status="Pending").count()+AssignmentOrder.objects.filter(user=request.user, status="Pending").count()
@@ -25,7 +52,9 @@ def dashboard(request):
         'total_referal': total_referals,
         'completed_orders': completed_orders,
         'cancelled_orders': cancelled_orders,
-        'pending_orders': pending_orders
+        'pending_orders': pending_orders,
+        'data': data,
+        'label': label
     }
     return render(request, 'assignments/dashboard.html', context)
 
@@ -67,18 +96,41 @@ def orders(request):
 
 @login_required
 def earnings(request):
-    earnings = []
+    data = []
+    label = []
+    start_date = date.today() - timedelta(days=365)
+
     ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user)
     assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
     project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
-    total_referals = ideas_referal.count() + assignment_referal.count() + project_referal.count()
-    earnings.append(ideas_referal)
-    earnings.append(assignment_referal)
-    earnings.append(project_referal)
+    all_orders = list(ideas_referal) + list(assignment_referal) + list(project_referal)
+    total_referals = ideas_referal.count()+assignment_referal.count()+project_referal.count()
+    current_date = start_date
+    month_counter = 0
+
+    while month_counter < 13:
+        month_name = current_date.strftime('%b')
+        year = current_date.year
+        orders_for_month = [order for order in all_orders if order.created_at.month == current_date.month and order.created_at.year == year]
+        month_earnings = sum(order.payment.get_amount_earned_by_referer() for order in orders_for_month)
+        
+        if month_counter > 0:
+            label.append(month_name)
+            data.append(month_earnings)
+        
+        if current_date.month == 12:
+            current_date = current_date.replace(year=current_date.year + 1, month=1)
+        else:
+            current_date = current_date.replace(month=current_date.month + 1)
+        
+        month_counter += 1
+
     context = {
         'title': 'Earnings',
         'total_referal': total_referals,
-        'earnings':earnings
+        'earnings':all_orders,
+        'data': data,
+        'label': label
     }
     return render(request, 'assignments/earnings.html', context)
 
@@ -294,44 +346,6 @@ def payment(request, code):
     }
     return render(request, 'assignments/make_payment.html', context)
 
-@login_required
-def montly_earnings(request):
-    data = []
-    label = []
-    start_date = date.today() - timedelta(days=365)
-
-    ideas_referal = IdeaRequest.objects.filter(payment__is_paid=True, refered_by=request.user)
-    assignment_referal = AssignmentOrder.objects.filter(refered_by=request.user, status='Completed')
-    project_referal = ProjectOrder.objects.filter(refered_by=request.user, status='Completed')
-    all_orders = list(ideas_referal) + list(assignment_referal) + list(project_referal)
-
-    current_date = start_date
-    month_counter = 0
-
-    while month_counter < 13:
-        month_name = current_date.strftime('%b')
-        year = current_date.year
-        orders_for_month = [order for order in all_orders if order.created_at.month == current_date.month and order.created_at.year == year]
-        month_earnings = sum(order.payment.get_amount_earned_by_referer() for order in orders_for_month)
-        
-        if month_counter > 0:
-            label.append(month_name)
-            data.append(int(month_earnings))
-        
-        if current_date.month == 12:
-            current_date = current_date.replace(year=current_date.year + 1, month=1)
-        else:
-            current_date = current_date.replace(month=current_date.month + 1)
-        
-        month_counter += 1
-
-
-    context = {
-        'title': 'Monthly Earnings',
-        'data': data,
-        'label': label
-    }
-    return render(request, 'assignments/monthly-earnings.html', context)
 
 
 

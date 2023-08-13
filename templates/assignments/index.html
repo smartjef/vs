@@ -2,7 +2,7 @@
 {% block title %}Homepage - GWD - VSTech Limited{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="d-flex justify-content-between my-4">
+    <div class="d-flex justify-content-between my-4 align-items-center">
         <p class="h1">Earn by refering a friend</p>
         <a href="{% url 'gwd:dashboard' %}" class="theme-btn btn-style-one">View Dashboard</a>
         {% if not request.user.referal.code %}

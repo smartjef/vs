@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('gwd/', include('assignments.urls')),
     path('api-auth/', include('rest_framework.urls')),
+    path('edu/', include('academy.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitempas.views.sitemap'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

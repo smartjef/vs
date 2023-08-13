@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Generate</span></button>
+                                <button class="theme-btn btn-style-one" type="submit" name="submit-form" id="button"><span class="btn-title">Generate</span></button>
                             </div>
                         </form>
 
@@ -148,11 +148,13 @@
     document.getElementById('number_of_images').addEventListener('keyup', function() {
         var errorElement = document.getElementById('number_of_images_error');
         var value = parseInt(this.value);
-
+        var button = document.getElementById("button")
         if (isNaN(value) || value < 1 || value > 4) {
             errorElement.textContent = 'Number must be between 1 and 4.';
+            button.classList.add('d-none');
         } else {
             errorElement.textContent = '';
+            button.classList.remove('d-none');
         }
     });
 </script>

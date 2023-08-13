@@ -20,5 +20,4 @@ urlpatterns = [
     path('leave-assignment/', views.AssignmentOrderCreateView, name='leave_assignment'),
     path('leave-project/', views.ProjectOrderCreateView, name='leave_project'),
     path('make-payment/<str:code>/', views.payment, name='make_payment'),   
-    path('monthly/', views.montly_earnings, name='monthly'),
 ]

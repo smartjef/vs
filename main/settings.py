@@ -6,8 +6,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = SECRET_KEY
 
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 if not DEBUG:
     from .new import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'ai.apps.AiConfig',
     'api.apps.ApiConfig',
     'assignments.apps.AssignmentsConfig',
+    'academy.apps.AcademyConfig',
 ]
 
 SITE_ID = 1
