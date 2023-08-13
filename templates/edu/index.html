@@ -13,7 +13,7 @@
             background-color: white;
         }
     </style>
-    <title>VSTech Academy | Notes</title>
+    <title>{{ title }} - VSTech Academy</title>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
                                 <span class="sub-title">Find your notes here!</span>
                                 <h3>Find Notes!</h3>
                             </div>
-                            <form class="form-group" id="contact-form">
+                            <form class="form-group" id="contact-form" action="{% url 'edu:index' %}">
                                 <div class="form-group d-flex no-wrap align-items-center">
                                     <input type="search" placeholder="Provide Search Key" required name="q">
                                     <button class="theme-btn btn-style-one m-0 p-3" type="submit"><span class="btn-title"><i class="fa fa-search" aria-hidden="true"></i></span></button>
@@ -40,9 +40,9 @@
 							<div class="" data-wow-delay="0.1s" data-wow-duration="1200m" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
 							    <div class="service-list">	
 									<ul class="flow">
-                                        <li><a href="{% url 'edu:index' %}" class="current py-1 m-0"><i class="fas fa-angle-right"></i><span>All Schools</span></a></li>
-                                        {% for school in schools %}
-                                        <li><a href="{{ school.get_absolute_url }}" class="py-1 m-0"><i class="fas fa-angle-right"></i><span>{{ school }}</span></a></li>
+                                        <li><a href="{% url 'edu:index' %}" class="{% if not school %}current {% endif %}py-1 m-0"><i class="fas fa-angle-right"></i><span>All Schools</span></a></li>
+                                        {% for eschool in schools %}
+                                        <li><a href="{{ eschool.get_absolute_url }}" class="{% if eschool == school %}current {% endif %}py-1 m-0"><i class="fas fa-angle-right"></i><span>{{ eschool }}</span></a></li>
                                         {% endfor %}
 									</ul>	
 							    </div>
@@ -73,6 +73,9 @@
                                 <i class="fa fa-list" aria-hidden="true"></i>
                                 <i class="fa fa-align-center" aria-hidden="true"></i>
                             </div>
+                        </div>
+                        <div class="col-lg-12 bg-white p-2">
+                            <h4 class="text-primary">{{ title }}</h4>
                         </div>
                         {% if notes %}
                         <div class="row py-3">
