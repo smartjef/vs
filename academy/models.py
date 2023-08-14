@@ -45,3 +45,12 @@ class Note(models.Model):
         name, extension = os.path.splitext(self.file.name)
 
         return extension
+    
+    def note_delete(self):
+        return reverse('edu:note_delete', kwargs={'note_id': self.id})
+    
+    def toggle_status(self):
+        return reverse('edu:toggle_status', kwargs={'note_id': self.id})
+    
+    class Meta:
+        ordering = ('-created_at',)
