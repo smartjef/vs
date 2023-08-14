@@ -38,3 +38,16 @@ def index(request, unit_slug=None, school_slug=None):
 @login_required
 def resources(request):
     return redirect('edu:index')
+
+@login_required
+def myDocuments(request):
+    notes = Note.objects.filter(user=request.user)
+    schools = School.objects.filter(is_active=True)
+    unit_names = UnitName.objects.filter(is_active=True)
+    context = {
+        'notes': notes,
+        'schools': schools,
+        'units': unit_names,
+        'title': "My Documents"
+    }
+    return render(request, 'edu/my-documents.html', context)

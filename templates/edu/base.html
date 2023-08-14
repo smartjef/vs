@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="Jeff Odhiambo">
+    <link rel="shortcut icon" href="/static/images/icon.png" type="image/x-icon">
+    {% include 'partials/css.html' %}    
+    <style>
+        .flow{
+            max-height: 15rem;
+            overflow-y: scroll;
+            background-color: white;
+        }
+    </style>
+    <title>{{ title }} - VSTech Academy</title>
+</head>
+
+<body>
+       {% include 'partials/top-nav.html' %}
+        <div class="container-fluid bg-light py-4">
+            <div class="container">
+                <div class="row">
+                    
+                    {% include 'edu/partials/sidebar.html' %}
+                    <div class="col-md-8">
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+
+    {% include 'partials/js.html' %}
+</body>
+
+</html>

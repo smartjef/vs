@@ -8,4 +8,5 @@ urlpatterns =[
     path('schools/<slug:school_slug>/', views.index, name='notes_by_school'),
     path('units/<slug:unit_slug>/', views.index, name='notes_by_unit'),
     path('resources/', views.resources, name='resources'),
+    path('my-documents', views.myDocuments, name="my-documents"),
 ]

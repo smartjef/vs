@@ -1,0 +1,41 @@
+<aside class="col-md-4 col-sm-6">
+    <div class="contact-form">
+        <div class="title-box">
+            <span class="sub-title">Find your notes here!</span>
+            <h3>Find Notes!</h3>
+        </div>
+        <form class="form-group" id="contact-form" action="{% url 'edu:index' %}">
+            <div class="form-group d-flex no-wrap align-items-center">
+                <input type="search" placeholder="Provide Search Key" required name="q">
+                <button class="theme-btn btn-style-one m-0 p-3" type="submit"><span class="btn-title"><i class="fa fa-search" aria-hidden="true"></i></span></button>
+            </div>
+        </form>
+    </div>
+    {% if schools %}
+    <h4 class="mt-3">Filter By School</h4>
+    <div class="sidebar-widget bg-white">
+        <div class="" data-wow-delay="0.1s" data-wow-duration="1200m" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+            <div class="service-list">	
+                <ul class="flow">
+                    <li><a href="{% url 'edu:index' %}" class="{% if not school %}current {% endif %}py-1 m-0"><i class="fas fa-angle-right"></i><span>All Schools</span></a></li>
+                    {% for eschool in schools %}
+                    <li><a href="{{ eschool.get_absolute_url }}" class="{% if eschool == school %}current {% endif %}py-1 m-0"><i class="fas fa-angle-right"></i><span>{{ eschool }}</span></a></li>
+                    {% endfor %}
+                </ul>	
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if units %}
+    <div class="bg-primary p-3 mt-3">
+        <h4 class="text-dark">Filter By Unit Name</h4>
+        <ul class="flow">
+            {% for unit in units %}
+            <a href="{{ unit.get_absolute_url }}" class="nav-link py-0">
+                <li>{{ unit }}</li>
+            </a>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</aside>
