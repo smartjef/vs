@@ -25,19 +25,6 @@
         <div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp animated"
             style="visibility: visible; animation-name: fadeInUp;">
             <div class="inner-box">
-                {% if note.file %}
-                <div class="image-box">
-                    <figure class="image">
-                        <a href="{{ note.file.url }}">
-                            {% if note.get_extension == ".pdf" or note.get_extension == "docx" %}
-                            <embed src="{{ note.file|urlencode }}" type="application/pdf" class="w-100 h-100">
-                            {% else %}
-                            <img src="{{ note.file.url }}" alt="{{ note }}" title="{{ note }}">
-                            {% endif %}
-                        </a>
-                    </figure>
-                </div>
-                {% endif %}
                 <div class="content-box">
                     <ul class="post-info">
                         <li><i class="fa fa-user"></i> by {{ note.user.get_full_name|default:'No Name'}}</li>
