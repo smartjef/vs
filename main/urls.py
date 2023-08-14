@@ -7,6 +7,7 @@ from django.contrib.sitemaps.views import sitemap
 from blog.sitemaps import PostSitemap
 from project.sitemaps import ProjectSitemap
 from service.sitemaps import ServiceSitemap
+from academy.sitemaps import SchoolSitemap, NoteSitemap, UnitNameSitemap
 from academy.views import index
 from shop.sitemaps import ProductCategorySitemap, ProductBrandSitemap, ProductSitemap
 from users.sitemaps import TeamSitemap
@@ -26,6 +27,9 @@ sitemaps = {
     'products': ProductSitemap,
     'projects': ProjectSitemap,
     'team': TeamSitemap,
+    'schools': SchoolSitemap,
+    'notes': NoteSitemap,
+    'courses': UnitNameSitemap
 }
 
 urlpatterns = [
