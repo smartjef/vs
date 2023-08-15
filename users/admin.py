@@ -13,7 +13,12 @@ class PreferencesInline(admin.StackedInline):
     can_delete = False
 
 class CustomUserAdmin(UserAdmin):
+    list_display = ['username', 'first_name', 'last_name', 'email', 'is_active', 'is_staff', 'is_superuser', 'date_joined', 'last_login']
+    ordering = ['date_joined', 'last_login']
     inlines = (ProfileInline, PreferencesInline)
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
 
 class SkillInline(admin.TabularInline):
     model = Skill
@@ -35,5 +40,3 @@ class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline, PreferencesInline)
     list_per_page = 20
 
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
