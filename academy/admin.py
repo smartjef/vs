@@ -18,7 +18,7 @@ class UNitNameAdmin(admin.ModelAdmin):
 
 @admin.register(Note)
 class NotesAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'file', 'unit_name', 'school', 'is_active']
+    list_display = ['id', 'user', 'file', 'unit_name', 'school', 'is_active', 'created_at']
     list_filter = ['is_active', 'created_at', 'updated_at']
     autocomplete_fields = ['unit_name', 'school', 'user']
     search_fields = ['file']

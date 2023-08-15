@@ -53,10 +53,58 @@ def myDocuments(request):
     }
     return render(request, 'edu/my-documents.html', context)
 
+def convert_to_slug(name):
+    slug = str(name).replace(' ', '-').lower()
+    return slug
+
 @login_required
 def add_notes(request):
+    school = None
+    unit = None
     schools = School.objects.filter(is_active=True)
     unit_names = UnitName.objects.filter(is_active=True)
+    if request.method == 'POST':
+        school_id = request.POST.get('school')
+        unit_id = request.POST.get('unit')
+        new_school = request.POST.get('new_school')
+        new_unit = request.POST.get('new_unit')
+        files = request.FILES.getlist('files')
+        
+        if School.objects.filter(title=new_school).exists():
+            messages.warning(request, "Provided school already exists, kindly select it from list")
+            return redirect("edu:add_notes")
+        
+        if UnitName.objects.filter(title=new_school).exists():
+            messages.warning(request, "Provided school already exists, kindly select it from list")
+            return redirect("edu:add_notes")
+        
+        if school_id == "other":
+            if not new_school:
+                messages.warning(request, "Provide the Name of the school to be created")
+                return redirect("edu:add_notes")
+            else:
+                school = School.objects.create(title=new_school, slug=f"{convert_to_slug(new_school)}-{request.user.id}")
+                school.save()
+        else:
+            school = School.objects.get(id=int(school_id))
+        if unit_id == "other":
+            if not new_unit:
+                messages.warning(request, "Provide the Name of the Unit to be created")
+                return redirect("edu:add_notes")
+            else:
+                unit = UnitName.objects.create(title=new_unit, slug=f"{convert_to_slug(new_unit)}-{request.user.id}")
+                unit.save()
+        else:
+            unit = UnitName.objects.get(id=int(unit_id))
+        
+        for f in files:
+            note = Note.objects.create(user=request.user, unit_name=unit, school=school, file=f)
+            note.save()
+            
+        messages.success(request, "Notes added Successfully")
+        return redirect("edu:my-documents")
+
+        
     context = {
         'title': "Add Documents",
         'schools': schools,

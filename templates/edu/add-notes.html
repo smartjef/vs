@@ -9,7 +9,7 @@
     </div>
     <div class="card-body">
         <div class="form form-group">
-            <form action="" method="POST">
+            <form action="{% url 'edu:add_notes' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% if schools %}
                 <div class="form-group">
@@ -19,11 +19,9 @@
                         {% for school in schools %}
                             <option value="{{school.id}}">{{ school }}</option>
                         {% endfor %}
-                        <option value="" school-value="other">Other</option>
+                        <option value="other">Other</option>
                     </select>
-                </div>
-                <div class="form-group mt-3">
-                    <input type="text" name="new_school" class="form form-control" placeholder="Enter School Name">
+                    <input type="text" name="new_school" class="form form-control mt-3 d-none" placeholder="Enter School Name">
                 </div>
                 {% endif %}
                 {% if units %}
@@ -34,17 +32,15 @@
                         {% for unit in units %}
                             <option value="{{unit.id}}">{{ unit }}</option>
                         {% endfor %}
-                        <option value="" unit-value="other">Other</option>
+                        <option value="other">Other</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="new_unit" class="form form-control" placeholder="Enter Unit Name">
+                    <input type="text" name="new_unit" class="form form-control mt-3 d-none" placeholder="Enter Unit Name">
                 </div>
                 {% endif %}
                 <div class="form-group">
                     <label for="file">Select File(s)*</label>
-                    <input type="file" name="file" id="file" class="form form-control" required multiple>
-                    <small><i class="fa fa-question-circle" aria-hidden="true"></i> Max File(s) Size: 20MBs</small>
+                    <input type="file" name="files" id="file" class="form form-control" required multiple>
+                    <small><i class="fa fa-question-circle" aria-hidden="true"></i> Max File(s) Size: 20MBs, Hold Cmd or Ctrl to select multiple</small>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="theme-btn btn-style-one">Submit</button>
@@ -53,4 +49,31 @@
         </div>
     </div>
 </div>
+<script>
+    var schoolSelect = document.getElementById("school");
+    var newSchoolInput = document.querySelector('input[name="new_school"]');
+    var unitSelect = document.getElementById("unit");
+    var newUnitInput = document.querySelector('input[name="new_unit"]');
+
+    schoolSelect.addEventListener('change', function() {
+        if (schoolSelect.value === "other") {
+            newSchoolInput.classList.remove('d-none');
+            newSchoolInput.setAttribute('required', 'required');
+        } else {
+            newSchoolInput.classList.add('d-none');
+            newSchoolInput.removeAttribute('required');
+        }
+    });
+
+    unitSelect.addEventListener('change', function() {
+        if (unitSelect.value === "other") {
+            newUnitInput.classList.remove('d-none');
+            newUnitInput.setAttribute('required', 'required');
+        } else {
+            newUnitInput.classList.add('d-none');
+            newUnitInput.removeAttribute('required');
+        }
+    });
+</script>
+
 {% endblock %}

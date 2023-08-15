@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from assignments.views import generate_unique_code
 from assignments.models import Referal
-from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment, IdeaPool, IdeaPoolCategory
+from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment, IdeaPool
 import openai
 
 def chack_if_user_has_trials(request):
