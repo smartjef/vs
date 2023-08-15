@@ -15,6 +15,7 @@ class PreferencesInline(admin.StackedInline):
 class CustomUserAdmin(UserAdmin):
     list_display = ['username', 'first_name', 'last_name', 'email', 'is_active', 'is_staff', 'is_superuser', 'date_joined', 'last_login']
     ordering = ['date_joined', 'last_login']
+    list_filter = ['date_joined', 'last_login', 'is_active', 'is_staff', 'is_superuser']
     inlines = (ProfileInline, PreferencesInline)
 
 admin.site.unregister(User)
