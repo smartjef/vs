@@ -2,10 +2,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import math
 # Create your views here.
 
 @login_required
 def index(request, unit_slug=None, school_slug=None):
+    link = reverse('edu:index')
+    ITEM_PER_PAGE = 9
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    else:
+        page = int(page)
+    start = (page-1)*ITEM_PER_PAGE
+    end = start + ITEM_PER_PAGE
     school=None
     title = "Notes"
     schools = School.objects.filter(is_active=True)
@@ -20,18 +30,33 @@ def index(request, unit_slug=None, school_slug=None):
         unit = get_object_or_404(UnitName, is_active=True, slug=unit_slug)
         notes = Note.objects.filter(is_active=True, unit_name=unit)
         title = f"Notes under unit {unit}"
+        link = unit.get_absolute_url()
 
     if school_slug:
         school = get_object_or_404(School, is_active=True, slug=school_slug)
         notes = Note.objects.filter(is_active=True, school=school)
         title = f"Notes under school {school}"
+        link = school.get_absolute_url()
+
+    previous_page = None
+
+    if page > 1:
+        previous_page = page - 1
+    number_of_pages = math.ceil(notes.count()/ITEM_PER_PAGE)
+    next_page = None
+    if page < number_of_pages:
+        next_page = page + 1
 
     context = {
-        'notes': notes,
+        'notes': notes[start:end],
         'schools': schools,
         'units': unit_names,
         'school':school,
-        'title': title
+        'title': title,
+        'current_page': page,
+        'next_page': next_page,
+        'previous_page': previous_page,
+        'link': f"{request.scheme}://{request.get_host()}{link}"
     }
 
     return render(request, 'edu/index.html', context)

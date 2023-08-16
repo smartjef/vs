@@ -95,6 +95,10 @@
                             <li><a href="{{ about.linkedin|default:'https://linkedin.com/company/vstech-ltd/' }}"><span class="fab fa-linkedin"></span></a></li>
                             <li><a href="{{ about.youtube|default:'https://www.youtube.com/channel/UCkedAOBJuj9d0cvTKFzWqmA?sub_confirmation=1' }}"><span class="fab fa-youtube"></span></a></li>
                         </ul>
+                        <ul class="user-links mt-4">
+                            <li><a href="{% url 'users:team' %}">Meet Team</a></li>
+                            <li><a href="{% url 'faq' %}">FAQs</a></li>
+                        </ul>
                     </div>
                 </div>
 
@@ -103,12 +107,12 @@
                     <div class="footer-widget">
                         <h3 class="widget-title">Explore</h3>
                         <ul class="user-links">
+                            <li><a href="{% url 'gwd:index' %}">Get Work Done(GWD)</a></li>
+                            <li><a href="{% url 'edu:index' %}">VSTech Academy</a></li>
                             <li><a href="{% url 'about' %}">About Company</a></li>
-                            <li><a href="{% url 'users:team' %}">Meet the Team</a></li>
                             <li><a href="{% url 'blog:list' %}">News & Media</a></li>
-                            <li><a href="{% url 'project:list' %}">Our Projects</a></li>
+                            <li><a href="{% url 'ai:desc_to_image' %}">Our AI Tools</a></li>
                             <li><a href="{% url 'shop:list' %}">Our Shop</a></li>
-                            <li><a href="{% url 'faq' %}">FAQ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -129,6 +133,10 @@
                             <ul class="contact-info">
                                 <li><i class="fa fa-envelope"></i> <a href="mailto:{{ about.email|default:'o.jeff3.a@gmail.com' }}">{{ about.email|default:'o.jeff3.a@gmail.com' }}</a><br></li>
                                 <li><i class="fa fa-phone-square"></i> <a href="tel:{{ about.phone_number|default:'+254795067776' }}">{{ about.phone_number|default:'+254795067776' }}</a><br></li>
+                            </ul>
+                            <ul class="user-links mt-4">
+                                <li><a href="{% url 'contact' %}">Contact us</a></li>
+                                <li><a href="{% url 'about' %}">About us</a></li>
                             </ul>
                         </div>
                     </div>

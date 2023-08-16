@@ -86,13 +86,14 @@
 					<nav class="nav main-menu">
 						<ul class="navigation">
 							<li class="{% if title == 'Homepage' %}current{% endif %}"><a href="/">Home</a></li>
-							<li class="dropdown {% if title == 'About Us' or title == 'Projects' or title == 'Team Members' or title == 'Testimonies' or title == 'FAQs' %}current{% endif %}"><a href="#">About</a>
+							<li class="dropdown {% if title == 'About Us' or title == 'Projects' or title == 'Team Members' or title == 'Testimonies' or title == 'FAQs' or title == 'Contact Us' or title == 'Our Services' or category == 'services' %}current{% endif %}"><a href="#">About</a>
 								<ul>
 									<li><a href="{% url 'about' %}">About</a></li>
 									<li><a href="{% url 'project:list' %}">Projects</a></li>
 									<li><a href="{% url 'users:team' %}">Team</a></li>
 									<li><a href="{% url 'testimonies' %}">Testimonial</a></li>
-									<li class="{% if title == 'Our Services' or category == 'services' %}current{% endif %}"><a href="{% url 'services:list' %}">Services</a></li>
+									<li><a href="{% url 'services:list' %}">Services</a></li>
+									<li><a href="{% url 'contact' %}">Contact</a></li>
 									<!-- <li><a href="page-pricing.html">Pricing</a></li>
 									<li><a href="page-pricing-switcher.html">Pricing Switcher</a></li> -->
 									<li><a href="{% url 'faq' %}">FAQ</a></li>
@@ -101,7 +102,13 @@
 							</li>
 							<li class="{% if title == 'Your Ultimate Electronics Shop' or category == 'Our Shop' %}current{% endif %}"><a href="{% url 'shop:list' %}">Shop</a></li>
 							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
-							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
+							<li class="dropdown {% if title == 'Notes' or title == 'Add Documents' or title == 'My Documents' %}current{% endif %}"><a href="#">Academy</a>
+								<ul>
+									<li><a href="{% url 'edu:index' %}">All Resources</a></li>
+									<li><a href="{% url 'edu:add_notes' %}">Add Notes</a></li>
+									<li><a href="{% url 'edu:my-documents' %}">My Notes</a></li>									
+								</ul>
+							</li>
 							<li class="dropdown {% if title == 'Generate Image' or title == 'Our Intelligent Chatbot' %}current{% endif %}"><a href="#">AI Tools</a>
 								<ul>
 									<li><a href="https://vstechwebapp.azurewebsites.net/" target="_blank">ChatBot</a></li>
