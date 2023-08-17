@@ -32,9 +32,9 @@ def index(request, category_slug=None, tag_slug=None):
     context = {
         'title': title,
         'blogs': blogs,
-        'latest_posts': blogs,
-        'categories': Category.objects.all(),
-        'tags': Tag.objects.all(),
+        'latest_posts': blogs[:5],
+        'categories': Category.objects.all()[:5],
+        'tags': Tag.objects.all()[:6],
         'recent_comments': Comment.objects.filter(is_approved=True)
     }
     return render(request, 'blog/index.html', context)
@@ -58,10 +58,10 @@ def blog_detail(request, slug, id=None):
         'post': post,
         'next_post': next_post,
         'previous_post': previous_post,
-        'tags': Tag.objects.all(),
-        'categories': Category.objects.all(),
+        'tags': Tag.objects.all()[:6],
+        'categories': Category.objects.all()[:5],
         'comment': comment,
-        'latest_posts': Post.objects.filter(is_published=True),
+        'latest_posts': Post.objects.filter(is_published=True)[:5],
         'recent_comments': Comment.objects.filter(is_approved=True),
         'blog_full_url': blog_full_url,
         'blog_text': f"Checkout this blog, {post.title} by {post.author.get_full_name()} on VSTech Limited"

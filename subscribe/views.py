@@ -89,7 +89,7 @@ def unsubscribe(request, email):
 def blogs(request):
     context = {
         'title': 'Blogs HTML Template',
-        'blogs': Post.objects.filter(is_published=True)[:2],
+        'blogs': Post.objects.filter(is_published=True)[:4],
         'testimonies': Testimony.objects.filter(is_active=True)[:2]
     }
     return render(request, 'newsletter/templates/blogs.html', context)
