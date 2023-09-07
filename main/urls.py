@@ -17,7 +17,7 @@ from rest_framework.schemas import get_schema_view
 API_TITLE = 'VSTech API'
 API_DESCRIPTION = 'VSTech Own API for creating and modifying applications/modules within the Company.'
 
-schema_view = get_schema_view(title=API_TITLE)
+schema_view = get_schema_view(title=API_TITLE, description=API_DESCRIPTION)
 
 sitemaps = {
     'posts': PostSitemap,

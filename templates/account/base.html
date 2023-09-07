@@ -19,9 +19,9 @@
     <div class="container">
       {% include 'partials/messages.html' %}
       <div class="row align-items-center justify-content-center p-4" style="height:80vh">
-        <div class="col-lg-4 col-md-8 col-sm-12 shadow-sm p-3 bg-white">
-          <div class="py-2 px-4 text-center">
-            <img src="/static/images/logo-3.png" alt="VSTech Limited" title="VSTech Limited Logo" class="img-fluid">
+        <div class="col-lg-4 col-md-8 col-sm-12 p-3 bg-white">
+          <div class="py-3 px-5 text-center">
+            <img src="/static/images/logo-3.png" alt="VSTech Limited" title="VSTech Limited Logo" style="max-width: 10em !important;">
           </div>
             {% block body %}
               {% block content %}
@@ -29,9 +29,9 @@
               {% endblock %}
               {% block extra_body %}  
             {% endblock %}
-          </div>
         </div>
       </div>
-      {% include 'partials/chat-bot.html' %}
+    </div>
+    {% include 'partials/chat-bot.html' %}
   </body>
 </html>

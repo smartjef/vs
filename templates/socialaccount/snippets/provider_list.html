@@ -8,16 +8,22 @@
 <span>
   <a title="{{brand.name}}" 
      class="socialaccount_provider btn btn-primary {{provider.id}} {{brand.id}}" href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">{{brand.name}}</a>
-</span>>
+</span>
 {% endfor %}
 {% endif %}
 <span>
   <a title="{{provider.name}}" class="socialaccount_provider nav-link {{provider.id}}" 
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
      {% if provider.name == 'Google' %}
-      <img src="/static/google.png" width="25" alt="{{provider.name}}" title="{{provider.name}}">
+     <div class="d-flex align-items-center border rounded rounded-pill justify-content-center py-1">
+        <img src="/static/google.png" style="width: 25px !important; height: 25px !important;" class="m-0 p-0" alt="{{provider.name}}" title="{{provider.name}}">
+        <span class="nav-link m-0 p-0 mx-3">{{ provider.name }} </span>
+      </div>
      {% elif provider.name == 'GitHub' %}
-      <img src="/static/github.png" width="25" alt="{{provider.name}}" title="{{provider.name}}"> 
+     <div class="d-flex align-items-center border rounded rounded-pill justify-content-center py-1">
+        <img src="/static/github.png" style="width: 25px !important; height: 25px !important;" class="m-0 p-0" alt="{{provider.name}}" title="{{provider.name}}"> 
+        <span class="nav-link m-0 p-0 mx-3">{{ provider.name }} </span>
+      </div>
      {% else %}
      {% endif %}
     </a>
