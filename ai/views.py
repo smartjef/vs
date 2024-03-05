@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .new import KEY, ENDPOINT
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from assignments.views import generate_unique_code
 from assignments.models import Referal
 from .models import GeneratedImage, Trial, ImageDescription, AreaChoice, LevelChoice, IdeaRequest, GeneratedIdeas, Payment, IdeaPool
 import openai
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def chack_if_user_has_trials(request):
     user_trials = Trial.objects.filter(user=request.user)
@@ -52,7 +54,7 @@ def desc_to_image(request):
                         openai.api_type = "azure"
                         openai.api_base = "https://chat-gpt4.openai.azure.com/"
                         openai.api_version = "2023-06-01-preview"
-                        openai.api_key = KEY
+                        openai.api_key = os.getenv('KEY')
                         image_description =  ImageDescription.objects.create(description=description, user=request.user, size=size, initial_number_of_images=number_of_images)
                         image_description.save()
                         response = openai.Image.create(
@@ -121,7 +123,7 @@ def regenerate_image(request, image_id):
     openai.api_type = "azure"
     openai.api_base = "https://chat-gpt4.openai.azure.com/"
     openai.api_version = "2023-06-01-preview"
-    openai.api_key = KEY
+    openai.api_key = os.getenv('KEY')
     response = openai.Image.create(
         prompt=image_description,
         size=image_size,
