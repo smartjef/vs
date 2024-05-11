@@ -6,12 +6,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-# DEBUG = True
+#DEBUG = True
 DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '107.37.21.185',
+    '102.37.21.185',
     'www.vstech.co.ke',
     'vstech.co.ke',
 ]
