@@ -32,13 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.github',
-
     'crispy_forms',
     'crispy_bootstrap5',
     'rest_framework',
@@ -168,32 +161,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_CONFIRM_EMAIL_ON_GET = False
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_EMAIL_MAX_LENGTH = 200
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_MAX_EMAIL_ADDRESSES = 3
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 1200
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
-ACCOUNT_PRESERVE_USERNAME_CASING = False
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_USERNAME_BLACKLIST = ['admin']
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USER_MODEL_EMAIL_FIELD = "email"
-ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
-ACCOUNT_USERNAME_MIN_LENGTH = 3
-ACCOUNT_USERNAME_REQUIRED = True
-LOGIN_REDIRECT_URL = '/'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = 'VSTech Limited - '
-
 CSRF_TRUSTED_ORIGINS = [
     'https://vstech.co.ke/',
     'https://www.vstech.co.ke/',
@@ -207,11 +174,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
 
 
 REST_FRAMEWORK = {

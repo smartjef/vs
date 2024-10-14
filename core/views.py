@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from random import randint
 from service.models import Service
@@ -9,7 +8,6 @@ from blog.models import Post
 from .models import Testimony, Partner, FAQ, Contact
 from users.models import Team
 from django.views.decorators.http import require_POST
-from .tasks import send_email
 
 def check_if_userprofile_is_updated(user):
     if user.first_name and user.last_name and user.email:
@@ -51,7 +49,6 @@ def contact(request):
         contact = Contact(name=name, email=email, subject=subject, message=message, phone_number=phone_number)
         contact.save()
         messages.success(request, 'Contact request submitted successfully.')
-        send_email.delay(contact.id)
         return redirect('index')
 
     context = {
