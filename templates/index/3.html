@@ -82,10 +82,7 @@
 						<!-- Info List -->
 						<ul class="list-style-one">
 							<li><a href="{% url 'faq' %}">Help</a></li>
-							<li><a href="https://clients.vstech.co.ke">Client Portal</a></li>
-							{% if request.user.is_staff %}
-								<li><a href="{% url 'staff:index' %}">Admin Portal</a></li>
-							{% endif %}
+							<li><a href="https://support.vstech.co.ke">Support</a></li>
 						</ul>
 					</div>
 				</div>
@@ -115,14 +112,18 @@
 									<li><a href="{% url 'users:team' %}">Team</a></li>
 									<li><a href="{% url 'testimonies' %}">Testimonial</a></li>
 									<li><a href="{% url 'services:list' %}">Services</a></li>
-									<li><a href="{% url 'contact' %}">Contact</a></li>
 									<!-- <li><a href="page-pricing.html">Pricing</a></li>
 									<li><a href="page-pricing-switcher.html">Pricing Switcher</a></li> -->
 									<li><a href="{% url 'faq' %}">FAQ</a></li>
 									
 								</ul>
 							</li>
+							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
 							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
+							<li><a href="https://clients.vstech.co.ke">Client Portal</a></li>
+							{% if request.user.is_staff %}
+							<li><a href="{% url 'staff:index' %}">Admin Portal</a></li>
+							{% endif %}
 						</ul>
 					</nav>
 						<!-- Main Menu End-->

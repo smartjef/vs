@@ -14,10 +14,7 @@
 
 				<div class="top-right">
 					<ul class="useful-links">
-						<li><a href="https://clients.vstech.co.ke">Client Portal</a></li>
-						{% if request.user.is_staff %}
-							<li><a href="{% url 'staff:index' %}">Admin Portal</a></li>
-						{% endif %}
+						<li><a href="https://support.vstech.co.ke">Support</a></li>
 					</ul>
 				</div>		
 			</div>
@@ -63,6 +60,10 @@
 							
 							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
 							<li class="{% if title == 'Contact Us' %}current{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
+							<li><a href="https://clients.vstech.co.ke">Client Portal</a></li>
+							{% if request.user.is_staff %}
+							<li><a href="{% url 'staff:index' %}">Admin Portal</a></li>
+							{% endif %}
 						</ul>
 					</nav>
 					<!-- Main Menu End-->

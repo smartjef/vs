@@ -14,22 +14,6 @@
             <!--Keep This Empty / Menu will come through Javascript-->
         </ul>
         <ul class="contact-list-one">
-            {% if request.user.is_staff %}
-                <li>
-                    <div class="contact-info-box">
-                        <i class="icon fa fa-power-off" aria-hidden="true"></i>
-                        <span class="title">Staff</span>
-                        <a href="{% url 'staff:index' %}">Portal</a>
-                    </div>
-                </li>
-            {% endif %}				
-                <li>
-                    <div class="contact-info-box">
-                        <i class="icon fa fa-user-plus" aria-hidden="true"></i>
-                        <span class="title">Client</span>
-                        <a href="https://clients.vstech.co.ke">Portal</a>
-                    </div>
-                </li>
             <li>
                 <!-- Contact Info Box -->
                 <div class="contact-info-box">
