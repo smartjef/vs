@@ -19,7 +19,7 @@ def check_if_userprofile_is_updated(user):
     
 # Create your views here.
 def index(request):
-    random_number = randint(3,3)
+    random_number = randint(1,3)
     context = {
         'title' : 'Homepage',
         'services': Service.objects.all()[:4],

@@ -79,19 +79,10 @@
 
 				<div class="top-right">
 					<ul class="useful-links">
-						<li>
-							<div class="form-check form-switch m-0 p-0">
-								<label class="form-check-label my-0 py-0" for="flexSwitchCheckChecked">Dark Theme</label>
-								<input class="form-check-input my-0 py-0" type="checkbox" {% if request.user.is_authenticated and request.user.preferences.theme == 'dark' %}checked{% endif %} role="switch" id="flexSwitchCheckChecked">
-							</div>
-						</li>
 						<li><a href="{% url 'faq' %}">Help</a></li>
-						{% if request.user.is_authenticated %}
-							<li><a href="{% url 'users:profile' %}">Profile</a></li>
-							<li><a href="{% url 'account_logout' %}">Logout</a></li>
-						{% else %}				
-							<li><a href="{% url 'account_signup' %}">Register</a></li>
-							<li><a href="{% url 'account_login' %}">Login</a></li>
+						<li><a href="https://clients.vstech.co.ke">Client Portal</a></li>
+						{% if request.user.is_staff %}
+							<li><a href="{% url 'staff:index' %}">Admin Portal</a></li>
 						{% endif %}
 					</ul>
 				</div>

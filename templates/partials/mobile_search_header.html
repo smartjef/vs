@@ -14,37 +14,22 @@
             <!--Keep This Empty / Menu will come through Javascript-->
         </ul>
         <ul class="contact-list-one">
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_staff %}
                 <li>
                     <div class="contact-info-box">
                         <i class="icon fa fa-power-off" aria-hidden="true"></i>
-                        <span class="title">Account</span>
-                        <a href="{% url 'users:profile' %}">Profile</a>
+                        <span class="title">Staff</span>
+                        <a href="{% url 'staff:index' %}">Portal</a>
                     </div>
                 </li>
-                <li>
-                    <div class="contact-info-box">
-                        <i class="icon fa fa-power-off" aria-hidden="true"></i>
-                        <span class="title">Account</span>
-                        <a href="{% url 'account_logout' %}">Logout</a>
-                    </div>
-                </li>
-            {% else %}				
+            {% endif %}				
                 <li>
                     <div class="contact-info-box">
                         <i class="icon fa fa-user-plus" aria-hidden="true"></i>
-                        <span class="title">Account</span>
-                        <a href="{% url 'account_signup' %}">Register</a>
+                        <span class="title">Client</span>
+                        <a href="https://clients.vstech.co.ke">Portal</a>
                     </div>
                 </li>
-                <li>
-                    <div class="contact-info-box">
-                        <i class="icon fa fa-user-circle" aria-hidden="true"></i>
-                        <span class="title">Account</span>
-                        <a href="{% url 'account_login' %}">Login</a>
-                    </div>
-                </li>
-            {% endif %}
             <li>
                 <!-- Contact Info Box -->
                 <div class="contact-info-box">
