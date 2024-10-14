@@ -6,12 +6,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '102.37.21.185',
+    '13.245.109.191',
     'www.vstech.co.ke',
     'vstech.co.ke',
 ]
@@ -165,16 +165,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://vstech.co.ke/',
     'https://www.vstech.co.ke/',
 ]
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_SSL = True
-
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
