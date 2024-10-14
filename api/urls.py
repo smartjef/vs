@@ -18,17 +18,7 @@ router.register('projects', views.ProjectViewSet, basename='project')
 router.register('testimonies', views.TestimonyViewSet, basename='testimony')
 router.register('faqs', views.FAQViewSet, basename='faq')
 router.register('partners', views.PartnerViewSet, basename='partner')
-router.register('product-categories', views.ProductCategoryViewSet, basename='product-category')
-router.register('product-categories/(?P<category_pk>\d+)/products', views.CategoryProductViewSet, basename='category-product')
-router.register('brands', views.BrandViewSet, basename='brands')
-router.register('brands/(?P<brand_pk>\d+)/products', views.BrandProductsViewSet, basename='brand-product')
-router.register('products', views.ProductViewSet, basename='products')
-router.register('products/(?P<product_pk>\d+)/reviews', views.ProductReviewViewSet, basename='product-review')
-router.register('products/(?P<product_pk>\d+)/images', views.ProductImageViewSet, basename='product-image')
 router.register('contacts', views.ContactCreateViewSet, basename='contact')
-router.register('descriptions', views.ImageDescritionViewSet, basename='ai-image-description')
-router.register('descriptions/(?P<description_pk>\d+)/images', views.GeneratedImagesViewSet, basename='ai-generated-image')
-router.register('subscribe', views.SubscriberViewSet, basename='subscribe')
 
 app_name = 'api'
 urlpatterns = [

@@ -131,55 +131,13 @@
 									
 								</ul>
 							</li>
-							<li class="{% if title == 'Your Ultimate Electronics Shop' or category == 'Our Shop' %}current{% endif %}"><a href="{% url 'shop:list' %}">Shop</a></li>
 							<li class="{% if title == 'Blogs' or category == 'Blogs > Test Category' %}current{% endif %}"><a href="{% url 'blog:list' %}">Blogs</a></li>
-							<li class="dropdown {% if title == 'Notes' or title == 'Add Documents' or title == 'My Documents' %}current{% endif %}"><a href="#">Academy</a>
-								<ul>
-									<li><a href="{% url 'edu:index' %}">All Resources</a></li>
-									<li><a href="{% url 'edu:add_notes' %}">Add Notes</a></li>
-									<li><a href="{% url 'edu:my-documents' %}">My Notes</a></li>									
-								</ul>
-							</li>
-							<li class="dropdown {% if title == 'Generate Image' or title == 'Our Intelligent Chatbot' %}current{% endif %}"><a href="#">AI Tools</a>
-								<ul>
-									<li><a href="https://vstechwebapp.azurewebsites.net/" target="_blank">ChatBot</a></li>
-									<li><a href="{% url 'ai:get_ideas' %}">Get Ideas</a></li>
-									<li><a href="{% url 'ai:desc_to_image' %}">Description to Image</a></li>									
-								</ul>
-							</li>
-							<li class="dropdown {% if title == 'Get Work Done' or title == 'Get Project Ideas' %}current{% endif %}"><a href="#">G.W.D</a>
-								<ul>
-									<li><a href="{% url 'gwd:index' %}">GWD Homepage</a></li>
-									<li><a href="{% url 'gwd:dashboard' %}">Dashboard</a></li>
-									<li><a href="{% url 'ai:get_ideas' %}">Get Ideas</a></li>
-									<li><a href="{% url 'gwd:leave_project' %}">Leave a Project</a></li>
-									<li><a href="{% url 'gwd:leave_assignment' %}">Leave Assignment</a></li>									
-								</ul>
-							</li>
 						</ul>
 					</nav>
 						<!-- Main Menu End-->
 
 
 						<div class="outer-box">
-							<div class="ui-btn-outer">
-								<button class="ui-btn ui-btn search-btn">
-									<span class="icon lnr lnr-icon-search"></span>
-								</button>
-								{% with total_items=cart|length %}
-								<a href="{% url 'shop:cart' %}" class="ui-btn">
-									<span class="d-flex no-wrap">
-									<i class="lnr-icon-shopping-cart"></i>
-									{% if total_items > 0 %}
-										<sup class="text-success" style="font-size: 16px;">{{ total_items }}</sup>
-									{% else %}
-										<sup class="text-danger" style="font-size: 16px;">0</sup>
-									{% endif %}
-									</span>
-								</a>
-							{% endwith %}
-							</div>
-
 							<!-- Mobile Nav toggler -->
 							<div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
 						</div>

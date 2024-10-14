@@ -5,11 +5,8 @@ from service.models import Service, ServiceFAQ
 from core.models import About, FAQ, Partner, Testimony, Tag, Category, Contact
 from users.models import Team
 from blog.models import Post, Comment, Reply
-from shop.models import Product, ProductCategory, Brand, Review, ProductImage
 from project.models import Project
-from ai.models import GeneratedImage, ImageDescription
-from subscribe.models import Subscriber
-from .serializers import ServiceSerializer, AboutSerializer, FAQSerializer, PartnerSerializer, TestimonySerializer, PostSerializer, ProjectSerializer, ProductSerializer, ServiceFAQSerializer, TeamSerializer, CommentSerializer, ReplySerializer, TagSerializer, CategorySerializer, ProductCategorySerializer, BrandSerializer, ReviewSerializer, ProductImageSerializer, ContactSerializer, ImageDescriptionSerializer, GeneratedImagesSerializer, SubscriberSerializer
+from .serializers import ServiceSerializer, AboutSerializer, FAQSerializer, PartnerSerializer, TestimonySerializer, PostSerializer, ProjectSerializer, ServiceFAQSerializer, TeamSerializer, CommentSerializer, ReplySerializer, TagSerializer, CategorySerializer, ContactSerializer
 # Create your views here.
 
 class IsObjOwner(permissions.BasePermission):
@@ -115,61 +112,6 @@ class PartnerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Partner.objects.all()
     serializer_class = PartnerSerializer
 
-class ProductViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Product.objects.filter(is_approved=True)
-    serializer_class = ProductSerializer
-
-class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = ProductCategory.objects.all()
-    serializer_class = ProductCategorySerializer
-
-class CategoryProductViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = ProductSerializer
-
-    def get_queryset(self):
-        category_pk = self.kwargs.get('category_pk')
-        category = get_object_or_404(ProductCategory, pk=category_pk)
-        queryset = Product.objects.filter(category=category, is_approved=True)
-        return queryset
-
-class BrandViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
-
-class BrandProductsViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = ProductSerializer
-
-    def get_queryset(self):
-        brand_pk = self.kwargs.get('brand_pk')
-        brand = get_object_or_404(Brand, pk=brand_pk)
-        queryset = Product.objects.filter(brand=brand, is_approved=True)
-        return queryset
-
-class ProductReviewViewSet(viewsets.ModelViewSet):
-    serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsObjOwner]
-
-    def get_queryset(self):
-        product_pk = self.kwargs.get('product_pk')
-        product = get_object_or_404(Product, pk=product_pk, is_approved=True)
-        queryset = Review.objects.filter(product=product, is_active=True)
-        return queryset
-
-    def perform_create(self, serializer):
-        product_pk = self.kwargs.get('product_pk')
-        product = get_object_or_404(Product, pk=product_pk, is_approved=True)
-        serializer.save(product=product, user=self.request.user)
-
-class ProductImageViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = ProductImageSerializer
-
-    def get_queryset(self):
-        product_pk = self.kwargs.get('product_pk')
-        product = get_object_or_404(Product, pk=product_pk, is_approved=True)
-        queryset = ProductImage.objects.filter(product=product)
-        return queryset
-    
-
 class ContactCreateViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -183,42 +125,4 @@ class ContactCreateViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class ImageDescritionViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = ImageDescriptionSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = ImageDescription.objects.filter(user=user)
-        return queryset
-
-
-class GeneratedImagesViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = GeneratedImagesSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        description_pk = self.kwargs.get('description_pk')
-        queryset = GeneratedImage.objects.filter(description__user=user, description_id=description_pk, is_active=True)
-        return queryset
-    
-class SubscriberViewSet(viewsets.ViewSet):
-    serializer_class = SubscriberSerializer
-
-    def get_queryset(self):
-        return Subscriber.objects.none()  
-
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data.get('email')
-
-            if Subscriber.objects.filter(email=email).exists():
-                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
-
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 

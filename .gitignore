@@ -1,4 +1,4 @@
-new.py
+.env
 env/
 **/__pycache__/
 .idea/

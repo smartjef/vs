@@ -6,8 +6,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -46,16 +46,10 @@ INSTALLED_APPS = [
     # Local apps
     'core.apps.CoreConfig',
     'project.apps.ProjectConfig',
-    'shop.apps.ShopConfig',
     'users.apps.UsersConfig',
     'service.apps.ServiceConfig',
     'blog.apps.BlogConfig',
-    'subscribe.apps.SubscribeConfig',
-    'orders.apps.OrdersConfig',
-    'ai.apps.AiConfig',
     'api.apps.ApiConfig',
-    'assignments.apps.AssignmentsConfig',
-    'academy.apps.AcademyConfig',
 ]
 
 SITE_ID = 1

@@ -5,9 +5,6 @@ from django.contrib.auth.models import User
 from users.models import Profile, Team
 from blog.models import Post, Comment, Reply
 from project.models import Project
-from ai.models import ImageDescription, GeneratedImage, Trial
-from shop.models import ProductCategory, Brand, Product, ProductImage, Review
-from subscribe.models import Subscriber
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -98,53 +95,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['title', 'slug', 'category', 'author', 'body', 'tags', 'front_image', 'cover_image', 'views', 'likes', 'dislikes', 'created_at']
    
-
-class ProductCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductCategory
-        fields = ['title', 'slug']
-
-class BrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = ['title', 'slug']
-
-class ReviewSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
-    class Meta:
-        model = Review
-        fields = ['user', 'message', 'rating',  'created_at']
-
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['image']
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    category = ProductCategorySerializer(many=False, read_only=True)
-    brand = BrandSerializer(many=False, read_only=True)
-    class Meta:
-        model = Product
-        fields = ['title', 'category', 'brand', 'slug', 'image', 'description', 'current_price', 'discount', 'in_stock', 'created_at']
-
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = '__all__'
-
-class ImageDescriptionSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
-    class Meta:
-        model = ImageDescription
-        fields = ['user', 'description', 'initial_number_of_images', 'size', 'created_at']
-
-class GeneratedImagesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GeneratedImage
-        fields = ['image_url', 'created_at']
-
-class SubscriberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subscriber
-        fields = ['email', 'name', 'created_at']

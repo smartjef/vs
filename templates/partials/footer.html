@@ -60,22 +60,6 @@
         }
     }      
 </style>
-<section id="contact">
-    <div class="auto-container my-5">
-        <div class="row">
-            <div class="subscribe-form">
-                <h4 class="title text-white mb-30">Subscribe our newsletter and get useful <br> information every week</h4>
-                <form method="post" action="{% url 'subscribe:new'%}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <input type="email" name="email" class="email" placeholder="Email Address" required>
-                        <button type="submit" class="theme-btn btn-style-one text-white"><span class="btn-title"><i class="far fa-paper-plane"></i></span></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
 <!-- Main Footer -->
 <footer class="main-footer">
     <div class="bg-image"  style="background-image: url(/static/images/background/2.jpg)"></div>
@@ -107,12 +91,8 @@
                     <div class="footer-widget">
                         <h3 class="widget-title">Explore</h3>
                         <ul class="user-links">
-                            <li><a href="{% url 'gwd:index' %}">Get Work Done(GWD)</a></li>
-                            <li><a href="{% url 'edu:index' %}">VSTech Academy</a></li>
                             <li><a href="{% url 'about' %}">About Company</a></li>
                             <li><a href="{% url 'blog:list' %}">News & Media</a></li>
-                            <li><a href="{% url 'ai:desc_to_image' %}">Our AI Tools</a></li>
-                            <li><a href="{% url 'shop:list' %}">Our Shop</a></li>
                         </ul>
                     </div>
                 </div>
