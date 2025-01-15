@@ -131,3 +131,14 @@ def terms(request):
         'title': 'Terms & Conditions',   
     }
     return render(request, 'terms.html', context)
+
+from django.http import HttpResponse
+import os
+
+def acme_challenge(request, challenge):
+    file_path = os.path.join('/var/www/vstech/.well-known/acme-challenge/', challenge)
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
+            return HttpResponse(f.read(), content_type='text/plain')
+    return HttpResponse('Not Found', status=404)
+

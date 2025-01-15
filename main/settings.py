@@ -10,10 +10,17 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    '147.93.3.145',
     '127.0.0.1',
     '13.245.109.191',
     'www.vstech.co.ke',
     'vstech.co.ke',
+    'srv.vstech.co.ke',
+    'www.srv.vstech.co.ke',
+    'vmi2389059.contaboserver.net',
+    'www.vmi2389059.contaboserver.net'
+    'laonyangoadv.com',
+    'www.laonyangoadv.com'
 ]
 
 ADMINS = [
@@ -95,15 +102,12 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.db.backends.mysql',
             'NAME': os.getenv('DB_NAME'),
             'USER': os.getenv('DB_USER'),
             'PASSWORD': os.getenv('DB_PASSWORD'),
             'HOST': os.getenv('DB_HOST'),
-            'PORT': 5432,
-            'OPTIONS': {
-                'sslmode': 'require',
-            }
+            'PORT': 3306,
         }
     }
 

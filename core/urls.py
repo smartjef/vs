@@ -11,4 +11,5 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('terms-and-conditions/', views.terms, name='terms'),
     path('privacy-policy/', views.policy, name='policy'),
+    path('.well-known/acme-challenge/<str:challenge>', views.acme_challenge, name='acme-challenge'),
 ]
